@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "web_user")
 public class WebUser
@@ -17,13 +18,13 @@ public class WebUser
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "u_id", nullable = false)
-    private Long u_id;
+    private Long id;
 
 
     @Column(name = "u_phone_number", length = 20)
-    private String u_phone_number;
+    private String phoneNumber;
 
 
     @Column(name = "u_pass_word", nullable = false, length = 1000)
-    private String u_pass_word;
+    private String passWord;
 };
