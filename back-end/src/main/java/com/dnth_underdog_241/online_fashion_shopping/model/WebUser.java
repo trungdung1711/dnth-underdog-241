@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 @Table(name = "web_user")
 public class WebUser
 {
@@ -27,4 +30,11 @@ public class WebUser
 
     @Column(name = "u_pass_word", nullable = false, length = 1000)
     private String passWord;
+
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "web_user_roles",
+            joinColumns = @JoinColumn(name = "webUser_u_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_role_id"))
+    private Set<Role> roles = new LinkedHashSet<>();
 };
