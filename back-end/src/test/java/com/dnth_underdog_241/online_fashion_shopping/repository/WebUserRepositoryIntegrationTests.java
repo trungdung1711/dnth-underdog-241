@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @SpringBootTest
@@ -76,6 +77,33 @@ public class WebUserRepositoryIntegrationTests
                 .isPresent();
         Assertions
                 .assertThat(webUserOptional.get().getRoles().size())
+                .isEqualTo(1);
+    }
+
+
+    @Test
+    public void getWebUser_AddRoles_ReturnNewWebUserWithNewRoles()
+    {
+        WebUser webUserA = WebUserFactory.createUserA();
+
+        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
+        Optional<Role> roleCustomerOptional = roleRepository.findByName("ROLE_CUSTOMER");
+
+        webUserOptional.get().getRoles().add(roleCustomerOptional.get());
+        roleCustomerOptional.get().getWebUsers().add(webUserOptional.get());
+        webUserRepository.save(webUserOptional.get());
+
+        Optional<WebUser> changedWebUser = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
+        Assertions
+                .assertThat(changedWebUser)
+                .isPresent();
+        Assertions
+                .assertThat(changedWebUser.get().getRoles().size())
+                .isEqualTo(2);
+        Assertions
+                .assertThat(changedWebUser.get().getRoles())
+                .contains(roleCustomerOptional.get());
+        Assertions.assertThat(roleCustomerOptional.get().getWebUsers().size())
                 .isEqualTo(1);
     }
 };
