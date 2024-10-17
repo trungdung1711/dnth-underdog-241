@@ -2,10 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.LinkedHashSet;
@@ -18,16 +15,17 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "role")
 public class Role
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
 
-    @Column(name = "role_name", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
 
 
@@ -53,4 +51,4 @@ public class Role
     {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
-};
+}

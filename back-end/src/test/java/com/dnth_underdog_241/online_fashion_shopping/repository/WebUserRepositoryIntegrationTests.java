@@ -1,17 +1,21 @@
 package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 
+import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
 import com.dnth_underdog_241.online_fashion_shopping.model.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.util.DataInitialiser;
+import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
 import org.assertj.core.api.Assertions;
-import org.hibernate.Hibernate;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -21,51 +25,55 @@ import java.util.Set;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@Transactional
+@Import(TestsConfiguration.class)
 public class WebUserRepositoryIntegrationTests
 {
     @Autowired
     WebUserRepository webUserRepository;
+
+
     @Autowired
     RoleRepository roleRepository;
 
 
-    @Test
-    public void save_WithNoId_ReturnsWebUser()
+    @Autowired
+    DataInitialiser dataInitialiser;
+
+
+    @BeforeEach
+    public void setUp()
     {
-        WebUser webUser = WebUser
-                .builder()
-                .passWord("password")
-                .phoneNumber("0846979772")
-                .build();
-        webUserRepository.save(webUser);
-        Optional<WebUser> webUserOptional = webUserRepository.findById(webUser.getId());
-        Assertions.assertThat(webUserOptional).isPresent();
-        Assertions.assertThat(webUserOptional.get().getPhoneNumber()).isEqualTo(webUser.getPhoneNumber());
-        Assertions.assertThat(webUserOptional.get().getPassWord()).isEqualTo(webUser.getPassWord());
+        dataInitialiser.setUp();
     }
 
 
     @Test
-    public void saveWebUser_WithRoles_ReturnsWebUserWithRoles()
+    public void getWebUser_WithPhoneNumber_ReturnsCorrectWebUser()
     {
-        WebUser webUser = WebUser
-                .builder()
-                .passWord("password")
-                .phoneNumber("0846979772")
-                .build();
-        Optional<Role> role1 = roleRepository.findByName("ROLE_ADMIN");
-        Set<Role> roles = new HashSet<>();
-        roles.add(role1.get());
-        webUser.setRoles(roles);
-        webUserRepository.save(webUser);
-        Optional<WebUser> webUserOptional = webUserRepository.findById(webUser.getId());
-
+        WebUser webUserA = WebUserFactory.createUserA();
+        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
         Assertions
                 .assertThat(webUserOptional)
                 .isPresent();
         Assertions
-                .assertThat(webUserOptional.get().getRoles())
-                .isEqualTo(roles);
+                .assertThat(webUserOptional.get().getPhoneNumber())
+                .isEqualTo(webUserA.getPhoneNumber());
+        Assertions
+                .assertThat(webUserOptional.get().getPassword())
+                .isEqualTo(webUserA.getPassword());
+    }
+
+
+    @Test
+    public void getWebUser_WithPhoneNumber_ReturnsWebUserWithRoles()
+    {
+        WebUser webUserA = WebUserFactory.createUserA();
+        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
+
+        Assertions
+                .assertThat(webUserOptional)
+                .isPresent();
         Assertions
                 .assertThat(webUserOptional.get().getRoles().size())
                 .isEqualTo(1);

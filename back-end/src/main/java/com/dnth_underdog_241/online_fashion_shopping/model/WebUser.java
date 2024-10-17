@@ -1,10 +1,11 @@
 package com.dnth_underdog_241.online_fashion_shopping.model;
 
 
+import com.dnth_underdog_241.online_fashion_shopping.model.enums.Sex;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,21 +21,43 @@ public class WebUser
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "u_id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
 
-    @Column(name = "u_phone_number", length = 20)
+    @Column(length = 20)
     private String phoneNumber;
 
 
-    @Column(name = "u_pass_word", nullable = false, length = 1000)
-    private String passWord;
+    @Column(nullable = false, length = 1000)
+    private String password;
+
+
+    @Enumerated
+    private Sex sex;
+
+
+    @Column(nullable = false)
+    private String lastName;
+
+
+    @Column(nullable = false)
+    private String firstName;
+
+
+    @Column(unique = true)
+    private String email;
+
+
+    @Column
+    private LocalDate birthDay;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "web_user_roles",
+    @JoinTable
+            (name = "web_user_roles",
             joinColumns = @JoinColumn(name = "webUser_u_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
-};
+
+}
