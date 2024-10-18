@@ -9,7 +9,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface RoleRepository extends CrudRepository<Role, Integer>
+public interface RoleRepository extends CrudRepository<Role, Long>
 {
     public Optional<Role> findByName(String name);
 };

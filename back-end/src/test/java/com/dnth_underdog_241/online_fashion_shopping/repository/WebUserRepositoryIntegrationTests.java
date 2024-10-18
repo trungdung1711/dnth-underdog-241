@@ -2,6 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
+import com.dnth_underdog_241.online_fashion_shopping.model.Address;
 import com.dnth_underdog_241.online_fashion_shopping.model.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.util.DataInitialiser;

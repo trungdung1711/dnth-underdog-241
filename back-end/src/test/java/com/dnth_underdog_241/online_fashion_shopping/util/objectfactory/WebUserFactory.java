@@ -25,4 +25,20 @@ public class WebUserFactory
                 .roles(new HashSet<Role>())
                 .build();
     }
+
+
+    public static WebUser createUserB()
+    {
+        return WebUser
+                .builder()
+                .phoneNumber("01213828895")
+                .password("MinanonihongoN4@")
+                .sex(Sex.OTHER)
+                .lastName("Nobi")
+                .firstName("Nobita")
+                .email("nobiNobita1991@gmail.com")
+                .birthDay(LocalDate.of(1991, 4, 12))
+                .roles(new HashSet<Role>())
+                .build();
+    }
 }

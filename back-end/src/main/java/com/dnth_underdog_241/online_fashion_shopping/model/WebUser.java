@@ -60,4 +60,8 @@ public class WebUser
             inverseJoinColumns = @JoinColumn(name = "roles_role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
 
+
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JoinColumn
+    private Address address;
 }
