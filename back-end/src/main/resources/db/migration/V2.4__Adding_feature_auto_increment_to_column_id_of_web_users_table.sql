@@ -1,0 +1,4 @@
+ALTER TABLE
+    web_users
+MODIFY
+    id BIGINT NOT NULL AUTO_INCREMENT;

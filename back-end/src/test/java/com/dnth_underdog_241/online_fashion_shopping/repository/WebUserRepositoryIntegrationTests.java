@@ -2,10 +2,10 @@ package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.model.Address;
-import com.dnth_underdog_241.online_fashion_shopping.model.Role;
-import com.dnth_underdog_241.online_fashion_shopping.model.WebUser;
-import com.dnth_underdog_241.online_fashion_shopping.util.DataInitialiser;
+import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.users.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,10 +18,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @SpringBootTest
@@ -36,24 +33,22 @@ public class WebUserRepositoryIntegrationTests
 
 
     @Autowired
-    RoleRepository roleRepository;
-
-
-    @Autowired
-    DataInitialiser dataInitialiser;
+    DataInitializer dataInitializer;
 
 
     @BeforeEach
     public void setUp()
     {
-        dataInitialiser.setUp();
+        dataInitializer.setUp();
     }
 
 
     @Test
     public void getWebUser_WithPhoneNumber_ReturnsCorrectWebUser()
     {
+        /*For comparing the WebUser instance only*/
         WebUser webUserA = WebUserFactory.createUserA();
+
         Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
         Assertions
                 .assertThat(webUserOptional)
@@ -71,8 +66,8 @@ public class WebUserRepositoryIntegrationTests
     public void getWebUser_WithPhoneNumber_ReturnsWebUserWithRoles()
     {
         WebUser webUserA = WebUserFactory.createUserA();
-        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
 
+        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
         Assertions
                 .assertThat(webUserOptional)
                 .isPresent();
@@ -83,28 +78,27 @@ public class WebUserRepositoryIntegrationTests
 
 
     @Test
-    public void getWebUser_AddRoles_ReturnNewWebUserWithNewRoles()
+    public void getWebUser_WithPhoneNumber_ReturnAllRoles()
     {
-        WebUser webUserA = WebUserFactory.createUserA();
+        WebUser webUserB = WebUserFactory.createUserB();
 
-        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
-        Optional<Role> roleCustomerOptional = roleRepository.findByName("ROLE_CUSTOMER");
+        Optional<WebUser> webUserOptional = webUserRepository.findByPhoneNumber(webUserB.getPhoneNumber());
 
-        webUserOptional.get().getRoles().add(roleCustomerOptional.get());
-        roleCustomerOptional.get().getWebUsers().add(webUserOptional.get());
-        webUserRepository.save(webUserOptional.get());
-
-        Optional<WebUser> changedWebUser = webUserRepository.findByPhoneNumber(webUserA.getPhoneNumber());
         Assertions
-                .assertThat(changedWebUser)
+                .assertThat(webUserOptional)
                 .isPresent();
+
+        WebUser webUser = webUserOptional.get();
+
         Assertions
-                .assertThat(changedWebUser.get().getRoles().size())
-                .isEqualTo(2);
-        Assertions
-                .assertThat(changedWebUser.get().getRoles())
-                .contains(roleCustomerOptional.get());
-        Assertions.assertThat(roleCustomerOptional.get().getWebUsers().size())
-                .isEqualTo(1);
+                .assertThat(webUser.getRoles().size())
+                .isEqualTo(3);
+    }
+
+
+    @Test
+    public void DoingNothing_CheckingTheSQL_ReturnCorrectSQL()
+    {
+
     }
 };

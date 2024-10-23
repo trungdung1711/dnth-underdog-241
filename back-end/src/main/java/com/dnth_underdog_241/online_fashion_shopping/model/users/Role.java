@@ -1,36 +1,32 @@
-package com.dnth_underdog_241.online_fashion_shopping.model;
+package com.dnth_underdog_241.online_fashion_shopping.model.users;
 
 
+import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.LinkedHashSet;
 import java.util.Objects;
-import java.util.Set;
 
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "role")
+@Entity
+@Table(name = "roles")
 public class Role
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
 
-    @Column(nullable = false, unique = true)
-    private String name;
-
-
-    @ManyToMany(mappedBy = "roles")
-    private Set<WebUser> webUsers = new LinkedHashSet<>();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "name", nullable = false, unique = true)
+    private RoleEnum name;
 
 
     @Override
@@ -44,7 +40,6 @@ public class Role
         Role role = (Role) o;
         return getId() != null && Objects.equals(getId(), role.getId());
     }
-
 
     @Override
     public final int hashCode()

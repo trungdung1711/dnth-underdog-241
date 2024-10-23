@@ -11,28 +11,27 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "address")
+@Table(name = "addresses")
 public class Address
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
 
-    @Column(nullable = false)
+    @Column(name = "province", nullable = false)
     private String province;
 
 
-    @Column(nullable = false)
+    @Column(name = "city", nullable = false)
     private String city;
 
 
-    @Column(nullable = false)
+    @Column(name = "ward", nullable = false)
     private String ward;
 
 
-    @Column(nullable = false)
+    @Column(name = "street", nullable = false)
     private String street;
-
 }

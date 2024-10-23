@@ -1,7 +1,7 @@
 package com.dnth_underdog_241.online_fashion_shopping.config;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.util.DataInitialiser;
+import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Bean;
 public class TestsConfiguration
 {
     @Bean
-    public DataInitialiser createDataInitialiser()
+    public DataInitializer createDataInitializer()
     {
-        return new DataInitialiser();
+        return new DataInitializer();
     }
 }
