@@ -5,8 +5,12 @@ import com.dnth_underdog_241.online_fashion_shopping.model.Address;
 import com.dnth_underdog_241.online_fashion_shopping.model.enums.SexEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -22,7 +26,7 @@ import java.util.Set;
         discriminatorType = DiscriminatorType.STRING,
         length = 50)
 @Table(name = "web_users")
-public abstract class WebUser
+public abstract class WebUser implements UserDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,4 +89,24 @@ public abstract class WebUser
             joinColumns = @JoinColumn(name = "web_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return roles;
+    }
+
+
+    @Override
+    public String getPassword()
+    {
+        return password;
+    }
+
+    @Override
+    public String getUsername()
+    {
+        return this.phoneNumber;
+    }
 }
