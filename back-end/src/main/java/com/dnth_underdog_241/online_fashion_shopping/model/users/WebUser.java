@@ -26,7 +26,7 @@ import java.util.Set;
         discriminatorType = DiscriminatorType.STRING,
         length = 50)
 @Table(name = "web_users")
-public abstract class WebUser implements UserDetails
+public abstract class WebUser
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,24 +89,4 @@ public abstract class WebUser implements UserDetails
             joinColumns = @JoinColumn(name = "web_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new LinkedHashSet<>();
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
-        return roles;
-    }
-
-
-    @Override
-    public String getPassword()
-    {
-        return password;
-    }
-
-    @Override
-    public String getUsername()
-    {
-        return this.phoneNumber;
-    }
 }
