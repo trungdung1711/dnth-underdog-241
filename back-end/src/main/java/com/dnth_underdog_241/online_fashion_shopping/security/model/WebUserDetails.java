@@ -27,6 +27,7 @@ public class WebUserDetails implements UserDetails
         return webUser.getRoles();
     }
 
+
     @Override
     public String getPassword()
     {

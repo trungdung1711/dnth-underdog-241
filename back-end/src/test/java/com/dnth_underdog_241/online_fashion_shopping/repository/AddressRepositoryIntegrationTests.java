@@ -28,9 +28,6 @@ import java.util.Optional;
 @Import(TestsConfiguration.class)
 public class AddressRepositoryIntegrationTests
 {
-    @Autowired
-    private AddressRepository addressRepository;
-
 
     @Autowired
     private WebUserRepository webUserRepository;
