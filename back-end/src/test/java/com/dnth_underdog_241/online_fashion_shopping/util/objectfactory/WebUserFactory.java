@@ -1,14 +1,13 @@
 package com.dnth_underdog_241.online_fashion_shopping.util.objectfactory;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.SexEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.Admin;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.Customer;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.Employee;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SexEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Admin;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Employee;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 
 
 public class WebUserFactory

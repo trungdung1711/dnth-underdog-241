@@ -2,10 +2,9 @@ package com.dnth_underdog_241.online_fashion_shopping.util;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.model.Address;
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.Role;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
-import com.dnth_underdog_241.online_fashion_shopping.repository.AddressRepository;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.AddressFactory;

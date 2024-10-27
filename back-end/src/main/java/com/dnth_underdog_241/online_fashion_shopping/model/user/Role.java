@@ -1,7 +1,7 @@
-package com.dnth_underdog_241.online_fashion_shopping.model.users;
+package com.dnth_underdog_241.online_fashion_shopping.model.user;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

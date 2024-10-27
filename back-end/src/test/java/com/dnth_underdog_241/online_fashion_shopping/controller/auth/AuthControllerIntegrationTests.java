@@ -19,6 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @SpringBootTest
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(TestsConfiguration.class)
+@Transactional
 public class AuthControllerIntegrationTests
 {
     @Autowired
@@ -40,7 +42,6 @@ public class AuthControllerIntegrationTests
     public void signInNewWebUser_WithValidPhoneNumber_ResponseCreated()
             throws Exception
     {
-
         String request = objectMapper
                 .writeValueAsString(GeneralDTOFactory.createWebUserRequestDtoA());
         String response = objectMapper

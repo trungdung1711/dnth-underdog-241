@@ -4,16 +4,14 @@ package com.dnth_underdog_241.online_fashion_shopping.dto.mapper;
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
 import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
-import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
-import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
+import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(TestsConfiguration.class)
+@Transactional
 public class WebUserMapperTests
 {
     @Autowired
@@ -44,6 +43,9 @@ public class WebUserMapperTests
 
         WebUser entity = webUserMapper.toEntity(dto);
 
+        Assertions
+                .assertThat(entity.getRoles())
+                .isNotNull();
         Assertions
                 .assertThat(entity.getPhoneNumber())
                 .isEqualTo(dto.getPhoneNumber());
@@ -77,5 +79,19 @@ public class WebUserMapperTests
         Assertions
                 .assertThat(dto.getFirstName())
                 .isEqualTo(entity.getFirstName());
+    }
+
+
+    @Test
+    public void haveCustomerBuilder_WithBuilderPattern_SettingDefaultObjectOfRoles()
+    {
+        Customer test = Customer
+                .builder()
+                .firstName("John")
+                .build();
+
+        Assertions
+                .assertThat(test.getRoles())
+                .isNotNull();
     }
 }

@@ -2,9 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.Role;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
 import org.assertj.core.api.Assertions;

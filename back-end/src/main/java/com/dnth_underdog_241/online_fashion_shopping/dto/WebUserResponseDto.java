@@ -5,7 +5,7 @@ import lombok.Value;
 import java.io.Serializable;
 
 /**
- * DTO for {@link com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser}
+ * DTO for {@link com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser}
  */
 @Value
 public class WebUserResponseDto implements Serializable

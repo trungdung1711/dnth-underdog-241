@@ -1,7 +1,7 @@
 package com.dnth_underdog_241.online_fashion_shopping.security.model;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

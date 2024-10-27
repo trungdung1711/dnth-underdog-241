@@ -1,4 +1,4 @@
-package com.dnth_underdog_241.online_fashion_shopping.model.users;
+package com.dnth_underdog_241.online_fashion_shopping.model.user;
 
 
 import jakarta.persistence.DiscriminatorValue;
@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @Entity
-@DiscriminatorValue("EMPLOYEE")
-public class Employee extends WebUser
+@DiscriminatorValue("CUSTOMER")
+public class Customer extends WebUser
 {
 }
