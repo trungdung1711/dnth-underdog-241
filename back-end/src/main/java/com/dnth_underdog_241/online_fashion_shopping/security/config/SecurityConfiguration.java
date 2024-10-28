@@ -34,12 +34,11 @@ public class SecurityConfiguration
                         csrfConfigurer.disable())
                 .authorizeHttpRequests(AMRMRegistry ->
                         AMRMRegistry
-                                .requestMatchers("/auth/v1/sign-up")
+                                .requestMatchers("api/v1/auth/*")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
-                .authenticationProvider(createAuthenticationProvider())
                 .formLogin(Customizer.withDefaults())
                 .build();
     }
@@ -49,15 +48,5 @@ public class SecurityConfiguration
     public PasswordEncoder createPasswordEncoder()
     {
         return new BCryptPasswordEncoder(12);
-    }
-
-
-    @Bean
-    public AuthenticationProvider createAuthenticationProvider()
-    {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(createPasswordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return daoAuthenticationProvider;
     }
 }

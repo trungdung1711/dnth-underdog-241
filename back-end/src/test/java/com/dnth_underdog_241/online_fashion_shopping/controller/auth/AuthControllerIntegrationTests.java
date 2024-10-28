@@ -50,7 +50,7 @@ public class AuthControllerIntegrationTests
                 .perform
                         (
                                 MockMvcRequestBuilders
-                                        .post("/auth/v1/sign-up")
+                                        .post("/api/v1/auth/sign-up")
                                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                                         .content(request)
                         )
