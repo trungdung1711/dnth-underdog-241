@@ -2,9 +2,9 @@ package com.dnth_underdog_241.online_fashion_shopping.dto.mapper;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
+import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
@@ -24,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(TestsConfiguration.class)
 @Transactional
-public class WebUserMapperTests
+public class SignUpMapperTests
 {
     @Autowired
-    private WebUserMapper webUserMapper;
+    private SignUpMapper signUpMapper;
 
 
     @Test
@@ -35,13 +35,13 @@ public class WebUserMapperTests
     {
         WebUser webUser = WebUserFactory.createUserA();
 
-        WebUserRequestDto dto = new WebUserRequestDto(
+        SignUpRequestDto dto = new SignUpRequestDto(
                 webUser.getPhoneNumber(),
                 webUser.getPassword(),
                 webUser.getLastName(),
                 webUser.getFirstName());
 
-        WebUser entity = webUserMapper.toEntity(dto);
+        WebUser entity = signUpMapper.toCustomerEntity(dto);
 
         Assertions
                 .assertThat(entity.getRoles())
@@ -66,7 +66,7 @@ public class WebUserMapperTests
     {
         WebUser entity  = WebUserFactory.createUserA();
 
-        WebUserResponseDto dto = webUserMapper.toDto(entity);
+        SignUpResponseDto dto = signUpMapper.toDto(entity);
 
         Assertions
                 .assertThat(dto.getPhoneNumber())

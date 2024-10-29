@@ -1,14 +1,14 @@
 package com.dnth_underdog_241.online_fashion_shopping.util.objectfactory;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
 
 public class GeneralDTOFactory
 {
-    public static WebUserRequestDto createWebUserRequestDtoA()
+    public static SignUpRequestDto createWebUserRequestDtoA()
     {
-        return new WebUserRequestDto
+        return new SignUpRequestDto
                 (
                         "0846979772",
                         "Trungdung1711",
@@ -18,9 +18,9 @@ public class GeneralDTOFactory
     }
 
 
-    public static WebUserResponseDto createWebUserResponseDtoA()
+    public static SignUpResponseDto createWebUserResponseDtoA()
     {
-        return new WebUserResponseDto
+        return new SignUpResponseDto
                 (
                         "0846979772",
                         "Le",

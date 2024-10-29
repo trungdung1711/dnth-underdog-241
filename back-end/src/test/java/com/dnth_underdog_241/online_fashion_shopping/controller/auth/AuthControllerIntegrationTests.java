@@ -2,10 +2,10 @@ package com.dnth_underdog_241.online_fashion_shopping.controller.auth;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.LogInRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.GeneralDTOFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
