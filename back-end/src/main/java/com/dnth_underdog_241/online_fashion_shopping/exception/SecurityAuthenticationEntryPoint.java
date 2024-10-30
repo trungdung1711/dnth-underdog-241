@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 
+/**
+ * Handler for filters when
+ * invoked when an unauthenticated user
+ * tries to access a protected resource.
+ *
+ */
 @Component
 public class SecurityAuthenticationEntryPoint
     implements AuthenticationEntryPoint
@@ -26,6 +32,8 @@ public class SecurityAuthenticationEntryPoint
     {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"dnth_underdog_241_AuthenticationEntryPointError\": \"Unauthorized access. Please login.\"}");
+        response
+                .getWriter()
+                .write("{\"" + serverName + "AuthenticationEntryPoint\": \"Unauthorized access\"}");
     }
 }

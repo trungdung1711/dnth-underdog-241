@@ -70,13 +70,13 @@ public class JWTAuthenticationFilter
             response.getWriter().write("{\"" + serverName +"-JWT_error_Known-Exception"+"\": \"" + e.getMessage() + "\"}");
             return;
         }
-        catch (Exception e)
-        {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName +"-JWT_error_Unknown-Exception"+"\": \"Token is invalid. Login redirect.\"}");
-            return;
-        }
+//        catch (Exception e)
+//        {
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setContentType("application/json");
+//            response.getWriter().write("{\"" + serverName +"-JWT_error_Unknown-Exception"+"\": \"Token is invalid. Login redirect.\"}");
+//            return;
+//        }
         filterChain.doFilter(request, response);
     }
 }

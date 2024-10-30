@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
-@RequestMapping("api/v1/customer")
+@RequestMapping("api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController
 {
@@ -22,7 +22,7 @@ public class CustomerController
 
 
     @GetMapping("{id}/info")
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or authentication.principal.getId() == #id")
     public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Long id)
     {
         CustomerResponseDTO customerResponseDTO = customerService.getCustomerById(id);

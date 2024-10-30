@@ -34,9 +34,16 @@ public class WebUserDetails implements UserDetails
         return webUser.getPassword();
     }
 
+
     @Override
     public String getUsername()
     {
         return webUser.getPhoneNumber();
+    }
+
+
+    public Long getId()
+    {
+        return webUser.getId();
     }
 }

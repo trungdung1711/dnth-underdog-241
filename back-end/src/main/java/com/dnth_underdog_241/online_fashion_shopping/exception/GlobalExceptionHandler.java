@@ -10,6 +10,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -17,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * Global Exception Handler for all Controllers
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
@@ -24,6 +28,12 @@ public class GlobalExceptionHandler
     String serverName;
 
 
+    /**
+     * Handle the UserAlreadyExistsException.
+     *
+     * @param  UserAlreadyExistsException the exception.
+     * @return ResponseEntity with status CONFLICT.
+     */
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException)
     {
@@ -31,17 +41,6 @@ public class GlobalExceptionHandler
         response.put(serverName, userAlreadyExistsException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(response);
-    }
-
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException authenticationException)
-    {
-        Map<String, String> response = new HashMap<>();
-        response.put(serverName, authenticationException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
                 .body(response);
     }
 
@@ -90,6 +89,14 @@ public class GlobalExceptionHandler
     }
 
 
+    /**
+     * Catch the exception thrown by the
+     * annotation PreAuthorize in methods
+     * @param authorizationDeniedException thrown
+     * when authenticated user can't access
+     * the resources which required higher Role
+     * @return ResponseEntity with 403 Forbidden
+     */
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException authorizationDeniedException)
     {
@@ -101,11 +108,16 @@ public class GlobalExceptionHandler
     }
 
 
+    /**
+     *
+     * @param exception Exception which is caught all
+     * @return ResponseEntity with INTERNAL_SERVER_ERROR code
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception exception)
     {
         Map<String, String> response = new HashMap<>();
-        response.put("Global_Exception_handler", exception.getMessage());
+        response.put("Global_Exception_handler_catch_all", exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);

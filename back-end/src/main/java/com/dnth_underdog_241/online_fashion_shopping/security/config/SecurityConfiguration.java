@@ -6,6 +6,7 @@ import com.dnth_underdog_241.online_fashion_shopping.security.service.WebUserDet
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
@@ -40,6 +42,9 @@ public class SecurityConfiguration
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
 
+    private final AccessDeniedHandler accessDeniedHandler;
+
+
     @Bean
     public SecurityFilterChain createSecurityFilterChain(HttpSecurity httpSecurity)
             throws Exception
@@ -48,8 +53,14 @@ public class SecurityConfiguration
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(AMRMRegistry ->
                         AMRMRegistry
-                                .requestMatchers("api/v1/auth/*")
+                                .requestMatchers("api/v1/auth/**")
                                 .permitAll()
+                                .requestMatchers("api/v1/admins/**")
+                                .hasRole("ADMIN")
+                                .requestMatchers("api/v1/employees")
+                                .hasRole("EMPLOYEE")
+                                .requestMatchers("api/v1/customers/**")
+                                .hasRole("CUSTOMER")
                                 .anyRequest()
                                 .authenticated()
                 )
@@ -57,7 +68,9 @@ public class SecurityConfiguration
                         sessionManagementConfigurer
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptionHandlingConfigurer ->
-                        exceptionHandlingConfigurer.authenticationEntryPoint(authenticationEntryPoint))
+                        exceptionHandlingConfigurer
+                                .authenticationEntryPoint(authenticationEntryPoint)
+                                .accessDeniedHandler(accessDeniedHandler))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

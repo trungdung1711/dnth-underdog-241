@@ -37,7 +37,6 @@ public class AuthController
 
 
     @PostMapping("sign-up")
-    @PreAuthorize("permitAll()")
     public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody SignUpRequestDto signUpRequestDto)
     {
         SignUpResponseDto signUpResponseDto = webUserAuthService.signUpCustomer(signUpRequestDto);
@@ -48,7 +47,6 @@ public class AuthController
 
 
     @PostMapping("login")
-    @PreAuthorize("permitAll()")
     public ResponseEntity<LogInResponseDto> logIn(@RequestBody LogInRequestDto logInRequestDto)
     {
         Authentication authentication = new UsernamePasswordAuthenticationToken(logInRequestDto.getPhoneNumber(), logInRequestDto.getPassword());
