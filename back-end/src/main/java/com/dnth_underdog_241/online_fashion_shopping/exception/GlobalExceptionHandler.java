@@ -28,6 +28,9 @@ public class GlobalExceptionHandler
     String serverName;
 
 
+    String name = "GlobalExceptionHandler";
+
+
     /**
      * Handle the UserAlreadyExistsException.
      *
@@ -38,7 +41,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, userAlreadyExistsException.getMessage());
+        response.put(serverName + name, userAlreadyExistsException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(response);
@@ -49,7 +52,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleCustomerIdNotFoundException(UserNotFoundException customerNotFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, customerNotFoundException.getMessage());
+        response.put(serverName + name, customerNotFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -60,7 +63,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, usernameNotFoundException.getMessage());
+        response.put(serverName + name, usernameNotFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -71,7 +74,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException badCredentialsException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, badCredentialsException.getMessage());
+        response.put(serverName + name, badCredentialsException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(response);
@@ -82,7 +85,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, noResourceFoundException.getMessage());
+        response.put(serverName + name, noResourceFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -101,7 +104,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException authorizationDeniedException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName, authorizationDeniedException.getMessage());
+        response.put(serverName + name, authorizationDeniedException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(response);
@@ -117,7 +120,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleException(Exception exception)
     {
         Map<String, String> response = new HashMap<>();
-        response.put("Global_Exception_handler_catch_all", exception.getMessage());
+        response.put(serverName + "Global_Exception_handler_catch_all", exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);

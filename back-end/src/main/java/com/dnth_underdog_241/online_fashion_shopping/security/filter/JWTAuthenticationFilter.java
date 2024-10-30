@@ -4,6 +4,12 @@ package com.dnth_underdog_241.online_fashion_shopping.security.filter;
 import com.dnth_underdog_241.online_fashion_shopping.exception.InvalidTokenException;
 import com.dnth_underdog_241.online_fashion_shopping.security.service.WebUserDetailsService;
 import com.dnth_underdog_241.online_fashion_shopping.security.util.JWTUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -70,13 +76,44 @@ public class JWTAuthenticationFilter
             response.getWriter().write("{\"" + serverName +"-JWT_error_Known-Exception"+"\": \"" + e.getMessage() + "\"}");
             return;
         }
-//        catch (Exception e)
-//        {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//            response.setContentType("application/json");
-//            response.getWriter().write("{\"" + serverName +"-JWT_error_Unknown-Exception"+"\": \"Token is invalid. Login redirect.\"}");
-//            return;
-//        }
+        catch (ExpiredJwtException e)
+        {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"" + serverName + "-JWT_error_Expired-Exception" + "\": \"" + "Token has been expired"+ "\"}");
+            return;
+        }
+        catch (UnsupportedJwtException e)
+        {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"" + serverName + "-JWT_error_Unsupported-Exception" + "\": \"" + "Token is not supported" + "\"}");
+            return;
+        }
+        catch (MalformedJwtException e)
+        {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"" + serverName + "-JWT_error_Malformed-Exception" + "\": \"" + "Token is malformed" + "\"}");
+            return;
+        }
+        catch (SignatureException e)
+        {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"" + serverName + "-JWT_error_Signature-Exception" + "\": \"" + "Signature is not matched" + "\"}");
+            return;
+        }
+        /*
+         * Catch all JwtException
+         */
+        catch (JwtException e)
+        {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"" + serverName + "-JWT_error_Unknown-Exception" + "\": \"Token is invalid. Login redirect.\"}");
+            return;
+        }
         filterChain.doFilter(request, response);
     }
 }
