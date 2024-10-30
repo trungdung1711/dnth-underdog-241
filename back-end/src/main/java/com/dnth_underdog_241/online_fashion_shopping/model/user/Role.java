@@ -1,10 +1,11 @@
-package com.dnth_underdog_241.online_fashion_shopping.model.users;
+package com.dnth_underdog_241.online_fashion_shopping.model.user;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "roles")
-public class Role
+public class Role implements GrantedAuthority
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +46,12 @@ public class Role
     public final int hashCode()
     {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+
+    @Override
+    public String getAuthority()
+    {
+        return this.name.name();
     }
 }

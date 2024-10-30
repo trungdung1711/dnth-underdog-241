@@ -1,10 +1,11 @@
-package com.dnth_underdog_241.online_fashion_shopping.model.users;
+package com.dnth_underdog_241.online_fashion_shopping.model.user;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.model.Address;
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.SexEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SexEnum;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -84,5 +86,6 @@ public abstract class WebUser
     @JoinTable(name = "web_users_roles",
             joinColumns = @JoinColumn(name = "web_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new LinkedHashSet<>();
+    @Builder.Default
+    private Set<Role> roles = new LinkedHashSet<Role>();
 }

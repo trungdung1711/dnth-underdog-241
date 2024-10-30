@@ -2,8 +2,8 @@ package com.dnth_underdog_241.online_fashion_shopping.service;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.model.enums.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.users.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.service.webuser.RoleService;
 import com.dnth_underdog_241.online_fashion_shopping.service.webuser.WebUserService;
 import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
@@ -17,14 +17,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Import(TestsConfiguration.class)
+@Transactional
 public class RoleServiceIntegrationTests
 {
     @Autowired
