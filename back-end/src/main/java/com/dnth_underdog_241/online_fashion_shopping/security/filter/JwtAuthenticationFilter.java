@@ -3,8 +3,7 @@ package com.dnth_underdog_241.online_fashion_shopping.security.filter;
 
 import com.dnth_underdog_241.online_fashion_shopping.exception.InvalidTokenException;
 import com.dnth_underdog_241.online_fashion_shopping.security.service.WebUserDetailsService;
-import com.dnth_underdog_241.online_fashion_shopping.security.util.JWTUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dnth_underdog_241.online_fashion_shopping.security.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -24,18 +23,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Optional;
 
 
 @Component
 @RequiredArgsConstructor
-public class JWTAuthenticationFilter
+public class JwtAuthenticationFilter
         extends OncePerRequestFilter
 {
     private final WebUserDetailsService webUserDetailsService;
 
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
 
     @Value("${com.dnth_underdog_241.online_fashion_shopping.server.name}")
@@ -48,14 +46,13 @@ public class JWTAuthenticationFilter
     {
         try
         {
-            Optional<String> token = Optional.empty();
             final String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer "))
             {
-                token = Optional.of(authorizationHeader.substring(7));
-                if (jwtUtil.validateToken(token.get()))
+                String token = authorizationHeader.substring(7);
+                if (jwtUtil.validateToken(token))
                 {
-                    String subject = jwtUtil.extractAllClaims(token.get()).getSubject();
+                    String subject = jwtUtil.extractAllClaims(token).getSubject();
 
                     UserDetails userDetails = webUserDetailsService.loadUserByUsername(subject);
 
@@ -69,39 +66,40 @@ public class JWTAuthenticationFilter
                 }
             }
         }
+        /* Immediately stop the filter chain */
         catch(InvalidTokenException e)
         {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName +"-JWT_error_Known-Exception"+"\": \"" + e.getMessage() + "\"}");
+            response.getWriter().write("{\"" + serverName +":JWT_error_Invalid-token-Exception"+"\": \"" + e.getMessage() + "\"}");
             return;
         }
         catch (ExpiredJwtException e)
         {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName + "-JWT_error_Expired-Exception" + "\": \"" + "Token has been expired"+ "\"}");
+            response.getWriter().write("{\"" + serverName + ":JWT_error_Expired-Exception" + "\": \"" + "Token has been expired"+ "\"}");
             return;
         }
         catch (UnsupportedJwtException e)
         {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName + "-JWT_error_Unsupported-Exception" + "\": \"" + "Token is not supported" + "\"}");
+            response.getWriter().write("{\"" + serverName + ":JWT_error_Unsupported-Exception" + "\": \"" + "Token is not supported" + "\"}");
             return;
         }
         catch (MalformedJwtException e)
         {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName + "-JWT_error_Malformed-Exception" + "\": \"" + "Token is malformed" + "\"}");
+            response.getWriter().write("{\"" + serverName + ":JWT_error_Malformed-Exception" + "\": \"" + "Token is malformed" + "\"}");
             return;
         }
         catch (SignatureException e)
         {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName + "-JWT_error_Signature-Exception" + "\": \"" + "Signature is not matched" + "\"}");
+            response.getWriter().write("{\"" + serverName + ":JWT_error_Signature-Exception" + "\": \"" + "Signature is not matched" + "\"}");
             return;
         }
         /*
@@ -111,7 +109,7 @@ public class JWTAuthenticationFilter
         {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
-            response.getWriter().write("{\"" + serverName + "-JWT_error_Unknown-Exception" + "\": \"Token is invalid. Login redirect.\"}");
+            response.getWriter().write("{\"" + serverName + ":JWT_error_Unknown-Exception" + "\": \"Token is invalid. Login redirect.\"}");
             return;
         }
         filterChain.doFilter(request, response);

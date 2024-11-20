@@ -1,15 +1,11 @@
-package com.dnth_underdog_241.online_fashion_shopping.service.customer;
+package com.dnth_underdog_241.online_fashion_shopping.service.employee;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExistsException;
-import com.dnth_underdog_241.online_fashion_shopping.exception.UserNotFoundException;
-import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
@@ -19,54 +15,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CustomerService
+public class EmployeeService
 {
+    private final SignUpMapper signUpMapper;
+
+
     private final WebUserRepository webUserRepository;
 
 
     private final RoleRepository roleRepository;
 
 
-    private final CustomerMapper customerMapper;
-
-
-    private final SignUpMapper signUpMapper;
-
-
     private final PasswordEncoder passwordEncoder;
 
 
-    public GetWebUserResponseDTO getCustomerById(Long id)
-    {
-        Optional<WebUser> webUserOptional = webUserRepository.findById(id);
-
-        WebUser webUser = webUserOptional.orElseThrow( () -> new UserNotFoundException(id));
-
-        if (! (webUser instanceof Customer) )
-            throw new UserNotFoundException(id);
-
-        return customerMapper.toDto(webUser);
-    }
-
-
     @Transactional
-    public SignUpResponseDto createCustomer(SignUpRequestDto signUpRequestDto)
+    public SignUpResponseDto createEmployee(SignUpRequestDto signUpRequestDto)
     {
         if (webUserRepository.existsByPhoneNumber(signUpRequestDto.getPhoneNumber()))
         {
             throw new UserAlreadyExistsException("User already exists");
         }
 
-        WebUser webUser = signUpMapper.toCustomerEntity(signUpRequestDto);
+        WebUser webUser = signUpMapper.toEmployeeEntity(signUpRequestDto);
         webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
 
-        Role roleCustomer = roleRepository.findByName(RoleEnum.ROLE_CUSTOMER).get();
+        Role roleEmployee = roleRepository
+                .findByName(RoleEnum.ROLE_EMPLOYEE)
+                .get();
+        Role roleCustomer = roleRepository
+                .findByName(RoleEnum.ROLE_CUSTOMER)
+                .get();
+
+        webUser.getRoles().add(roleEmployee);
         webUser.getRoles().add(roleCustomer);
 
         WebUser savedWebUser = webUserRepository.save(webUser);

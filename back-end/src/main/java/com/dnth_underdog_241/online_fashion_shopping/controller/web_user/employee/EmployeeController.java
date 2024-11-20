@@ -1,9 +1,9 @@
-package com.dnth_underdog_241.online_fashion_shopping.controller.employee;
+package com.dnth_underdog_241.online_fashion_shopping.controller.web_user.employee;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.service.auth.WebUserAuthService;
+import com.dnth_underdog_241.online_fashion_shopping.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EmployeeController
 {
-    private final WebUserAuthService webUserAuthService;
+    private final EmployeeService employeeService;
 
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SignUpResponseDto> signInEmployee(@RequestBody SignUpRequestDto signUpRequestDto)
+    public ResponseEntity<SignUpResponseDto> createEmployee(@RequestBody SignUpRequestDto signUpRequestDto)
     {
-        SignUpResponseDto signUpResponseDto = webUserAuthService.signUpEmployee(signUpRequestDto);
+        SignUpResponseDto signUpResponseDto = employeeService.createEmployee(signUpRequestDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(signUpResponseDto);

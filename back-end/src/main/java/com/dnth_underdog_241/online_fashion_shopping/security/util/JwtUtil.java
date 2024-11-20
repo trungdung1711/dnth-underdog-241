@@ -15,7 +15,7 @@ import java.util.*;
 
 
 @Component
-public class JWTUtil
+public class JwtUtil
 {
     @Value("${com.dnth_underdog_241.online_fashion_shopping.jwt.secret}")
     private String secretKey;
