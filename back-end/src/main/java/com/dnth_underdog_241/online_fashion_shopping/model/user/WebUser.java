@@ -47,8 +47,7 @@ public abstract class WebUser
 
 
     @Enumerated
-    @Column(name = "sex",
-            nullable = true)
+    @Column(name = "sex")
     private SexEnum sex;
 
 
@@ -63,7 +62,6 @@ public abstract class WebUser
 
 
     @Column(name = "email",
-            nullable = true,
             unique = true)
     private String email;
 
@@ -72,8 +70,7 @@ public abstract class WebUser
     private LocalDate birthDay;
 
 
-    @OneToOne(cascade =
-            {CascadeType.MERGE,
+    @OneToOne(cascade = {
             CascadeType.REMOVE,
             CascadeType.PERSIST},
             orphanRemoval = true)
@@ -87,5 +84,5 @@ public abstract class WebUser
             joinColumns = @JoinColumn(name = "web_user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @Builder.Default
-    private Set<Role> roles = new LinkedHashSet<Role>();
+    private Set<Role> roles = new LinkedHashSet<>();
 }

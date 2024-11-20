@@ -1,7 +1,7 @@
-package com.dnth_underdog_241.online_fashion_shopping.controller.customer;
+package com.dnth_underdog_241.online_fashion_shopping.controller.web_user.customer;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.CustomerResponseDTO;
+import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
 import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,16 +18,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class CustomerController
 {
-    private final CustomerService customerService;
-
-
-    @GetMapping("{id}/info")
-    @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE') or authentication.principal.getId() == #id")
-    public ResponseEntity<CustomerResponseDTO> getCustomerById(@PathVariable Long id)
-    {
-        CustomerResponseDTO customerResponseDTO = customerService.getCustomerById(id);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(customerResponseDTO);
-    }
 }

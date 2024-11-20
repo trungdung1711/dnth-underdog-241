@@ -1,6 +1,7 @@
 package com.dnth_underdog_241.online_fashion_shopping.exception;
 
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,18 @@ import java.util.Map;
 public class GlobalExceptionHandler
 {
     @Value("${com.dnth_underdog_241.online_fashion_shopping.server.name}")
-    String serverName;
+    private String serverName;
 
 
-    String name = "GlobalExceptionHandler";
+    private String loggerName;
+
+
+    @PostConstruct
+    private void createLoggerName()
+    {
+        String handlerName = "GlobalExceptionHandler";
+        loggerName = serverName + ":" + handlerName;
+    }
 
 
     /**
@@ -41,7 +50,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, userAlreadyExistsException.getMessage());
+        response.put(loggerName, userAlreadyExistsException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(response);
@@ -52,7 +61,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleCustomerIdNotFoundException(UserNotFoundException customerNotFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, customerNotFoundException.getMessage());
+        response.put(loggerName, customerNotFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -63,7 +72,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, usernameNotFoundException.getMessage());
+        response.put(loggerName, usernameNotFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -74,7 +83,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException badCredentialsException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, badCredentialsException.getMessage());
+        response.put(loggerName, badCredentialsException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(response);
@@ -85,7 +94,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, noResourceFoundException.getMessage());
+        response.put(loggerName, noResourceFoundException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(response);
@@ -104,7 +113,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException authorizationDeniedException)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + name, authorizationDeniedException.getMessage());
+        response.put(loggerName, authorizationDeniedException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(response);
@@ -120,7 +129,7 @@ public class GlobalExceptionHandler
     public ResponseEntity<Map<String, String>> handleException(Exception exception)
     {
         Map<String, String> response = new HashMap<>();
-        response.put(serverName + "Global_Exception_handler_catch_all", exception.getMessage());
+        response.put(loggerName +":CatchAll", exception.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);

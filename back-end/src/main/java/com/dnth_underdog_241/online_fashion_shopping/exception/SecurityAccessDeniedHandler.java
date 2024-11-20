@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * Handler for filters
- * when  an authenticated user
+ * when an authenticated user
  * attempts to access a resource
  * they don’t have permission for
  * Return 403 Forbidden

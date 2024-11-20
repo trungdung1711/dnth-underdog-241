@@ -1,9 +1,9 @@
-package com.dnth_underdog_241.online_fashion_shopping.controller.admin;
+package com.dnth_underdog_241.online_fashion_shopping.controller.web_user.admin;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.service.auth.WebUserAuthService;
+import com.dnth_underdog_241.online_fashion_shopping.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminController
 {
-    private final WebUserAuthService webUserAuthService;
+    private final AdminService adminService;
 
 
     @PostMapping
-    ResponseEntity<SignUpResponseDto> signInAdmin(@RequestBody SignUpRequestDto signUpRequestDto)
+    ResponseEntity<SignUpResponseDto> createAdmin(@RequestBody SignUpRequestDto signUpRequestDto)
     {
-        SignUpResponseDto signUpResponseDto = webUserAuthService.signUpAdmin(signUpRequestDto);
+        SignUpResponseDto signUpResponseDto = adminService.createAdmin(signUpRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(signUpResponseDto);

@@ -1,18 +1,12 @@
 package com.dnth_underdog_241.online_fashion_shopping.security.config;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.security.filter.JWTAuthenticationFilter;
-import com.dnth_underdog_241.online_fashion_shopping.security.service.WebUserDetailsService;
+import com.dnth_underdog_241.online_fashion_shopping.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,7 +18,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 
 @Configuration
@@ -33,10 +26,7 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @RequiredArgsConstructor
 public class SecurityConfiguration
 {
-    private final WebUserDetailsService userDetailsService;
-
-
-    private final JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -55,12 +45,22 @@ public class SecurityConfiguration
                         AMRMRegistry
                                 .requestMatchers("api/v1/auth/**")
                                 .permitAll()
+
+                                .requestMatchers("public/**")
+                                .permitAll()
+
+                                .requestMatchers("api/v1/users/**")
+                                .hasAnyRole("ADMIN", "CUSTOMER", "EMPLOYEE")
+
                                 .requestMatchers("api/v1/admins/**")
                                 .hasRole("ADMIN")
+
                                 .requestMatchers("api/v1/employees")
                                 .hasRole("EMPLOYEE")
+
                                 .requestMatchers("api/v1/customers/**")
                                 .hasRole("CUSTOMER")
+
                                 .anyRequest()
                                 .authenticated()
                 )

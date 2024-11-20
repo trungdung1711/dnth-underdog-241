@@ -7,12 +7,11 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.security.model.WebUserDetails;
-import com.dnth_underdog_241.online_fashion_shopping.security.util.JWTUtil;
-import com.dnth_underdog_241.online_fashion_shopping.service.auth.WebUserAuthService;
+import com.dnth_underdog_241.online_fashion_shopping.security.util.JwtUtil;
+import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,19 +26,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController
 {
-    private final WebUserAuthService webUserAuthService;
+    private final CustomerService customerService;
 
 
     private final AuthenticationManager authenticationManager;
 
 
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
 
     @PostMapping("sign-up")
     public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody SignUpRequestDto signUpRequestDto)
     {
-        SignUpResponseDto signUpResponseDto = webUserAuthService.signUpCustomer(signUpRequestDto);
+        SignUpResponseDto signUpResponseDto = customerService.createCustomer(signUpRequestDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(signUpResponseDto);
