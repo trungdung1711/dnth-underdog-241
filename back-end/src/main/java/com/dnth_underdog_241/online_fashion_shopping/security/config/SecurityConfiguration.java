@@ -56,10 +56,10 @@ public class SecurityConfiguration
                                 .hasRole("ADMIN")
 
                                 .requestMatchers("api/v1/employees")
-                                .hasRole("EMPLOYEE")
+                                .hasAnyRole("EMPLOYEE", "ADMIN")
 
                                 .requestMatchers("api/v1/customers/**")
-                                .hasRole("CUSTOMER")
+                                .hasAnyRole("CUSTOMER", "ADMIN", "EMPLOYEE")
 
                                 .anyRequest()
                                 .authenticated()

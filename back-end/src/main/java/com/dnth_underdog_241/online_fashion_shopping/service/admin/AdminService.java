@@ -45,18 +45,20 @@ public class AdminService
 
         webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
 
-        Role roleEmployee = roleRepository
-                .findByName(RoleEnum.ROLE_EMPLOYEE)
-                .get();
-        Role roleCustomer = roleRepository
-                .findByName(RoleEnum.ROLE_CUSTOMER)
-                .get();
+//        Admin is Admin, Admin can't be Customer, Employee
+//        Role roleEmployee = roleRepository
+//                .findByName(RoleEnum.ROLE_EMPLOYEE)
+//                .get();
+//        Role roleCustomer = roleRepository
+//                .findByName(RoleEnum.ROLE_CUSTOMER)
+//                .get();
+
         Role roleAdmin = roleRepository
                 .findByName(RoleEnum.ROLE_ADMIN)
                 .get();
 
-        webUser.getRoles().add(roleEmployee);
-        webUser.getRoles().add(roleCustomer);
+//        webUser.getRoles().add(roleEmployee);
+//        webUser.getRoles().add(roleCustomer);
         webUser.getRoles().add(roleAdmin);
 
         WebUser savedWebUser = webUserRepository.save(webUser);

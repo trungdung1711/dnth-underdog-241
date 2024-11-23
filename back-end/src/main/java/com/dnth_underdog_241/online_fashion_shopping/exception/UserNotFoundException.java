@@ -6,6 +6,6 @@ public class UserNotFoundException
 {
     public UserNotFoundException(Long id)
     {
-        super("Customer not found with id " + id);
+        super("User not found with id " + id);
     }
 }
