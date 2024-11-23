@@ -44,14 +44,15 @@ public class EmployeeService
         WebUser webUser = signUpMapper.toEmployeeEntity(signUpRequestDto);
         webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
 
-        Role roleEmployee = roleRepository
-                .findByName(RoleEnum.ROLE_EMPLOYEE)
-                .get();
+//        Employee is Employee, Employee can't be Customer
+//        Role roleEmployee = roleRepository
+//                .findByName(RoleEnum.ROLE_EMPLOYEE)
+//                .get();
         Role roleCustomer = roleRepository
                 .findByName(RoleEnum.ROLE_CUSTOMER)
                 .get();
 
-        webUser.getRoles().add(roleEmployee);
+//        webUser.getRoles().add(roleEmployee);
         webUser.getRoles().add(roleCustomer);
 
         WebUser savedWebUser = webUserRepository.save(webUser);

@@ -42,6 +42,7 @@ public class Role implements GrantedAuthority
         return getId() != null && Objects.equals(getId(), role.getId());
     }
 
+
     @Override
     public final int hashCode()
     {

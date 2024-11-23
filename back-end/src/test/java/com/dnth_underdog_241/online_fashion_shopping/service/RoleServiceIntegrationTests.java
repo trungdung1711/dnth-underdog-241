@@ -2,13 +2,8 @@ package com.dnth_underdog_241.online_fashion_shopping.service;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.service.webuser.RoleService;
-import com.dnth_underdog_241.online_fashion_shopping.service.webuser.WebUserService;
 import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
-import com.dnth_underdog_241.online_fashion_shopping.util.objectfactory.WebUserFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

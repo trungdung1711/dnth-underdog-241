@@ -3,7 +3,7 @@ package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
 import com.dnth_underdog_241.online_fashion_shopping.dto.UpdateWebUserDto;
-import com.dnth_underdog_241.online_fashion_shopping.service.webuser.WebUserService;
+import com.dnth_underdog_241.online_fashion_shopping.service.WebUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ public class WebUserController
     private final WebUserService webUserService;
 
 
-    @PutMapping("{id}/info")
+    @PutMapping("/{id}/info")
     @PreAuthorize("authentication.principal.getId() == #id")
     public ResponseEntity<UpdateWebUserDto> updateWebUser(@RequestBody UpdateWebUserDto updateWebUserDto, @PathVariable Long id)
     {
@@ -30,7 +30,7 @@ public class WebUserController
     }
 
 
-    @GetMapping("{id}/info")
+    @GetMapping("/{id}/info")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.getId() == #id ")
     public ResponseEntity<GetWebUserResponseDTO> getWebUser(@PathVariable Long id)
     {
@@ -38,5 +38,14 @@ public class WebUserController
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(getWebUserResponseDTO);
+    }
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteWebUser(@PathVariable Long id)
+    {
+        webUserService.deleteWebUser(id);
     }
 }

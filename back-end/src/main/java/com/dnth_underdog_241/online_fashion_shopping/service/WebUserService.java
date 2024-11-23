@@ -1,4 +1,4 @@
-package com.dnth_underdog_241.online_fashion_shopping.service.webuser;
+package com.dnth_underdog_241.online_fashion_shopping.service;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
@@ -10,8 +10,6 @@ import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Service
@@ -48,5 +46,18 @@ public class WebUserService
         webUserMapper.toEntity(updateWebUserDto, webUser);
 
         return updateWebUserDto;
+    }
+
+
+    public void deleteWebUser(Long id)
+    {
+        WebUser webUser = webUserRepository
+                .findById(id)
+                .orElseThrow( () -> new UserNotFoundException(id) );
+        /* Found user, but admin can't delete admin */
+        /*
+        As Address is set as cascadeType = REMOVE
+         */
+        webUserRepository.deleteById(id);
     }
 };
