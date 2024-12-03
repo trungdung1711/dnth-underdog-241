@@ -5,7 +5,7 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.LogInRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.LogInResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.*;
 import com.dnth_underdog_241.online_fashion_shopping.security.model.WebUserDetails;
 import com.dnth_underdog_241.online_fashion_shopping.security.util.JwtUtil;
 import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;

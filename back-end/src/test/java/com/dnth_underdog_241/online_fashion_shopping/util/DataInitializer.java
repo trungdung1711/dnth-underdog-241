@@ -3,7 +3,7 @@ package com.dnth_underdog_241.online_fashion_shopping.util;
 
 import com.dnth_underdog_241.online_fashion_shopping.model.Address;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
