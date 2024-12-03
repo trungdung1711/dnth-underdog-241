@@ -145,6 +145,17 @@ public class GlobalExceptionHandler
     }
 
 
+    @ExceptionHandler(ResourcesNotFound.class)
+    public ResponseEntity<Map<String, String>> handleResourcesNotFound(ResourcesNotFound resourcesNotFound)
+    {
+        Map<String, String> response = new HashMap<>();
+        response.put(loggerName, resourcesNotFound.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(response);
+    }
+
+
     /**
      *
      * @param exception Exception which is caught all
