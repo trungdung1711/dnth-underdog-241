@@ -3,7 +3,7 @@ package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 import com.dnth_underdog_241.online_fashion_shopping.config.TestsConfiguration;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.Role;
 import com.dnth_underdog_241.online_fashion_shopping.util.DataInitializer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * DTO for {@link com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser}
  */
 @Value
-public class UpdateWebUserDto implements Serializable
+public class WebUserUpdateWebUserRequestDto implements Serializable
 {
     SexEnum sex;
     String lastName;

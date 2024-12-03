@@ -34,6 +34,6 @@ public class SecurityAuthenticationEntryPoint
         response.setContentType("application/json");
         response
                 .getWriter()
-                .write("{\"" + serverName + "AuthenticationEntryPoint\": \"Unauthorized access\"}");
+                .write("{\"" + serverName + "_AuthenticationEntryPoint\": \"Unauthorized access\"}");
     }
 }

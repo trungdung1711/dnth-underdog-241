@@ -35,6 +35,6 @@ implements AccessDeniedHandler
         response.setContentType("application/json");
         response
                 .getWriter()
-                .write("{\"" + serverName +"AccessDeniedHandler\": \"Access denied\"}");
+                .write("{\"" + serverName +"_AccessDeniedHandler\": \"Access denied\"}");
     }
 }

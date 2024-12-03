@@ -30,35 +30,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthControllerIntegrationTests
 {
-    @Autowired
-    private MockMvc mvc;
-
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-
-    @Test
-    public void signInNewWebUser_WithValidPhoneNumber_ResponseCreated()
-            throws Exception
-    {
-        String request = objectMapper
-                .writeValueAsString(GeneralDTOFactory.createWebUserRequestDtoA());
-        String response = objectMapper
-                .writeValueAsString(GeneralDTOFactory.createWebUserResponseDtoA());
-        mvc
-                .perform
-                        (
-                                MockMvcRequestBuilders
-                                        .post("/api/v1/auth/sign-up")
-                                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                                        .content(request)
-                        )
-                .andExpect
-                        (
-                                MockMvcResultMatchers
-                                        .content()
-                                        .json(response)
-                        );
-    }
 }

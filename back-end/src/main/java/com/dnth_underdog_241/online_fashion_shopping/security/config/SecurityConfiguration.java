@@ -5,6 +5,7 @@ import com.dnth_underdog_241.online_fashion_shopping.security.filter.JwtAuthenti
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -47,6 +48,9 @@ public class SecurityConfiguration
                                 .permitAll()
 
                                 .requestMatchers("public/**")
+                                .permitAll()
+
+                                .requestMatchers(HttpMethod.GET, "api/v1/brands/**")
                                 .permitAll()
 
                                 .requestMatchers("api/v1/users/**")

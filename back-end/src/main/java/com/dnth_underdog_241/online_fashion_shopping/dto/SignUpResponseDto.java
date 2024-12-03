@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Value
 public class SignUpResponseDto implements Serializable
 {
+    Long id;
     String phoneNumber;
     String lastName;
     String firstName;

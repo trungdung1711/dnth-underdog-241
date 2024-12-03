@@ -10,13 +10,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -43,7 +47,7 @@ public class GlobalExceptionHandler
     /**
      * Handle the UserAlreadyExistsException.
      *
-     * @param  UserAlreadyExistsException the exception.
+     * @param  userAlreadyExistsException the exception.
      * @return ResponseEntity with status CONFLICT.
      */
     @ExceptionHandler(UserAlreadyExistsException.class)
@@ -116,6 +120,38 @@ public class GlobalExceptionHandler
         response.put(loggerName, authorizationDeniedException.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
+                .body(response);
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException methodArgumentNotValidException) 
+    {
+        List<String> errors = methodArgumentNotValidException
+                .getBindingResult()
+                .getAllErrors()
+                .stream()
+                .map(error -> 
+                {
+                    String fieldName = ((FieldError) error).getField();
+                    String message = error.getDefaultMessage();
+                    return fieldName + ": " + message;
+                })
+                .collect(Collectors.toList());
+        
+        errors.add(loggerName + ": " + methodArgumentNotValidException.getMessage());
+        
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(ResourcesNotFound.class)
+    public ResponseEntity<Map<String, String>> handleResourcesNotFound(ResourcesNotFound resourcesNotFound)
+    {
+        Map<String, String> response = new HashMap<>();
+        response.put(loggerName, resourcesNotFound.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(response);
     }
 

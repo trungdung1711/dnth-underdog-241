@@ -5,10 +5,11 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.LogInRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.LogInResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.*;
 import com.dnth_underdog_241.online_fashion_shopping.security.model.WebUserDetails;
 import com.dnth_underdog_241.online_fashion_shopping.security.util.JwtUtil;
 import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class AuthController
 
 
     @PostMapping("login")
-    public ResponseEntity<LogInResponseDto> logIn(@RequestBody LogInRequestDto logInRequestDto)
+    public ResponseEntity<LogInResponseDto> logIn(@RequestBody @Valid LogInRequestDto logInRequestDto)
     {
         Authentication authentication = new UsernamePasswordAuthenticationToken(logInRequestDto.getPhoneNumber(), logInRequestDto.getPassword());
         authentication = authenticationManager.authenticate(authentication);
