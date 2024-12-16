@@ -1,27 +1,19 @@
 package com.dnth_underdog_241.online_fashion_shopping.exception;
 
-
-import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Value;
+import com.dnth_underdog_241.online_fashion_shopping.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authorization.AuthorizationDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
 
 /**
  * Global Exception Handler for all Controllers
@@ -29,145 +21,88 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler
 {
-    @Value("${com.dnth_underdog_241.online_fashion_shopping.server.name}")
-    private String serverName;
-
-
-    private String loggerName;
-
-
-    @PostConstruct
-    private void createLoggerName()
-    {
-        String handlerName = "GlobalExceptionHandler";
-        loggerName = serverName + ":" + handlerName;
-    }
-
-
-    /**
-     * Handle the UserAlreadyExistsException.
-     *
-     * @param  userAlreadyExistsException the exception.
-     * @return ResponseEntity with status CONFLICT.
-     */
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleUserAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponseDto> handleUserAlreadyExistsException(UserAlreadyExistsException ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, userAlreadyExistsException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(response);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleCustomerIdNotFoundException(UserNotFoundException customerNotFoundException)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponseDto> handleUserNotFoundException(UserNotFoundException ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, customerNotFoundException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponseDto> handleUsernameNotFoundException(UsernameNotFoundException ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, usernameNotFoundException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException badCredentialsException)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ErrorResponseDto> handleBadCredentialsException(BadCredentialsException ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, badCredentialsException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(response);
-    }
-
-
-    @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNoResourceFoundException(NoResourceFoundException noResourceFoundException)
-    {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, noResourceFoundException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
-    }
-
-
-    /**
-     * Catch the exception thrown by the
-     * annotation PreAuthorize in methods
-     * @param authorizationDeniedException thrown
-     * when authenticated user can't access
-     * the resources which required higher Role
-     * @return ResponseEntity with 403 Forbidden
-     */
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<Map<String, String>> handleAuthorizationDeniedException(AuthorizationDeniedException authorizationDeniedException)
-    {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, authorizationDeniedException.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(response);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException methodArgumentNotValidException) 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ErrorResponseDto> handleValidationExceptions(MethodArgumentNotValidException ex)
     {
-        List<String> errors = methodArgumentNotValidException
-                .getBindingResult()
-                .getAllErrors()
-                .stream()
-                .map(error -> 
-                {
+        List<String> errors = ex.getBindingResult().getAllErrors().stream()
+                .map(error -> {
                     String fieldName = ((FieldError) error).getField();
                     String message = error.getDefaultMessage();
                     return fieldName + ": " + message;
                 })
                 .collect(Collectors.toList());
-        
-        errors.add(loggerName + ": " + methodArgumentNotValidException.getMessage());
-        
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        String errorMessage = String.join(", ", errors);
+        return buildErrorResponse(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(ResourcesNotFound.class)
-    public ResponseEntity<Map<String, String>> handleResourcesNotFound(ResourcesNotFound resourcesNotFound)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ErrorResponseDto> handleResourcesNotFound(ResourcesNotFound ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName, resourcesNotFound.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(response);
+        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
 
-    /**
-     *
-     * @param exception Exception which is caught all
-     * @return ResponseEntity with INTERNAL_SERVER_ERROR code
-     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleException(Exception exception)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ErrorResponseDto> handleException(Exception ex)
     {
-        Map<String, String> response = new HashMap<>();
-        response.put(loggerName +":CatchAll", exception.getMessage());
+        return buildErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Helper method to build a consistent error response.
+     *
+     * @param message the error message
+     * @param status  the HTTP status code
+     * @return a ResponseEntity with ErrorResponseDto
+     */
+    private ResponseEntity<ErrorResponseDto> buildErrorResponse(String message, HttpStatus status)
+    {
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(response);
+                .status(status)
+                .body(
+                        ErrorResponseDto.builder()
+                                .status(status.value())
+                                .error(status.getReasonPhrase())
+                                .message(message)
+                                .path(null) // Path can be set dynamically if needed
+                                .timestamp(LocalDateTime.now())
+                                .build()
+                );
     }
 }

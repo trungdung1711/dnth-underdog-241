@@ -10,6 +10,7 @@ import java.util.Set;
 @Value
 public class LogInResponseDto
 {
+    Long id;
     String JWTToken;
     String phoneNumber;
     Set<Role> roles;
