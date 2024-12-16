@@ -9,7 +9,7 @@ This document explains how to build a Docker image for the Spring Boot applicati
 - Ensure the application is packaged into a JAR file (e.g., `app.jar`) located in the `target/` directory.  
   You can create the JAR by running:
   ```bash
-  mvn clean package
+  .\mvnw clean package
   
 ## **Building**
 - Run the command to build the image:
