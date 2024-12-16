@@ -20,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +43,19 @@ public class SecurityConfiguration
             throws Exception
     {
         return httpSecurity
+                .cors(
+                        cors -> cors
+                                .configurationSource(request ->
+                                {
+                                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                                    corsConfig.addAllowedOriginPattern("http://localhost:*");
+                                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                                    corsConfig.setAllowedHeaders(List.of("*"));
+                                    corsConfig.setAllowCredentials(true);
+                                    var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+                                    source.registerCorsConfiguration("/**", corsConfig);
+                                    return corsConfig;
+                                }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(AMRMRegistry ->
                         AMRMRegistry
@@ -49,6 +64,7 @@ public class SecurityConfiguration
 
                                 .requestMatchers("public/**")
                                 .permitAll()
+
 
                                 .requestMatchers(HttpMethod.GET, "api/v1/brands/**")
                                 .permitAll()

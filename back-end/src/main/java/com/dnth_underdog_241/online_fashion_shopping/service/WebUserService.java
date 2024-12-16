@@ -51,9 +51,6 @@ public class WebUserService
 
     public void deleteWebUser(Long id)
     {
-        WebUser webUser = webUserRepository
-                .findById(id)
-                .orElseThrow( () -> new UserNotFoundException(id) );
         /* Found user, but admin can't delete admin */
         /*
         As Address is set as cascadeType = REMOVE

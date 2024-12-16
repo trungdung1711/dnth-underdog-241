@@ -55,15 +55,20 @@ public class AuthController
         WebUser webUser = ((WebUserDetails) authentication.getPrincipal()).getWebUser();
 
 
-        String token = jwtUtil.generateToken(
-                webUser.getId(),
-                webUser.getPhoneNumber(),
-                webUser.getRoles());
+        String token = jwtUtil.generateToken
+                (
+                        webUser.getId(),
+                        webUser.getPhoneNumber(),
+                        webUser.getRoles()
+                );
 
-        LogInResponseDto logInResponseDto = new LogInResponseDto(
-                token,
-                webUser.getPhoneNumber(),
-                webUser.getRoles());
+        LogInResponseDto logInResponseDto = new LogInResponseDto
+                (
+                        webUser.getId(),
+                        token,
+                        webUser.getPhoneNumber(),
+                        webUser.getRoles()
+                );
 
         return ResponseEntity
                 .status(HttpStatus.OK)

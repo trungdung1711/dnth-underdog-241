@@ -1,0 +1,7 @@
+!.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+.git
+.idea
+*.iml
+*.log
+*.tmp
