@@ -5,13 +5,13 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copy the JAR file to the container
-COPY target/smart-printing-system-0.0.1-SNAPSHOT.jar /app/smart-printing-system.jar
+COPY target/online-fashion-shopping-0.0.1-SNAPSHOT.jar /app/online-fashion-shopping-0.0.1-SNAPSHOT.jar
 
 # Copy the public directory to the container
-COPY storage /app/public
+COPY storage /app/storage
 
 # Expose the application port
 EXPOSE 8080
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "smart-printing-system.jar"]
+ENTRYPOINT ["java", "-jar", "online-fashion-shopping-0.0.1-SNAPSHOT.jar"]
