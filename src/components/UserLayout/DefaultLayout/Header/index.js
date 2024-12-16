@@ -5,6 +5,7 @@ import {
   faHeart,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import style from "./Header.module.scss";
 import classNames from "classnames/bind";
 
@@ -34,9 +35,9 @@ function Header() {
           <strong>Exclusive</strong>
         </div>
         <nav className={cx("nav-links")}>
-          <a href="">Trang chủ</a>
-          <a href="#">Liên hệ</a>
-          <a href="#">Giới thiệu</a>
+          <Link to={"/"}>Trang chủ</Link>
+          <Link to={"/contact"}>Liên hệ</Link>
+          <Link to={"/about"}>Giới thiệu</Link>
         </nav>
         <div className={cx("search-bar")}>
           <input type="text" placeholder="Bạn muốn tìm kiếm sản phẩm nào?" />
