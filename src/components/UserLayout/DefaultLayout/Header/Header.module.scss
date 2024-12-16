@@ -1,0 +1,137 @@
+.top-banner {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  background-color: #000;
+  color: white;
+  position: fixed;
+  z-index: 1000;
+  font-weight: 300;
+  top: 0;
+}
+.select-lang {
+  padding: 0 20px;
+  text-align: center;
+  span {
+    margin-right: 5px;
+  }
+  button {
+    border: none; /* Loại bỏ viền */
+
+    color: white; /* Màu chữ */
+    padding: 0;
+    width: 0;
+    height: 0; /* Khoảng cách bên trong */
+    font-size: 1.4rem; /* Kích thước chữ */
+
+    cursor: pointer; /* Hiệu ứng con trỏ */
+  }
+}
+.ad {
+  text-align: center;
+  a {
+    font-weight: 400;
+    position: relative;
+    color: white;
+    padding: 0 5px;
+    bottom: 1px;
+  }
+}
+.log {
+  padding: 0 20px;
+
+  a {
+    padding: 0 2px;
+    text-decoration: none;
+    color: white;
+  }
+}
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 30px;
+  background-color: #fff;
+  border-bottom: 2px solid #d9d9d9;
+  margin-top: 60px;
+}
+
+.logo {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px 10px;
+  width: 300px;
+  margin-right: 20px; /* Added margin to create space between search bar and icon links */
+}
+
+.search-bar input {
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  outline: none;
+  padding: 5px;
+}
+
+.search-bar button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.search-bar button i {
+  font-size: 16px;
+  color: #888;
+}
+
+.icon-links {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon-links a {
+  text-decoration: none;
+
+  font-size: 18px;
+  color: #000;
+}
+
+.icon-links a:hover {
+  color: #888;
+}
+
+/* New CSS to match the desired layout */
+.navbar {
+  height: 60px; /* Increased height for better spacing */
+}
+
+.nav-links {
+  margin-right: 20px; /* Added margin to create space between nav links and search bar */
+}

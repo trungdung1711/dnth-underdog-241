@@ -1,0 +1,68 @@
+.footer {
+  margin-top: 30px;
+  background-color: #000;
+  color: #fff;
+  padding: 20px 10px; /* Reduced padding for a more compact footer */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  max-width: 160px; /* Reduced max width for each section */
+  margin: 10px; /* Reduced margin for a tighter layout */
+}
+
+.footer-section h3 {
+  font-size: 16px; /* Smaller font size for titles */
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 12px; /* Smaller font size for links and text */
+  color: #bbb;
+  margin: 4px 0; /* Reduced spacing between lines */
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  color: #fff;
+}
+
+.subscribe-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid #fff;
+  padding: 4px; /* Reduced padding */
+  border-radius: 4px;
+  margin-top: 8px; /* Reduced margin */
+}
+
+.subscribe-input input {
+  border: none;
+  background: none;
+  color: #fff;
+  padding: 4px;
+  outline: none;
+  font-size: 12px;
+}
+
+.subscribe-input button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px; /* Smaller icon size */
+}
+
+.footer-bottom {
+  width: 100%;
+  text-align: center;
+  padding-top: 15px; /* Reduced padding for bottom section */
+  font-size: 12px; /* Smaller font size */
+  color: #666;
+  border-top: 1px solid #333;
+  margin-top: 15px;
+}

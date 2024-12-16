@@ -1,0 +1,56 @@
+.content {
+  margin-top: 40px;
+  min-height: 600px;
+}
+.breadcrumb-greeting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 70px; /* Adjusted padding for spacing */
+  font-size: 14px; /* Smaller text */
+  color: #333; /* Default color */
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color: #777; /* A lighter color to make it appear dimmer */
+  margin-right: 5px; /* Space between breadcrumb links */
+  font-weight: normal; /* Makes the text less bold */
+}
+
+.greeting {
+  font-weight: normal;
+  font-size: 14px; /* Matching font size */
+}
+
+.username {
+  color: red; /* Color for the username */
+  margin-left: 5px; /* Space before the username */
+}
+.account-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+.account-sidebar {
+  flex: 1;
+  margin-left: 70px;
+
+  ul {
+    list-style: none;
+    li {
+      margin-left: 20px;
+      color: rgba($color: #000000, $alpha: 0.5);
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .order {
+      margin-top: 20px;
+    }
+  }
+}
+.account-content {
+  flex: 2;
+  margin-top: 10px;
+  margin-right: 80px;
+}
