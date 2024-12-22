@@ -1,7 +1,6 @@
-package com.dnth_underdog_241.online_fashion_shopping.dto;
+package com.dnth_underdog_241.online_fashion_shopping.dto.response;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.Address;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SexEnum;
 import lombok.Value;
 
@@ -9,7 +8,7 @@ import java.time.LocalDate;
 
 
 @Value
-public class GetWebUserResponseDTO
+public class WebUserGetDTO
 {
     Long id;
     String phoneNumber;
@@ -18,5 +17,5 @@ public class GetWebUserResponseDTO
     String firstName;
     String email;
     LocalDate birthDay;
-    AddressDto address;
+    AddressGetDto address;
 }

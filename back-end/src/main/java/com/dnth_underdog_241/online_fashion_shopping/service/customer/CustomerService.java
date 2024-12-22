@@ -1,9 +1,9 @@
 package com.dnth_underdog_241.online_fashion_shopping.service.customer;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExistsException;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserNotFoundException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
@@ -42,7 +42,7 @@ public class CustomerService
     private final PasswordEncoder passwordEncoder;
 
 
-    public GetWebUserResponseDTO getCustomerById(Long id)
+    public WebUserGetDTO getCustomerById(Long id)
     {
         Optional<WebUser> webUserOptional = webUserRepository.findById(id);
 

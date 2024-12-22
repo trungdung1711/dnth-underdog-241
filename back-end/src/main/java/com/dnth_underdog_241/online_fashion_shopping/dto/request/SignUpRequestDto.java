@@ -1,4 +1,4 @@
-package com.dnth_underdog_241.online_fashion_shopping.dto;
+package com.dnth_underdog_241.online_fashion_shopping.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

@@ -1,8 +1,8 @@
 package com.dnth_underdog_241.online_fashion_shopping.service.admin;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExistsException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;

@@ -1,6 +1,6 @@
 package com.dnth_underdog_241.online_fashion_shopping.exception;
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.ErrorResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
