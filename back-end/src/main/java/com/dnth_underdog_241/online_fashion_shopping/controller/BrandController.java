@@ -1,12 +1,11 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.BrandGetDetailedBrandResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.BrandUploadBrandRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.BrandUploadBrandResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.BrandGetDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.BrandCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.BrandCreateResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.ImageRequiredException;
 import com.dnth_underdog_241.online_fashion_shopping.service.BrandService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,9 +27,9 @@ public class BrandController
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<BrandUploadBrandResponseDto> createBrand
+    public ResponseEntity<BrandCreateResponseDto> createBrand
             (
-                    @RequestPart(name = "brand") BrandUploadBrandRequestDto brandUploadBrandRequestDto,
+                    @RequestPart(name = "brand") BrandCreateRequestDto brandUploadBrandRequestDto,
                     @RequestPart(name = "image") MultipartFile image
             )
             throws IOException
@@ -45,7 +44,7 @@ public class BrandController
 
 
     @GetMapping("{name}")
-    public ResponseEntity<BrandGetDetailedBrandResponseDto> getBranchByName(@PathVariable String name)
+    public ResponseEntity<BrandGetDto> getBranchByName(@PathVariable String name)
     {
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -1,8 +1,8 @@
 package com.dnth_underdog_241.online_fashion_shopping.service;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserUpdateWebUserRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.WebUserUpdateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserNotFoundException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
@@ -23,7 +23,7 @@ public class WebUserService
     private final WebUserMapper webUserMapper;
 
 
-    public GetWebUserResponseDTO getWebUser(Long id)
+    public WebUserGetDTO getWebUser(Long id)
     {
         WebUser webUser = webUserRepository
                 .findById(id)
@@ -33,7 +33,7 @@ public class WebUserService
     }
 
 
-    public WebUserUpdateWebUserRequestDto updateWebUser(WebUserUpdateWebUserRequestDto webUserUpdateWebUserRequestDto, Long id)
+    public WebUserUpdateRequestDto updateWebUser(WebUserUpdateRequestDto webUserUpdateWebUserRequestDto, Long id)
     {
         /*
         * Load the WebUser object from the database (managed)

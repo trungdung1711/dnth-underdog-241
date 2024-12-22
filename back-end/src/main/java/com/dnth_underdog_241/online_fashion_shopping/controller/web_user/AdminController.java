@@ -1,8 +1,8 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
