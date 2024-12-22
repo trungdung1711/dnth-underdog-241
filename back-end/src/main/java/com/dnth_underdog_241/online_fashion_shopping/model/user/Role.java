@@ -1,4 +1,4 @@
-package com.dnth_underdog_241.online_fashion_shopping.model;
+package com.dnth_underdog_241.online_fashion_shopping.model.user;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
