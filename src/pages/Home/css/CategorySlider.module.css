@@ -1,0 +1,32 @@
+.cursor-pointer {
+   cursor: pointer; /* Ensures the pointer cursor */
+}
+
+/* Hover effect for red background */
+.list-group-item:hover {
+   background-color: red !important; /* Red background on hover */
+   color: white; /* Optionally change text color for better contrast */
+}
+
+.carousel-control-prev, .carousel-control-next {
+  visibility: hidden;
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+/* Show controls when hovering over the carousel */
+.carousel:hover .carousel-control-prev,
+.carousel:hover .carousel-control-next {
+   visibility: visible;
+}
+
+/* CategorySlider.module.css */
+.hoverBgRed {
+   background-color: transparent;
+   cursor: pointer; /* Thêm dòng này để thay đổi con trỏ thành pointer khi hover */
+}
+
+.hoverBgRed:hover {
+   background-color: red !important;
+   color: white; /* Thêm màu chữ để dễ đọc khi hover */
+}
+

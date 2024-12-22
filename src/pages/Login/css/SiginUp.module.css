@@ -1,0 +1,60 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2em;
+  gap: 10em;
+}
+
+.signup-form {
+  max-width: 500px;
+  margin-left: 2em;
+}
+
+.signup-form h1 {
+  margin-bottom: 0.5em;
+}
+
+.signup-form form input {
+  display: block;
+  width: 100%;
+  padding: 0.5em;
+  margin: 0.5em 0;
+  outline: none;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+}
+
+.signup-form form button{
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 0.5em;
+  background-color: #d9534f;
+  color: white;
+  border: none;
+}
+
+.signup-button:hover{
+  background-color: #edaeab;
+}
+
+.google-signup {
+  width: 100%;
+  padding: 0.5em;
+  background-color: #4285F4;
+  color: white;
+  border: none;
+}
+
+.google-signup:hover{
+  background-color: #9fc1f9;
+}
+
+.signup-form p{
+  margin-top: 1em;
+}

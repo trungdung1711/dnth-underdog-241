@@ -1,0 +1,36 @@
+/* Căn chỉnh các nút điều hướng */
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.slider-btn.left {
+  left: -50px; /* Đẩy nút trái ra ngoài */
+}
+
+.slider-btn.right {
+  right: -50px; /* Đẩy nút phải ra ngoài */
+}
+
+/* Đảm bảo các sản phẩm trong slider hiển thị đúng */
+.carousel-inner {
+  overflow: hidden;
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+}
