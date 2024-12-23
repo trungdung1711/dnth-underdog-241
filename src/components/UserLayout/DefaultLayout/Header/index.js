@@ -95,7 +95,7 @@ function Header() {
           <a href="#">
             <FontAwesomeIcon icon={faHeart} />
           </a>
-          <a href="#">
+          <a href="/cart">
             <FontAwesomeIcon icon={faCartShopping} />
           </a>
         </div>

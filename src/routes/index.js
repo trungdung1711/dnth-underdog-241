@@ -6,6 +6,7 @@ import SignIn from "../pages/Login/SignIn";
 import SignUp from "../pages/Login/SignUp";
 import Contact from "../pages/Contact/Contact";
 import Product from "../pages/Product/Product";
+import Cart from "../pages/Cart";
 
 const publicRoute = [
   { path: "/", component: Home },
@@ -16,7 +17,8 @@ const publicRoute = [
   { path: "/productdetail", component: ProductDetails },
   { path: "/login", component: SignIn },
   { path: "/register", component: SignUp },
-  { path: "/contact", component: Contact }
+  { path: "/contact", component: Contact },
+  { path: "/cart", component: Cart }
 ];
 const privateRoute = [];
 export { publicRoute, privateRoute };
