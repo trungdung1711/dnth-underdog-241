@@ -65,6 +65,11 @@ public class SecurityConfiguration
                                 .requestMatchers("public/**")
                                 .permitAll()
 
+                                .requestMatchers("api/v1/categories/**")
+                                .permitAll()
+
+                                .requestMatchers("api/v1/categories/{categoryId}/products")
+                                .permitAll()
 
                                 .requestMatchers(HttpMethod.GET, "api/v1/brands/**")
                                 .permitAll()

@@ -2,7 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.security.util;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.exception.InvalidTokenException;
-import com.dnth_underdog_241.online_fashion_shopping.model.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

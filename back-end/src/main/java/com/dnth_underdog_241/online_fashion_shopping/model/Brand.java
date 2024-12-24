@@ -4,6 +4,9 @@ package com.dnth_underdog_241.online_fashion_shopping.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -25,4 +28,8 @@ public class Brand
 
     @Column(name = "url", nullable = false)
     private String url;
+
+
+    @OneToMany(mappedBy = "brand", orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
 }

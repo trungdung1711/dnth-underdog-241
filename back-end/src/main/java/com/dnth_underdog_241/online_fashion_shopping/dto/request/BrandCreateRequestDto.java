@@ -10,7 +10,8 @@ import java.io.Serializable;
  * DTO for {@link com.dnth_underdog_241.online_fashion_shopping.model.Brand}
  */
 @Value
-public class BrandCreateRequestDto implements Serializable {
+public class BrandCreateRequestDto implements Serializable
+{
     @NotNull(message = "Name should be specified")
     @NotBlank(message = "Name should be specified")
     String name;
