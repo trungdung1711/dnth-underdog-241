@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+
+    <style>
+        .dropdown-menu .dropdown-item {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #d9d9d9;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+
+
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right d-flex align-items-center justify-content-end">
+                        <!-- Avatar -->
+                        <div class="header__user">
+                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                        </div>
+                        <!-- User Name -->
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
+                            <span id="username"></span>
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
+                                <a class="dropdown-item" href="/update-info">Update Info</a>
+                                <a class="dropdown-item" href="/orders">Orders</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
+                            </div>
+                        </div>
+
+                        <script>
+                            function logout() {
+                                // Gửi yêu cầu logout đến backend
+                                fetch('/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                                })
+                                    .then(response => {
+                                        // Nếu logout thành công, xóa thông tin từ localStorage
+                                        if (response.ok) {
+                                            localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            window.location.href = '/index';  // Điều hướng về trang /index
+                                        } else {
+                                            alert('Logout thất bại');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Có lỗi khi thực hiện logout:', error);
+                                    });
+                            }
+                        </script>
+
+
+                        <script>
+                            // Lấy dữ liệu từ localStorage
+                            const userData = localStorage.getItem("token");
+                            console.log("Phone Number Data:", userData);
+
+                            if (userData) {
+                                document.getElementById("username").innerText = userData;
+                            } else {
+                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                            }
+
+
+                            document.getElementById("userDropdown").addEventListener("click", () => {
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                dropdownMenu.classList.toggle("show");
+                            });
+
+                            // Close the dropdown when clicking outside
+                            window.addEventListener("click", (event) => {
+                                if (!document.getElementById("userDropdown").contains(event.target)) {
+                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                }
+                            });
+
+                        </script>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="./home">Home</a></li>
+                        <li><a href="./shop">Shop</a></li>
+                        <li><a href="./contact">Contacts</a></li>
+                        <li><a href="./about">About Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option d-flex align-items-center justify-content-between">
+                    <!-- Search Form -->
+                    <form action="#" class="d-flex align-items-center flex-grow-1">
+                        <input type="text" class="form-control" placeholder="Search..." style="border-radius: 0;"/>
+                        <button type="submit" class="btn btn-light">
+                            <span class="icon_search"></span>
+                        </button>
+                    </form>
+
+                    <!-- Cart Icon -->
+                    <a href="/cart" class="ml-3">
+                        <img src="/img/icon/cart.png" alt="Cart" style="width: 1.5rem; height: 1.5rem;">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+
+<!-- Main Content Begin -->
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <form class="w-50" id="signupForm">
+        <!-- Name input -->
+        <div class="row">
+            <!-- First Name input -->
+            <div data-mdb-input-init class="col-md-6 form-outline mb-4">
+                <label class="form-label" for="FirstName">First Name</label>
+                <input type="text" id="FirstName" class="form-control" />
+            </div>
+
+            <!-- Last Name input -->
+            <div data-mdb-input-init class="col-md-6 form-outline mb-4">
+                <label class="form-label" for="LastName">Last Name</label>
+                <input type="text" id="LastName" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Phone Number input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="PhoneNumber">Phone Number</label>
+            <input type="text" id="PhoneNumber" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="Password">Password</label>
+            <input type="password" id="Password" class="form-control" />
+        </div>
+
+        <!-- Confirm Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="ConfirmPassword">Confirm Password</label>
+            <input type="password" id="ConfirmPassword" class="form-control" />
+        </div>
+
+        <!-- Terms and Conditions Checkbox -->
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-sm-start">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="Terms" checked />
+                    <label class="form-check-label" for="Terms"> I agree to the terms and conditions </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+
+        <!-- Social Media buttons -->
+        <div class="text-center">
+            <p>Already a member? <a href="#!" style="text-decoration: none; color: dodgerblue;">Sign In</a></p>
+            <p>or sign up with:</p>
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-facebook-f"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-google"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-twitter"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-github"></i>
+            </button>
+        </div>
+    </form>
+
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const firstName = document.getElementById("FirstName").value;
+            const lastName = document.getElementById("LastName").value;
+            const phoneNumber = document.getElementById("PhoneNumber").value;
+            const password = document.getElementById("Password").value;
+
+            try {
+                const response = await fetch("/api/v1/auth/sign-up", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phoneNumber, password, firstName, lastName }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Sign Up failed!");
+                }
+
+                const data = await response.json();
+                console.log("Sign Up successful", data);
+
+                // Save token in localStorage
+                localStorage.setItem("phoneNumber", data.phoneNumber);
+
+                // Redirect after successful sign-up
+                window.location.href = "/login";
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Invalid credentials or error occurred");
+            }
+        });
+
+    </script>
+</div>
+<!-- Main Content End -->
+
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="#"><img src="/img/footer-logo.png" alt=""></a>
+                    </div>
+                    <p>The customer is at the heart of our unique business model, which includes design.</p>
+                    <a href="#"><img src="/img/payment.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Clothing Store</a></li>
+                        <li><a href="#">Trending Shoes</a></li>
+                        <li><a href="#">Accessories</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Delivary</a></li>
+                        <li><a href="#">Return & Exchanges</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                <div class="footer__widget">
+                    <h6>NewLetter</h6>
+                    <div class="footer__newslatter">
+                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                        <form action="#">
+                            <input type="text" placeholder="Your email">
+                            <button type="submit"><span class="icon_mail_alt"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="footer__copyright__text">
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    <p>Copyright ©
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>2020
+                        All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+<!-- Js Plugins -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery.nicescroll.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
+
+</html>
