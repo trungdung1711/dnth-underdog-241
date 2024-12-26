@@ -1,12 +1,12 @@
 package com.dnth_underdog_241.online_fashion_shopping.service.employee;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExistsException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;

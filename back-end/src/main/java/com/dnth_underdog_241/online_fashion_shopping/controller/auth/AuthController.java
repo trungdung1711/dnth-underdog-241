@@ -1,9 +1,9 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.auth;
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.LogInRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.LogInResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.LogInRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.LogInResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.*;
 import com.dnth_underdog_241.online_fashion_shopping.security.model.WebUserDetails;
 import com.dnth_underdog_241.online_fashion_shopping.security.util.JwtUtil;

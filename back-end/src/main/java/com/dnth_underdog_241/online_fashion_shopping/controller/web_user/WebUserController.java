@@ -1,7 +1,7 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
-import com.dnth_underdog_241.online_fashion_shopping.dto.GetWebUserResponseDTO;
-import com.dnth_underdog_241.online_fashion_shopping.dto.WebUserUpdateWebUserRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.WebUserUpdateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.service.WebUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +17,9 @@ public class WebUserController {
 
     @PutMapping("/{id}/info")
     @PreAuthorize("authentication.principal.getId() == #id")
-    public ResponseEntity<WebUserUpdateWebUserRequestDto> updateWebUser(
-            @RequestBody WebUserUpdateWebUserRequestDto webUserUpdateWebUserRequestDto, @PathVariable Long id) {
-        WebUserUpdateWebUserRequestDto responseWebUserUpdateWebUserRequestDto = webUserService
-                .updateWebUser(webUserUpdateWebUserRequestDto, id);
+    public ResponseEntity<WebUserUpdateRequestDto> updateWebUser(@RequestBody WebUserUpdateRequestDto webUserUpdateWebUserRequestDto, @PathVariable Long id)
+    {
+        WebUserUpdateRequestDto responseWebUserUpdateWebUserRequestDto = webUserService.updateWebUser(webUserUpdateWebUserRequestDto, id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(responseWebUserUpdateWebUserRequestDto);
@@ -28,8 +27,10 @@ public class WebUserController {
 
     @GetMapping("/{id}/info")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.getId() == #id ")
-    public ResponseEntity<GetWebUserResponseDTO> getWebUser(@PathVariable Long id) {
-        GetWebUserResponseDTO getWebUserResponseDTO = webUserService.getWebUser(id);
+
+    public ResponseEntity<WebUserGetDTO> getWebUser(@PathVariable Long id)
+    {
+        WebUserGetDTO getWebUserResponseDTO = webUserService.getWebUser(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(getWebUserResponseDTO);
