@@ -1,6 +1,5 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.auth;
 
-
 import com.dnth_underdog_241.online_fashion_shopping.dto.LogInRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.LogInResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.SignUpRequestDto;
@@ -21,57 +20,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("api/v1/auth/")
 @RequiredArgsConstructor
-public class AuthController
-{
-    private final CustomerService customerService;
+public class AuthController {
+        private final CustomerService customerService;
 
+        private final AuthenticationManager authenticationManager;
 
-    private final AuthenticationManager authenticationManager;
+        private final JwtUtil jwtUtil;
 
+        @PostMapping("sign-up")
+        public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody SignUpRequestDto signUpRequestDto) {
+                SignUpResponseDto signUpResponseDto = customerService.createCustomer(signUpRequestDto);
+                return ResponseEntity
+                                .status(HttpStatus.OK)
+                                .body(signUpResponseDto);
+        }
 
-    private final JwtUtil jwtUtil;
+        @PostMapping("login")
+        public ResponseEntity<LogInResponseDto> logIn(@RequestBody @Valid LogInRequestDto logInRequestDto) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                                logInRequestDto.getPhoneNumber(), logInRequestDto.getPassword());
+                authentication = authenticationManager.authenticate(authentication);
 
+                WebUser webUser = ((WebUserDetails) authentication.getPrincipal()).getWebUser();
 
-    @PostMapping("sign-up")
-    public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody SignUpRequestDto signUpRequestDto)
-    {
-        SignUpResponseDto signUpResponseDto = customerService.createCustomer(signUpRequestDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(signUpResponseDto);
-    }
+                String token = jwtUtil.generateToken(
+                                webUser.getId(),
+                                webUser.getPhoneNumber(),
+                                webUser.getRoles());
 
+                LogInResponseDto logInResponseDto = new LogInResponseDto(
+                                webUser.getId(),
+                                token,
+                                webUser.getPhoneNumber(),
+                                webUser.getRoles());
 
-    @PostMapping("login")
-    public ResponseEntity<LogInResponseDto> logIn(@RequestBody @Valid LogInRequestDto logInRequestDto)
-    {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(logInRequestDto.getPhoneNumber(), logInRequestDto.getPassword());
-        authentication = authenticationManager.authenticate(authentication);
-
-        WebUser webUser = ((WebUserDetails) authentication.getPrincipal()).getWebUser();
-
-
-        String token = jwtUtil.generateToken
-                (
-                        webUser.getId(),
-                        webUser.getPhoneNumber(),
-                        webUser.getRoles()
-                );
-
-        LogInResponseDto logInResponseDto = new LogInResponseDto
-                (
-                        webUser.getId(),
-                        token,
-                        webUser.getPhoneNumber(),
-                        webUser.getRoles()
-                );
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(logInResponseDto);
-    }
+                return ResponseEntity
+                                .status(HttpStatus.OK)
+                                .body(logInResponseDto);
+        }
 }

@@ -165,7 +165,21 @@
 		</dependency>
 
 
-<!--		<dependency>-->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>4.4.1</version> <!-- Sử dụng phiên bản mới nhất -->
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+
+
+
+		<!--		<dependency>-->
 <!--			<groupId>io.minio</groupId>-->
 <!--			<artifactId>minio</artifactId>-->
 <!--			<version>8.5.2</version>-->
@@ -174,7 +188,11 @@
 
 	</dependencies>
 
+
+
+
 	<build>
+
 		<resources>
 			<resource>
 				<directory>
