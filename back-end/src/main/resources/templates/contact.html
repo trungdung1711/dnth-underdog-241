@@ -41,12 +41,48 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
-                    <div class="header__top__right">
+                    <div class="header__top__right" id="guest">
                         <div class="header__top__links">
                             <a href="/login">Sign in</a>/
                             <a href="/signup">Sign up</a>
                         </div>
                     </div>
+
+                    <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
+                        <!-- Avatar -->
+                        <div class="header__user">
+                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                        </div>
+                        <!-- User Name -->
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
+                            <span id="username"></span>
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
+                                <a class="dropdown-item" href="/update-info">Update Info</a>
+                                <a class="dropdown-item" href="/orders">Orders</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        // Kiểm tra xem người dùng đã đăng nhập hay chưa (ví dụ: kiểm tra token trong localStorage)
+                        const isLoggedIn = localStorage.getItem('token') !== null;
+
+                        if (isLoggedIn) {
+                            // Nếu đã đăng nhập
+                            document.getElementById('guest').classList.add('d-none'); // Ẩn phần tử chứa "Sign in" và "Sign up"
+                            document.getElementById('user').classList.remove('d-none'); // Hiển thị phần tử chứa tên người dùng
+
+                            // Lấy tên người dùng (ví dụ: từ localStorage hoặc API)
+                            const username = localStorage.getItem('phoneNumber'); // Thay bằng cách lấy tên người dùng thực tế
+                            document.getElementById('username').textContent = username;
+                        } else {
+                            // Nếu chưa đăng nhập
+                            document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
+                            document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                        }
+                    </script>
                 </div>
             </div>
         </div>

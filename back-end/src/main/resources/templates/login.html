@@ -117,7 +117,7 @@
                 const response = await fetch("/api/v1/auth/login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ phoneNumber: phoneNumber, password: password }),
+                    body: JSON.stringify({ phoneNumber, password }),
                 });
 
                 if (!response.ok) {
@@ -127,10 +127,10 @@
                 const data = await response.json();
                 console.log("Login successful", data);
 
-                // Lưu token vào localStorage
+                // Lưu thông tin vào localStorage
                 localStorage.setItem("phoneNumber", data.phoneNumber);
-                // Lưu token vào localStorage
-                localStorage.setItem("token", data.phoneNumber);
+                localStorage.setItem("token", data.jwttoken);
+                localStorage.setItem("id", data.id);
 
                 // Chuyển hướng sau khi đăng nhập
                 window.location.href = "/home";
@@ -139,6 +139,7 @@
                 alert("Invalid credentials");
             }
         });
+
     </script>
 
 </div>

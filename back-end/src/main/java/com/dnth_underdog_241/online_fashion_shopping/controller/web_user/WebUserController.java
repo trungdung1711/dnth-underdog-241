@@ -27,7 +27,6 @@ public class WebUserController {
 
     @GetMapping("/{id}/info")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.getId() == #id ")
-
     public ResponseEntity<WebUserGetDTO> getWebUser(@PathVariable Long id)
     {
         WebUserGetDTO getWebUserResponseDTO = webUserService.getWebUser(id);
