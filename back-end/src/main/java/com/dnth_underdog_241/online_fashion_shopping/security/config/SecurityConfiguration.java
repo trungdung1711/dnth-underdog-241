@@ -69,10 +69,15 @@ public class SecurityConfiguration {
                                         "/shop",
                                         "/details",
                                         "/checkout",
-                                        "/cart"
+                                        "/cart",
+                                        "/admin/**"
                                 ).permitAll()
 
-                                .requestMatchers("/css/**", "/js/**", "/img/**","/fonts/**","/favicon.ico", "/webjars/**")
+                                .requestMatchers(
+                                        "/admin/**"
+                                ).permitAll()
+
+                                .requestMatchers("/css/**", "/plugins/**", "/dist/**","/js/**", "/img/**","/fonts/**","/favicon.ico", "/webjars/**")
                                 .permitAll()
 
                                 .requestMatchers("api/v1/categories/**")

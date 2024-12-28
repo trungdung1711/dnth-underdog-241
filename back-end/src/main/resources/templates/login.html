@@ -132,8 +132,17 @@
                 localStorage.setItem("token", data.jwttoken);
                 localStorage.setItem("id", data.id);
 
-                // Chuyển hướng sau khi đăng nhập
-                window.location.href = "/home";
+                const roles = data.roles[0].name;
+                localStorage.setItem("role", roles);
+
+                if(roles === "ROLE_CUSTOMER"){
+                    // Chuyển hướng sau khi đăng nhập
+                    window.location.href = "/home";
+                }
+
+                window.location.href = "/admin";
+
+
             } catch (error) {
                 console.error("Error:", error);
                 alert("Invalid credentials");

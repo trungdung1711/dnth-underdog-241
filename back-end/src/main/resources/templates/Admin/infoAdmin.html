@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="admin" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <div class="dropdown ml-auto mr-3">
+                    <a href="#" id="username" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="infor">Information</a>
+                        <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+                <script>
+                    const userData = localStorage.getItem("phoneNumber");
+                    console.log("Phone Number Data:", userData);
+                    document.getElementById("username").innerText = userData;
+                </script>
+
+
+                <script>
+                    function logout() {
+                        // Gửi yêu cầu logout đến backend
+                        fetch('/logout', {
+                            method: 'GET',
+                            credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                        })
+                            .then(response => {
+                                // Nếu logout thành công, xóa thông tin từ localStorage
+                                if (response.ok) {
+                                    localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                    localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                    localStorage.removeItem('id');
+                                    localStorage.removeItem('role');
+                                    window.location.href = '/index';  // Điều hướng về trang /index
+                                } else {
+                                    alert('Logout thất bại');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Có lỗi khi thực hiện logout:', error);
+                            });
+                    }
+
+                </script>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/admin" class="brand-link">
+            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link" >
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="product" class="nav-link" id="product">
+                            <i class="nav-icon fa fa-shopping-cart"></i>
+                            <p>Products</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order" class="nav-link" id="order">
+                            <i class="nav-icon fa fa-shopping-bag"></i>
+                            <p>Orders</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="comment" class="nav-link" id="comment">
+                            <i class="nav-icon fa fa-comment"></i>
+                            <p>Rating & Comments</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customer" class="nav-link" id="customer">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>Customers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="managerid" style="display: none;">
+                        <a href="manager" class="nav-link"  id="manager">
+                            <i class="nav-icon fa fa-user-plus"></i>
+                            <p>Managers</p>
+                        </a>
+                    </li>
+
+                    <script>
+                        const role = localStorage.getItem("role");
+                        if (role === "ROLE_ADMIN") {
+                            document.getElementById("managerid").style.display = 'block';
+                        }
+
+                        // Determine the current page from the data-page attribute
+                        const currentPage = window.location.pathname.split('/').pop();
+                        document.getElementById(currentPage).classList.add('active');
+
+                    </script>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+
+
+    <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Information</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- /.col -->
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header p-2">
+                  <h3>Update Information</h3>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                  <!-- /.tab-pane -->
+                  <div id="settings">
+                        <form class="form-horizontal" id="updateForm">
+                          <div class="form-group row">
+                              <label for="FirstName" class="col-sm-2 col-form-label">First Name</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="FirstName" name="name" placeholder="Name" />
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="LastName" class="col-sm-2 col-form-label">Last Name</label>
+                              <div class="col-sm-10">
+                                  <input type="text" class="form-control" id="LastName" name="email" placeholder="Email" />
+                              </div>
+                          </div>
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-2 col-form-label">Email</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="PhoneNumber" class="col-sm-2 col-form-label">Phone Number</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="PhoneNumber" name="phone" placeholder="Phone Number" />
+                                </div>
+                            </div>
+<!--                          <div class="form-group row">-->
+<!--                              <label for="password" class="col-sm-2 col-form-label">Password</label>-->
+<!--                              <div class="col-sm-10">-->
+<!--                                  <input type="text" class="form-control" id="password" name="password" placeholder="password" />-->
+<!--                              </div>-->
+<!--                          </div>-->
+
+                          <div class="form-group row">
+                              <label for="Birthday" class="col-sm-2 col-form-label">Birthday</label>
+                              <div class="col-sm-10">
+                                  <input type="date" class="form-control" id="Birthday" name="birthday" placeholder="Birthday" />
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="Sex" class="col-sm-2 col-form-label">Sex</label>
+                              <div class="col-sm-10">
+                                  <select id="Sex" name="Sex" class="form-control">
+                                      <option value="0" >Male</option>
+                                      <option value="1" >Female</option>
+                                      <option value="2" >Other</option>
+                                  </select>
+                              </div>
+                          </div>
+<!--                          <div class="form-group row">-->
+<!--                              <label for="address" class="col-sm-2 col-form-label">Address</label>-->
+<!--                              <div class="col-sm-10">-->
+<!--                                  <input type="text" class="form-control" id="address" name="address" placeholder="address" />-->
+<!--                              </div>-->
+<!--                          </div>-->
+                          <div class="form-group row">
+                              <div class="offset-sm-2 col-sm-10">
+                                  <button type="submit" class="btn btn-danger" >Update</button>
+                              </div>
+                          </div>
+                        </form>
+                      <script>
+                          document.addEventListener('DOMContentLoaded', function () {
+                              const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                              const userInfoUrl = `http://localhost:8080/api/v1/users/${userId}/info`;
+                              const token = localStorage.getItem('token');
+
+                              fetch(userInfoUrl, {
+                                  method: 'GET',
+                                  headers: {
+                                      'Content-Type': 'application/json',
+                                      'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                  },
+                              })
+                                  .then((response) => {
+                                      if (!response.ok) {
+                                          throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                      }
+                                      return response.json();
+                                  })
+                                  .then((data) => {
+                                      // Hiển thị dữ liệu lên view
+                                      document.getElementById('FirstName').value = data.firstName ? data.firstName : "";
+                                      document.getElementById('LastName').value  = data.lastName ? data.lastName : "";
+                                      document.getElementById('PhoneNumber').value  = data.phoneNumber ? data.phoneNumber : "";
+                                      document.getElementById('email').value  = data.email ? data.email : "";
+                                      document.getElementById('Birthday').value  = data.birthDay ? data.birthDay : "";
+
+                                      const selectElement = document.getElementById('Sex');
+                                      const selectedValue = data.sex ? data.sex : "";
+
+                                      for (let option of selectElement.options) {
+                                          if (option.value === selectedValue) {
+                                              option.selected = true;
+                                              break;
+                                          }
+                                      }
+                                  })
+                                  .catch((error) => {
+                                      console.error('Có lỗi xảy ra:', error);
+                                  });
+                          });
+
+
+                          document.getElementById("updateForm").addEventListener("submit", async (event) => {
+                              event.preventDefault();
+                              const firstName = document.getElementById("FirstName").value;
+                              const lastName = document.getElementById("LastName").value;
+                              const phoneNumber = document.getElementById("PhoneNumber").value;
+                              const sex = document.getElementById("Sex").value;
+                              const birthDay = document.getElementById("Birthday").value;
+                              const email = document.getElementById("email").value;
+                              const address = null;
+
+                              const userId = localStorage.getItem("id");
+                              const userInfoUrl = `http://localhost:8080/api/v1/users/${userId}/info`;
+                              const token = localStorage.getItem('token');
+
+                              try {
+                                  const response = await fetch(userInfoUrl, {
+                                      method: "PUT",
+                                      headers: {
+                                          "Content-Type": "application/json",
+                                          'Authorization': `Bearer ${token}`
+                                      },
+                                      body: JSON.stringify({ firstName,lastName, phoneNumber, sex, birthDay, email, address }),
+                                  });
+
+                                  if (!response.ok) {
+                                      throw new Error("Update failed!");
+                                  }
+
+                                  window.location.href = "/admin/infor";
+                              } catch (error) {
+                                  console.error("Error:", error);
+                                  alert("Invalid credentials");
+                              }
+                          });
+
+                      </script>
+
+
+                  </div>
+                  <!-- /.tab-pane -->
+              </div>
+                <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+            <!-- /.card -->
+        </div>
+          <!-- /.col -->
+      </div>
+        <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+   <script>
+	function Confirm() {
+		// Hiển thị thông báo xác nhận
+		alert("Tài khoản đã được cập nhật thành công!");
+		// Cho phép form được gửi đi
+		return true;
+	}
+  </script>
+
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.2.0-rc
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<!-- AdminLTE App -->
+<script src="/dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="/dist/js/pages/dashboard.js"></script>
+</body>
+</html>

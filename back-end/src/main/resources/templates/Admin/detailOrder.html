@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="admin" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="#" class="nav-link">Contact</a>
+            </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <div class="dropdown ml-auto mr-3">
+                    <a href="#" id="username" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </a>
+
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="infor">Information</a>
+                        <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+                <script>
+                    const userData = localStorage.getItem("phoneNumber");
+                    console.log("Phone Number Data:", userData);
+                    document.getElementById("username").innerText = userData;
+                </script>
+
+
+                <script>
+                    function logout() {
+                        // Gửi yêu cầu logout đến backend
+                        fetch('/logout', {
+                            method: 'GET',
+                            credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                        })
+                            .then(response => {
+                                // Nếu logout thành công, xóa thông tin từ localStorage
+                                if (response.ok) {
+                                    localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                    localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                    localStorage.removeItem('id');
+                                    localStorage.removeItem('role');
+                                    window.location.href = '/index';  // Điều hướng về trang /index
+                                } else {
+                                    alert('Logout thất bại');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Có lỗi khi thực hiện logout:', error);
+                            });
+                    }
+
+                </script>
+            </li>
+        </ul>
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="/admin" class="brand-link">
+            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item">
+                        <a href="/admin" class="nav-link" >
+                            <i class="nav-icon fas fa-home"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="product" class="nav-link" id="product">
+                            <i class="nav-icon fa fa-shopping-cart"></i>
+                            <p>Products</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="order" class="nav-link" id="order">
+                            <i class="nav-icon fa fa-shopping-bag"></i>
+                            <p>Orders</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="comment" class="nav-link" id="comment">
+                            <i class="nav-icon fa fa-comment"></i>
+                            <p>Rating & Comments</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="customer" class="nav-link" id="customer">
+                            <i class="nav-icon fa fa-user"></i>
+                            <p>Customers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item" id="managerid" style="display: none;">
+                        <a href="manager" class="nav-link"  id="manager">
+                            <i class="nav-icon fa fa-user-plus"></i>
+                            <p>Managers</p>
+                        </a>
+                    </li>
+
+                    <script>
+                        const role = localStorage.getItem("role");
+                        if (role === "ROLE_ADMIN") {
+                            document.getElementById("managerid").style.display = 'block';
+                        }
+
+                        // Determine the current page from the data-page attribute
+                        const currentPage = window.location.pathname.split('/').pop();
+                        document.getElementById(currentPage).classList.add('active');
+
+                    </script>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+
+
+    <!-- Main content -->
+   <div class="content-wrapper">
+    <section class="content">
+      <div class="container-fluid">
+        <h2 class="mb-3">Khách Hàng</h2>
+        <div class="row">
+          <div class="col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-info"><i class="far fa-user"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Họ Tên: <?= $data['user']->name; ?></span>
+                <span class="info-box-text">Email: <?= $data['user']->email; ?></span>
+                <span class="info-box-text">Số điện thoại: <?= $data['user']->phone; ?></span>
+                <span class="info-box-text">Địa chỉ: <?= $data['user']->address; ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+        </div>
+
+
+        <h2 class="mb-3">Đơn Hàng</h2>
+        <div class="row">
+          <div class="col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-danger"><i class="fa fa-shopping-bag"></i></span>
+              <div class="info-box-content">
+                <span class="info-box-text">Mã đơn hàng: <?= $data['order']->order_id; ?></span>
+                <span class="info-box-text">Thanh toán: <?= $data['order']->payment_method; ?></span>
+                <span class="info-box-text">Giao hàng: <?= $data['order']->shipping_type; ?></span>
+                <span class="info-box-text">Trạng thái: <?= $data['order']->status; ?></span>
+                <span class="info-box-text">Ghi chú: <?= $data['order']->notes ? $data['order']->notes : 'không'; ?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+     <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Chi tiết đơn hàng</h1>
+          </div>
+          <!-- /.col -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+         <!-- /.row -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">OrderID</h3>
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <thead>
+                      <th>ID</th>
+                      <th>Sản Phẩm</th>
+                      <th>Số Lượng</th>
+                      <th>Giá Tiền</th>
+                    </thead>
+                  </thead>
+                  <tbody>
+                    <?php $total = 0 ?>
+                    <?php if (is_array($data['orders'])): ?>
+										<?php foreach ($data['orders'] as $row): ?>
+                    <tr>
+										<div class="row">
+											<a href="#">
+                        <td><?=$row->product_id?></td>
+                        <td><?=$row->ptitle?></td>
+                        <td><?=$row->quantity?></td>
+                        <td><?=$row->totalAmount?><small>đ</small></td>
+                        <?php $total+= $row->totalAmount ?>
+											</a>
+										</div>
+                    </tr>
+										<!-- /product -->
+										<?php endforeach; ?>
+										<?php else: ?>
+										<tr>
+                        <td colspan="4">
+                           <p class="text-center">Không tìm thấy đơn hàng</p>
+                        </td>
+                     </tr>
+										<?php endif; ?>
+                  </tbody>
+                </table>
+              </div>
+               <div class="mt-sm-3 ml-auto mr-lg-5">
+                  <!-- <h3>Discount: 10000 vnđ</h3> -->
+                  <h3>Thành tiền: <?=$total?><small>đ</small></h3>
+                </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+      </div>
+    </section>
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Timeline</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Timelime example  -->
+        <div class="row">
+          <div class="col-md-12">
+            <!-- The time line -->
+            <div class="timeline">
+              <!-- timeline item -->
+              <div>
+                <i class="fas fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                  <span class="time"><i class="fas fa-clock"></i>Tuesday 11:29 AM</span>
+                  <h3 class="timeline-header">Order was placed </h3>
+                  <div class="timeline-body">
+                    Your order has been placed successfully
+                  </div>
+                </div>
+              </div>
+              <!-- END timeline item -->
+              <!-- timeline item -->
+              <div>
+                <i class="fas fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                  <span class="time"><i class="fas fa-clock"></i>Tuesday 11:29 AM</span>
+                  <h3 class="timeline-header">Order was placed </h3>
+                  <div class="timeline-body">
+                    Your order has been placed successfully
+                  </div>
+                </div>
+              </div>
+              <!-- END timeline item -->
+              <!-- timeline item -->
+              <div>
+                <i class="fas fa-envelope bg-blue"></i>
+                <div class="timeline-item">
+                  <span class="time"><i class="fas fa-clock"></i>Tuesday 11:29 AM</span>
+                  <h3 class="timeline-header">Order was placed </h3>
+                  <div class="timeline-body">
+                    Your order has been placed successfully
+                  </div>
+                </div>
+              </div>
+              <!-- END timeline item -->
+              <div>
+                <i class="fas fa-clock bg-gray"></i>
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+      </div>
+      <!-- /.timeline -->
+    </section>
+    <!-- /.content -->
+   </div>
+
+   <!-- Control Sidebar -->
+   <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+   </aside>
+   <!-- /.control-sidebar -->
+
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 3.2.0-rc
+    </div>
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<script src="/plugins/jquery/jquery.min.js"></script>
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<!-- AdminLTE App -->
+<script src="/dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="/dist/js/pages/dashboard.js"></script>
+</body>
+</html>
