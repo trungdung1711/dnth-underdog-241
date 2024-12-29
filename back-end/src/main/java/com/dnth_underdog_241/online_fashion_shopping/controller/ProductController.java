@@ -2,6 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductUpdateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.VariantProductCreateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
@@ -49,6 +50,28 @@ public class ProductController
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(null);
+    }
+
+
+    @PutMapping(value ="{productId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<Void> updateProduct
+            (
+                @RequestPart(value = "product") ProductUpdateRequestDto productUpdateRequestDto,
+                @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+                @RequestPart(value = "picture1", required = false) MultipartFile picture1,
+                @RequestPart(value = "picture2", required = false) MultipartFile picture2,
+                @RequestPart(value = "picture3", required = false) MultipartFile picture3,
+                @RequestPart(value = "video", required = false) MultipartFile video,
+                @PathVariable Long categoryId,
+                @PathVariable Long productId
+            ) throws IOException
+    {
+        productService.updateProduct(productUpdateRequestDto, thumbnail, picture1, picture2, picture3, video, categoryId, productId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
                 .body(null);
     }
 

@@ -2,6 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.service;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductUpdateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.exception.ResourcesNotFound;
@@ -97,6 +98,61 @@ public class ProductService
                 );
 
         productRepository.save(product);
+    }
+
+
+    public void updateProduct
+            (
+                    ProductUpdateRequestDto productUpdateRequestDto,
+                    MultipartFile thumbnail,
+                    MultipartFile picture1,
+                    MultipartFile picture2,
+                    MultipartFile picture3,
+                    MultipartFile video,
+                    Long categoryId,
+                    Long productId
+            )
+            throws IOException
+    {
+        Product product = productRepository.findProductById(productId);
+
+        productMapper.updateProduct(productUpdateRequestDto, product);
+
+        if (thumbnail != null && !thumbnail.isEmpty())
+            product.setThumbnail(fileService.uploadFile(thumbnail, FileLocation.PRODUCT));
+
+        if (picture1 != null && !picture1.isEmpty())
+        {
+            product.getPictures().set(0,
+                    Picture
+                            .builder()
+                            .product(product)
+                            .path(fileService.uploadFile(picture1, FileLocation.PRODUCT))
+                            .build());
+        }
+
+        if (picture2 != null && !picture2.isEmpty())
+        {
+            product.getPictures().set(1,
+                    Picture
+                            .builder()
+                            .product(product)
+                            .path(fileService.uploadFile(picture2, FileLocation.PRODUCT))
+                            .build());
+        }
+
+        if (picture3 != null && !picture3.isEmpty())
+        {
+            product.getPictures().set(2,
+                    Picture
+                            .builder()
+                            .product(product)
+                            .path(fileService.uploadFile(picture3, FileLocation.PRODUCT))
+                            .build());
+        }
+
+        if (video != null && !video.isEmpty())
+            product.setVideo(fileService.uploadFile(video, FileLocation.PRODUCT));
     }
 
 
