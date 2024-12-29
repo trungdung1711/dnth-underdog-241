@@ -182,50 +182,193 @@
                   </div>
                   <div class="modal-body">
                     <!-- Nội dung modal -->
-                    <form action="products/AddProduct" method="post">
-                      <div class="form-group">
-                        <label for="productName">Tên sản phẩm</label>
-                        <input type="text" class="form-control" id="productName" placeholder="name" name="productName">
-                      </div>
-                      <div class="form-group">
-                        <label for="productCategory" class="mr-2">Loại</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="productCategory">
-                          <option selected>Chọn</option>
-                          <option value="Quần">Quần</option>
-                          <option value="Áo">Áo</option>
-                          <option value="Mũ">Mũ</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="productCategory" class="mr-2">Giới tính</label>
-                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="productSex">
-                          <option selected>Chọn</option>
-                          <option value="Nam">Nam</option>
-                          <option value="Nữ">Nữ</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="productPrice">Giá</label>
-                        <input type="text" class="form-control" id="productPrice" placeholder="vnđ" name="productPrice">
-                      </div>
-                      <div class="form-group">
-                        <label for="productImg">Ảnh</label>
-                        <input type="text" class="form-control" id="productImg" placeholder="URL" name="productImg">
-                      </div>
-                      <div class="form-group">
-                        <label for="productDescription">Mô tả</label>
-                        <textarea class="form-control" id="productDescription" placeholder="Description" name="productDescription"></textarea>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy Bỏ</button>
-                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
-                      </div>
-                    </form>
+                      <form id="productForm">
+                          <div class="form-group">
+                              <label for="productName">Name</label>
+                              <input type="text" class="form-control" id="productName" name="productName" required>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="productBrand">Brand</label>
+                                      <select class="form-control" id="productBrand" name="productBrand" required>
+                                          <option value="" selected>Chọn</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="productCategory">Category</label>
+                                      <select class="form-control" id="productCategory" name="productCategory" required>
+                                          <option value="" selected>Chọn</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="productMaterial">Material</label>
+                                      <input type="text" class="form-control" id="productMaterial" name="productMaterial" required>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-group">
+                                      <label for="productPrice">Price</label>
+                                      <input type="text" class="form-control" id="productPrice" name="productPrice" required>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="productShortDescription">Short Description</label>
+                              <textarea class="form-control" id="productShortDescription" name="productShortDescription" rows="3" required></textarea>
+                          </div>
+                          <div class="form-group">
+                              <label for="productLongDescription">Long Description</label>
+                              <textarea class="form-control" id="productLongDescription" name="productLongDescription" rows="5" required></textarea>
+                          </div>
+                          <div class="form-group">
+                              <label for="thumbnail">Thumbnail</label>
+                              <input type="file" class="form-control" id="thumbnail" name="thumbnail" accept="image/*" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="picture1">Picture 1</label>
+                              <input type="file" class="form-control" id="picture1" name="picture1" accept="image/*" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="picture2">Picture 2</label>
+                              <input type="file" class="form-control" id="picture2" name="picture2" accept="image/*" required>
+                          </div>
+                          <div class="form-group">
+                              <label for="picture3">Picture 3</label>
+                              <input type="file" class="form-control" id="picture3" name="picture3" accept="image/*" required>
+                          </div>
+                          <div class="form-group text-right">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Hủy Bỏ</button>
+                              <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                          </div>
+                      </form>
+
+
+                      <script>
+                          document.getElementById("productForm").addEventListener("submit", async (event) => {
+                              event.preventDefault();
+                              const name = document.getElementById("productName").value;
+                              const brand = document.getElementById("productBrand").value;
+                              const material = document.getElementById("productMaterial").value;
+                              const price= document.getElementById("productPrice").value;
+                              const shortDescription = document.getElementById("productShortDescription").value;
+                              const longDescription= document.getElementById("productLongDescription").value;
+
+                              const product = {
+                                  name: name,
+                                  brandId: "3",
+                                  material: "NYLON",
+                                  price: price,
+                                  shortDescription: shortDescription,
+                                  longDescription: longDescription
+                              };
+
+
+                              const categoryId =  "6";//document.getElementById("productCategory").value;
+                              const thumbnail = document.getElementById("thumbnail").files[0];
+                              const picture1 = document.getElementById("picture1").files[0];
+                              const picture2 = document.getElementById("picture2").files[0];
+                              const picture3 = document.getElementById("picture3").files[0];
+
+
+                              const formData = new FormData();
+                              formData.append('product', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+                              formData.append('thumbnail', thumbnail);      // Hình ảnh
+                              formData.append('picture1', picture1);        // Hình ảnh
+                              formData.append('picture2', picture2);        // Hình ảnh
+                              formData.append('picture3', picture3);        // Hình ảnh
+                              formData.append('categoryId', new Blob([JSON.stringify(categoryId)], { type: 'application/json' }));    // ID Danh mục
+
+                              const userInfoUrl = `http://localhost:8080/api/v1/products`;
+                              const token = localStorage.getItem('token');
+                              fetch(userInfoUrl, {
+                                  method: 'POST',
+                                  headers: {
+                                      'Authorization': `Bearer ${token}`,
+                                  },
+                                  body : formData
+
+                              })
+                                  .then(response => {
+                                      if (!response.ok) {
+                                          throw new Error("Create failed!");
+                                      }
+
+                                      // Chuyển hướng sau khi đăng nhập
+                                      window.location.href = "/admin/manager";
+                                  })
+                                  .catch(error => {
+                                      console.error('Error:', error);
+                                  });
+                          });
+
+                          document.addEventListener("DOMContentLoaded", function () {
+                              // Gọi API để lấy danh sách thương hiệu
+                              fetch('/api/v1/brands') // Đường dẫn tương ứng với @GetMapping
+                                  .then(response => {
+                                      if (!response.ok) {
+                                          throw new Error('Network response was not ok');
+                                      }
+                                      return response.json();
+                                  })
+                                  .then(data => {
+                                      const brandSelect = document.getElementById("productBrand");
+
+                                      // Xóa các tùy chọn hiện tại (trừ tùy chọn "Chọn")
+                                      brandSelect.innerHTML = '<option value="" selected>Chọn</option>';
+
+                                      // Thêm các tùy chọn mới từ dữ liệu API
+                                      data.forEach(brand => {
+                                          const option = document.createElement("option");
+                                          option.value = brand.id; // Giả sử BrandGetDto có thuộc tính `id`
+                                          option.textContent = brand.name; // Giả sử BrandGetDto có thuộc tính `name`
+                                          brandSelect.appendChild(option);
+                                      });
+                                  })
+                                  .catch(error => console.error('Error fetching brand data:', error));
+                          });
+
+                          document.addEventListener("DOMContentLoaded", function () {
+                              // Gọi API để lấy danh sách danh mục
+                              fetch('/api/v1/categories') // Đường dẫn tương ứng với @GetMapping
+                                  .then(response => {
+                                      if (!response.ok) {
+                                          throw new Error('Network response was not ok');
+                                      }
+                                      return response.json();
+                                  })
+                                  .then(data => {
+                                      const categorySelect = document.getElementById("productCategory");
+
+                                      // Xóa các tùy chọn hiện tại (trừ tùy chọn "Chọn")
+                                      categorySelect.innerHTML = '<option value="" selected>Chọn</option>';
+
+                                      // Thêm các tùy chọn mới từ dữ liệu API
+                                      data.forEach(category => {
+                                          const option = document.createElement("option");
+                                          option.value = category.id; // Giả sử CategoryGetDto có thuộc tính `id`
+                                          option.textContent = category.name; // Giả sử CategoryGetDto có thuộc tính `name`
+                                          categorySelect.appendChild(option);
+                                      });
+                                  })
+                                  .catch(error => console.error('Error fetching category data:', error));
+                          });
+
+
+                      </script>
                   </div>
                 </div>
               </div>
             </div>
         </div><!-- /.container-fluid -->
+        </div>
       </section>
 
       <section class="content">
@@ -238,7 +381,7 @@
                   <h3 class="card-title"></h3>
                   <div class="card-tools">
                     <div class="input-group input-group-sm align-content-center" style="width: 100%;">
-                      <form action="<?= ROOT ?>Products/Search" method="GET">
+                      <form>
                         <div class="input-group input-group-sm align-content-center" style="width: 100%;">
                           <input type="text" name="search" class="form-control float-right" placeholder="Search">
                           <div class="input-group-append">
@@ -258,118 +401,53 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Sản phẩm</th>
-                        <th>Thể loại</th>
-                        <th>
-                          Ngày tạo
-                          <a href="?sort=create_at<?php echo $ascUrl; ?>" class="text-success">
-                          </a>
-                          <a href="?sort=create_at<?php echo $descUrl; ?>" class="'text-danger">
-                          </a>
-                        </th>
-                        <th>
-                          Giá
-                          <a href="?sort=pprice<?php echo $ascUrl; ?>" class="text-success">
-                          </a>
-                          <a href="?sort=pprice<?php echo $descUrl; ?>" class="text-danger">
-                          </a>
-                        </th>
-
-                        <th>Thao tác</th>
+                        <th>Name</th>
+                        <th>Brand</th>
+                        <th>Price</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                     <!-- product -->
 
-                    <tr>
-										<div class="row">
-											<a href="<?= ROOT ?>detail_product/<?=$row->id?>">
-                        <td class="col-1"><?=$row->id?></td>
-												<td class="col-5">
-													<span><img class="table-avatar rounded-2" style="width: 10%; height: 10%;" src="<?=$row->pimg?>" alt=""></span><?=$row->ptitle?>
-												</td>
-                        <td class="col-1"><?=$row->pkind?></td>
-                        <td class="col-2"><?=$row->create_at?></td>
-                        <td><?=$row->pprice?></td>
-                        <td>
-                          <button type="button" class="btn btn-info float-left col-sm-5 mr-1" onclick="window.location='detailProduct.html'">Thêm sản phẩm</button>
-                          <!-- <button type="button" class="btn btn-info float-left col-sm-5 mr-1" onclick="OpenModal()" data-toggle="modal" data-target="#editProductModal">Chỉnh sửa</button> -->
-                          <!-- Modal -->
-                          <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="addProductModalLabel">Chỉnh sửa sản phẩm</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <form action="products/AddProduct" method="post" style="display: none;" id="editForm">
-                                      <div class="form-group">
-                                        <label for="productName">Tên sản phẩm</label>
-                                        <input type="text" class="form-control" id="productName" placeholder="name" name="productName" value="<?=$row->ptitle?>">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productCategory" class="mr-2">Thể loại</label>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="productCategory">
-                                          <option selected>Chọn</option>
-                                          <option value="Quần" <?= $row->pkind === 'Quần' ? 'selected' : '' ?>>Quần</option>
-                                          <option value="Áo" <?= $row->pkind === 'Áo' ? 'selected' : '' ?>>Áo</option>
-                                          <option value="Mũ" <?= $row->pkind === 'Mũ' ? 'selected' : '' ?>>Mũ</option>
-                                        </select>
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productSex" class="mr-2">Giới tính</label>
-                                        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="productSex">
-                                          <option selected>Chọn</option>
-                                          <option value="Nam" <?= $row->pgender === 'Nam' ? 'selected' : '' ?>>Nam</option>
-                                          <option value="Nữ" <?= $row->pgender === 'Nữ' ? 'selected' : '' ?>>Nữ</option>
-                                        </select>
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productPrice">Giá</label>
-                                        <input type="text" class="form-control" id="productPrice" placeholder="vnđ" name="productPrice" value="<?=$row->pprice?>">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productQuantity">Số lượng</label>
-                                        <input type="text" class="form-control" id="productQuantity" placeholder="number" name="productQuantity" value="chua co">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productImg">Ảnh</label>
-                                        <input type="text" class="form-control" id="productImg" placeholder="URL" name="productImg" value="<?=$row->pimg?>">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productDescription">Mô tả</label>
-                                       <textarea class="form-control" id="productDescription" placeholder="Description" name="productDescription">
-                                      </textarea>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Hủy Bỏ</button>                                        
-                                      </div>
-                                    </form>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <form action="<?= ROOT ?>Products/DeleteProduct/<?php echo $row->id; ?>" id="DeleteForm-?php echo $row->id; ?>">
-                            <input type="text" value="<?php echo $row->id; ?>" hidden />
-                            <button type="button" class="btn btn-danger col-sm-5">Xóa</button>
-                          </form>
-                        </td>
-											</a>
-										</div>
-                    </tr>
-
-										<tr>
-                        <td colspan="8">
-                           <p class="text-center">Không tìm thấy sản phẩm</p>
-                        </td>
-                     </tr>
-
                     </tbody>
                   </table>
+                    <script>
+                        const userInfoUrl = `http://localhost:8080/api/v1/products`;
+                        const token = localStorage.getItem('token');
+                        // Fetch dữ liệu từ API
+                        fetch(userInfoUrl, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`,
+                            },
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                const tbody = document.querySelector('tbody');
+                                tbody.innerHTML = ''; // Xóa nội dung cũ trước khi thêm dữ liệu mới
+
+                                data.forEach(product => {
+                                    const row = document.createElement('tr');
+
+                                    row.innerHTML = `
+                                    <td>${product.id}</td>
+                                    <td>${product.name}</td>
+                                    <td>${product.brand}</td>
+                                    <td>${product.price}</td>
+                                    <td>
+                                      <!-- Add action buttons if needed -->
+                                    </td>
+                                  `;
+
+                                    tbody.appendChild(row);
+                                });
+                            })
+                            .catch(error => console.error('Error fetching products:', error));
+
+
+                    </script>
                 </div>
                 <!-- /.card-body -->
               </div>

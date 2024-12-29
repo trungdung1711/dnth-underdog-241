@@ -304,63 +304,6 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                            <div class="modal fade" id="editAdminmodal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" id="addProductModalLabel">Chỉnh sửa sản phẩm</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="products/UpdateProduct/<?=$row->id?>" method="post" style="display: none;" id="editForm">
-                                                <div class="form-group">
-                                                    <label for="productName">Tên sản phẩm</label>
-                                                    <input type="text" class="form-control" id="productName" placeholder="name" name="productName" value="<?=$row->ptitle?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productCategory">Thể loại</label>
-                                                    <select class="form-control" name="productCategory">
-                                                        <option value="" disabled selected>Chọn</option>
-                                                        <option value="Quần" <?= $row->pkind === 'Quần' ? 'selected' : '' ?>>Quần</option>
-                                                        <option value="Áo" <?= $row->pkind === 'Áo' ? 'selected' : '' ?>>Áo</option>
-                                                        <option value="Mũ" <?= $row->pkind === 'Mũ' ? 'selected' : '' ?>>Mũ</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productSex">Giới tính</label>
-                                                    <select class="form-control" name="productSex">
-                                                        <option value="" disabled selected>Chọn</option>
-                                                        <option value="Nam" <?= $row->pgender === 'Nam' ? 'selected' : '' ?>>Nam</option>
-                                                        <option value="Nữ" <?= $row->pgender === 'Nữ' ? 'selected' : '' ?>>Nữ</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productPrice">Giá</label>
-                                                    <input type="text" class="form-control" id="productPrice" placeholder="vnđ" name="productPrice" value="<?=$row->pprice?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productQuantity">Số lượng</label>
-                                                    <input type="text" class="form-control" id="productQuantity" placeholder="number" name="productQuantity" value="chưa có">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productImg">Ảnh</label>
-                                                    <input type="text" class="form-control" id="productImg" placeholder="URL" name="productImg" value="<?=$row->pimg?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="productDescription">Mô tả</label>
-                                                    <textarea class="form-control" id="productDescription" placeholder="Description" name="productDescription"><?=$row->pdescription?></textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Hủy Bỏ</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
@@ -418,9 +361,9 @@
                                                     editButton.className = 'btn btn-info';
                                                     editButton.setAttribute('data-toggle', 'modal');
                                                     // editButton.setAttribute('data-target', `#editAdmin-${manager.id}`);
-                                                    editButton.setAttribute('data-target', `#editAdminmodal`);
+                                                    editButton.setAttribute('data-target', `#edituserModal`);
                                                     editButton.addEventListener('click', () => {
-                                                        OpenModal();
+                                                        OpenModal(manager.id);
                                                     });
                                                     actionCell.appendChild(editButton);
 
@@ -462,6 +405,96 @@
                                 });
                             </script>
 
+
+                            <div class="modal fade" id="edituserModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Information</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!-- Nội dung modal -->
+                                            <form class="col-sm-12" id="editForm">
+                                                <div class="row">
+                                                    <div class="mb-3 col-lg-6">
+                                                        <label for="FirstName" class="form-label">First Name</label>
+                                                        <input type="text" class="form-control" id="FName" name="FirstName" required />
+                                                    </div>
+                                                    <div class="mb-3 col-lg-6">
+                                                        <label for="LastName" class="form-label">LastName</label>
+                                                        <input type="text" class="form-control" id="LName" name="LastName" required />
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                                                    <input type="text" class="form-control" id="pNumber" name="phoneNumber" />
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="password" class="form-label">Password</label>
+                                                    <input type="password" class="form-control" id="pword" name="password" />
+                                                </div>
+
+                                                <div class="mb-3 form-group">
+                                                    <label for="role" class="control-label">Role:</label>
+                                                    <select id="Rle" name="role" class="form-control">
+                                                        <option value="admin" selected>Admin</option>
+                                                        <option value="employee">Employee</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="text-center mt-4">
+                                                    <button type="submit" class="btn btn-primary auth-btn" >Confirm</button>
+                                                </div>
+                                            </form>
+
+                                            <script>
+                                                document.getElementById("editForm").addEventListener("submit", async (event) => {
+                                                    event.preventDefault();
+                                                    const firstName = document.getElementById("FName").value;
+                                                    const lastName = document.getElementById("LName").value;
+                                                    const phoneNumber = document.getElementById("pNumber").value;
+                                                    const password = document.getElementById("pword").value;
+                                                    const role = document.getElementById("Rle").value;
+
+                                                    let userInfoUrl = `http://localhost:8080/api/v1/admins`;
+                                                    if(role === "employee"){
+                                                        userInfoUrl = `http://localhost:8080/api/v1/employees`;
+                                                    }
+
+
+                                                    const token = localStorage.getItem('token');
+
+                                                    try {
+                                                        const response = await fetch(userInfoUrl, {
+                                                            method: "POST",
+                                                            headers: {
+                                                                "Content-Type": "application/json",
+                                                                'Authorization': `Bearer ${token}`
+                                                            },
+                                                            body: JSON.stringify({ firstName,lastName, phoneNumber, password }),
+                                                        });
+
+                                                        if (!response.ok) {
+                                                            throw new Error("Create failed!");
+                                                        }
+
+                                                        // Chuyển hướng sau khi đăng nhập
+                                                        window.location.href = "/admin/manager";
+                                                    } catch (error) {
+                                                        console.error("Error:", error);
+                                                        alert("Invalid credentials");
+                                                    }
+                                                });
+
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
@@ -523,9 +556,47 @@
         }
     }
 
-    function OpenModal() {
+    function OpenModal(id) {
         const form = document.getElementById('editForm');
         form.style.display = form.style.display === 'block' ? 'none' : 'block';  // Toggle giữa hiển thị và ẩn
+
+        const userInfoUrl = `http://localhost:8080/api/v1/users/${id}/info`;
+        const token = localStorage.getItem('token');
+
+        fetch(userInfoUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                // Hiển thị dữ liệu lên view
+                document.getElementById('FName').value = data.firstName ? data.firstName : "";
+                document.getElementById('LName').value  = data.lastName ? data.lastName : "";
+                document.getElementById('pNumber').value  = data.phoneNumber ? data.phoneNumber : "";
+                document.getElementById('email').value  = data.email ? data.email : "";
+                document.getElementById('Birthday').value  = data.birthDay ? data.birthDay : "";
+
+                const selectElement = document.getElementById('Sex');
+                const selectedValue = data.sex ? data.sex : "";
+
+                for (let option of selectElement.options) {
+                    if (option.value === selectedValue) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Có lỗi xảy ra:', error);
+            });
     }
 
     // Đóng modal

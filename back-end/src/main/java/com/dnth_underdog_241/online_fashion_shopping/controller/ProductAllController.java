@@ -8,6 +8,7 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResp
 import com.dnth_underdog_241.online_fashion_shopping.mapper.ProductMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.Material;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,28 @@ public class ProductAllController {
                                 .map(productMapper::toProductGetAllDto)
                                 .collect(Collectors.toList())
                 );
+    }
+
+    private final ProductService productService;
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Void> createProduct
+            (
+                    @RequestPart("product") ProductCreateRequestDto productCreateRequestDto,
+                    @RequestPart("thumbnail") MultipartFile thumbnail,
+                    @RequestPart("picture1") MultipartFile picture1,
+                    @RequestPart("picture2") MultipartFile picture2,
+                    @RequestPart("picture3") MultipartFile picture3,
+                    @RequestPart(value = "video", required = false) MultipartFile video,
+                    @RequestPart("categoryId") Long categoryId
+            ) throws IOException
+    {
+
+        productService.createProduct(productCreateRequestDto, thumbnail, picture1, picture2, picture3, video, categoryId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
     }
 
 }
