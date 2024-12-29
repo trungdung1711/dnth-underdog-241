@@ -48,46 +48,77 @@
                         </div>
                         <!-- User Name -->
                         <div class="header__user__name ml-2 text-white" id="userDropdown">
-                            <span id="username"></span>
+                            <span id="username">Guest</span>
                             <div class="dropdown-menu" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="/update-info">Update Info</a>
                                 <a class="dropdown-item" href="/orders">Orders</a>
-                                <a class="dropdown-item" href="/logout">Logout</a>
+                                <a class="dropdown-item" href="/">Logout</a>
                             </div>
                         </div>
 
-
                         <script>
-                            // Lấy dữ liệu từ localStorage
-                            const userData = localStorage.getItem("token");
-                            console.log("Phone Number Data:", userData);
+                            // Hàm bất đồng bộ để lấy thông tin người dùng
+                            async function fetchUserInfo() {
+                                const token = localStorage.getItem("token");
+                                const userID = localStorage.getItem("userID");
 
-                            if (userData) {
-                                document.getElementById("username").innerText = userData;
-                            } else {
-                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                                // Nếu không có token hoặc userID, hiển thị mặc định là Guest
+                                if (!token || !userID) {
+                                    document.getElementById("username").innerText = "Guest";
+                                    return;
+                                }
+
+                                try {
+                                    // Gửi yêu cầu lấy thông tin người dùng
+                                    const response = await fetch(`http://localhost:8080/api/v1/users/${userID}/info`, {
+                                        method: "GET",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Authorization": `Bearer ${token}`, // Đính kèm token
+                                        },
+                                    });
+
+                                    // Nếu phản hồi không thành công, hiển thị thông báo lỗi
+                                    if (!response.ok) {
+                                        console.error("Failed to fetch user info!");
+                                        document.getElementById("username").innerText = "Guest";
+                                        return;
+                                    }
+
+                                    // Hiển thị tên người dùng khi đăng nhập thành công
+                                    const data = await response.json();
+                                    document.getElementById("username").innerText = `${data.firstName} ${data.lastName}`;
+                                } catch (error) {
+                                    console.error("Error fetching user info:", error);
+                                    document.getElementById("username").innerText = "Guest";
+                                }
                             }
 
+                            // Gọi hàm lấy thông tin người dùng
+                            fetchUserInfo();
 
-                            document.getElementById("userDropdown").addEventListener("click", () => {
+                            // Xử lý dropdown toggle
+                            document.getElementById("userDropdown").addEventListener("click", (event) => {
+                                event.stopPropagation(); // Ngăn chặn sự kiện lan ra ngoài
                                 const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
                                 dropdownMenu.classList.toggle("show");
                             });
 
-                            // Close the dropdown when clicking outside
+                            // Đóng dropdown khi click ra ngoài
                             window.addEventListener("click", (event) => {
-                                if (!document.getElementById("userDropdown").contains(event.target)) {
-                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                if (dropdownMenu && dropdownMenu.classList.contains("show") && !event.target.closest("#userDropdown")) {
+                                    dropdownMenu.classList.remove("show");
                                 }
                             });
-
                         </script>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
+
+
 
     <div class="container">
         <div class="row">

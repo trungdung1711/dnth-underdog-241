@@ -16,39 +16,39 @@ public class HomeController {
       return "home";
    }
 
-//   @RequestMapping("/contact")
-//   public String contact() {
-//      return "contact";
-//   }
-//
-//   @RequestMapping("/about")
-//   public String about() {
-//      return "about";
-//   }
-//
-//   @RequestMapping("/login")
-//   public String login() {
-//      return "login";
-//   }
-//
-//   @RequestMapping("/signup")
-//   public String signup() {
-//      return "signup";
-//   }
-//
-//   @RequestMapping("/shop")
-//   public String shop() {
-//      return "shop";
-//   }
-//
-//   @RequestMapping("/cart")
-//   public String cart() {
-//      return "shopping-cart";
-//   }
-//
-//   @RequestMapping("/details")
-//   public String details() {
-//      return "shop-details";
-//   }
+   @RequestMapping("/contact")
+   public String contact() {
+      return "contact";
+   }
+
+   @RequestMapping("/about")
+   public String about() {
+      return "about";
+   }
+
+   @RequestMapping("/login")
+   public String login() {
+      return "login";
+   }
+
+   @RequestMapping("/signup")
+   public String signup() {
+      return "signup";
+   }
+
+   @RequestMapping("/shop")
+   public String shop() {
+      return "shop";
+   }
+
+   @RequestMapping("/cart")
+   public String cart() {
+      return "shopping-cart";
+   }
+
+   @RequestMapping("/details")
+   public String details() {
+      return "shop-details";
+   }
 
 }
