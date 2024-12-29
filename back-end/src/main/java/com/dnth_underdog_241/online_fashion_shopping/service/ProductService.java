@@ -120,4 +120,10 @@ public class ProductService
                                                 )
                         );
     }
+
+
+    public void deleteProduct(Long productId)
+    {
+        productRepository.deleteById(productId);
+    }
 }

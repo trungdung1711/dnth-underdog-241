@@ -104,6 +104,17 @@ public class ProductController
     }
 
 
+    @DeleteMapping("{productId}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId, @PathVariable Long categoryId)
+    {
+        productService.deleteProduct(productId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
+    }
+
+
     @GetMapping("{productId}/variant")
     public ResponseEntity<VariantProductGetResponseDto> getProductVariant
             (

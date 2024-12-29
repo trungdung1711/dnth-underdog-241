@@ -43,7 +43,7 @@ public class VariantProductService
         Size size = sizeRepository.findById(variantProductCreateRequestDto.getSize()).orElseThrow(() -> new ResourcesNotFound("Size not found"));
         Colour colour = colourRepository.findById(variantProductCreateRequestDto.getColour()).orElseThrow(() -> new ResourcesNotFound("Colour not found"));
 
-        if (variantProductRepository.existsBySizeAndColour(size, colour))
+        if (variantProductRepository.existsByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size, colour))
             throw new ResourceAlreadyExistException("Product variant already exists");
 
         Product product = productRepository.findProductById(variantProductCreateRequestDto.getId());
