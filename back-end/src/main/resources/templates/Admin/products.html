@@ -209,7 +209,36 @@
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label for="productMaterial">Material</label>
-                                      <input type="text" class="form-control" id="productMaterial" name="productMaterial" required>
+                                      <select class="form-control" id="productMaterial" name="productMaterial" required>
+                                          <option value="" selected>Chọn</option>
+                                          <option value="ACRYLIC">ACRYLIC</option>
+                                          <option value="BAMBOO">BAMBOO</option>
+                                          <option value="CASHMERE">CASHMERE</option>
+                                          <option value="CHIFFON">CHIFFON</option>
+                                          <option value="COTTON">COTTON</option>
+                                          <option value="DENIM">DENIM</option>
+                                          <option value="FAUX_LEATHER">FAUX_LEATHER</option>
+                                          <option value="FLEECE">FLEECE</option>
+                                          <option value="JUTE">JUTE</option>
+                                          <option value="KNIT">KNIT</option>
+                                          <option value="LACE">LACE</option>
+                                          <option value="LEATHER">LEATHER</option>
+                                          <option value="LINEN">LINEN</option>
+                                          <option value="MESH">MESH</option>
+                                          <option value="MICROFIBER">MICROFIBER</option>
+                                          <option value="NYLON">NYLON</option>
+                                          <option value="POLYESTER">POLYESTER</option>
+                                          <option value="RAYON">RAYON</option>
+                                          <option value="RUBBER">RUBBER</option>
+                                          <option value="SATIN">SATIN</option>
+                                          <option value="SILK">SILK</option>
+                                          <option value="SPANDEX">SPANDEX</option>
+                                          <option value="SUEDE">SUEDE</option>
+                                          <option value="VELVET">VELVET</option>
+                                          <option value="VISCOSE">VISCOSE</option>
+                                          <option value="WOOL">WOOL</option>
+                                      </select>
+
                                   </div>
                               </div>
                               <div class="col-md-6">
@@ -263,15 +292,15 @@
 
                               const product = {
                                   name: name,
-                                  brandId: "3",
-                                  material: "NYLON",
+                                  brandId: brand,
+                                  material: material,
                                   price: price,
                                   shortDescription: shortDescription,
                                   longDescription: longDescription
                               };
 
 
-                              const categoryId =  "6";//document.getElementById("productCategory").value;
+                              const categoryId = document.getElementById("productCategory").value;
                               const thumbnail = document.getElementById("thumbnail").files[0];
                               const picture1 = document.getElementById("picture1").files[0];
                               const picture2 = document.getElementById("picture2").files[0];
@@ -302,7 +331,7 @@
                                       }
 
                                       // Chuyển hướng sau khi đăng nhập
-                                      window.location.href = "/admin/manager";
+                                      window.location.href = "/admin/product";
                                   })
                                   .catch(error => {
                                       console.error('Error:', error);
@@ -437,7 +466,9 @@
                                     <td>${product.brand}</td>
                                     <td>${product.price}</td>
                                     <td>
-                                      <!-- Add action buttons if needed -->
+                                        <button class="btn btn-success btn-sm add-btn" onclick="window.location.href='product/detail/${product.id}'">Add</button>
+                                        <button class="btn btn-info btn-sm edit-btn" data-toggle="modal" data-target="#editProductModal" onclick="OpenModal(${product.id})" id="editProduct-${product.id}">Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-btn" onclick="DeleteFormjs(${product.id})" id="deleteProduct-${product.id}">Delete</button>
                                     </td>
                                   `;
 
@@ -445,9 +476,231 @@
                                 });
                             })
                             .catch(error => console.error('Error fetching products:', error));
-
-
                     </script>
+
+                    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Product</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Nội dung modal -->
+                                    <form id="editForm">
+                                        <div class="form-group">
+                                            <label for="editName">Name</label>
+                                            <input type="text" class="form-control" id="editName" name="productName" required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="editBrand">Brand</label>
+                                                    <select class="form-control" id="editBrand" name="productBrand" required>
+                                                        <option value="" selected>Chọn</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="editCategory">Category</label>
+                                                    <select class="form-control" id="editCategory" name="productCategory" required>
+                                                        <option value="" selected>Chọn</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="editMaterial">Material</label>
+                                                    <select class="form-control" id="editMaterial" name="productMaterial" required>
+                                                        <option value="" selected>Chọn</option>
+                                                        <option value="ACRYLIC">ACRYLIC</option>
+                                                        <option value="BAMBOO">BAMBOO</option>
+                                                        <option value="CASHMERE">CASHMERE</option>
+                                                        <option value="CHIFFON">CHIFFON</option>
+                                                        <option value="COTTON">COTTON</option>
+                                                        <option value="DENIM">DENIM</option>
+                                                        <option value="FAUX_LEATHER">FAUX_LEATHER</option>
+                                                        <option value="FLEECE">FLEECE</option>
+                                                        <option value="JUTE">JUTE</option>
+                                                        <option value="KNIT">KNIT</option>
+                                                        <option value="LACE">LACE</option>
+                                                        <option value="LEATHER">LEATHER</option>
+                                                        <option value="LINEN">LINEN</option>
+                                                        <option value="MESH">MESH</option>
+                                                        <option value="MICROFIBER">MICROFIBER</option>
+                                                        <option value="NYLON">NYLON</option>
+                                                        <option value="POLYESTER">POLYESTER</option>
+                                                        <option value="RAYON">RAYON</option>
+                                                        <option value="RUBBER">RUBBER</option>
+                                                        <option value="SATIN">SATIN</option>
+                                                        <option value="SILK">SILK</option>
+                                                        <option value="SPANDEX">SPANDEX</option>
+                                                        <option value="SUEDE">SUEDE</option>
+                                                        <option value="VELVET">VELVET</option>
+                                                        <option value="VISCOSE">VISCOSE</option>
+                                                        <option value="WOOL">WOOL</option>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="editPrice">Price</label>
+                                                    <input type="text" class="form-control" id="editPrice" name="productPrice" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="editShortDescription">Short Description</label>
+                                            <textarea class="form-control" id="editShortDescription" name="productShortDescription" rows="3" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editLongDescription">Long Description</label>
+                                            <textarea class="form-control" id="editLongDescription" name="productLongDescription" rows="5" required></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editthumbnail">Thumbnail</label>
+                                            <input type="file" class="form-control" id="editthumbnail" name="thumbnail" accept="image/*" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editpicture1">Picture 1</label>
+                                            <input type="file" class="form-control" id="editpicture1" name="picture1" accept="image/*" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editpicture2">Picture 2</label>
+                                            <input type="file" class="form-control" id="editpicture2" name="picture2" accept="image/*" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editpicture3">Picture 3</label>
+                                            <input type="file" class="form-control" id="editpicture3" name="picture3" accept="image/*" required>
+                                        </div>
+                                        <div class="form-group text-right">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy Bỏ</button>
+                                            <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                                        </div>
+                                    </form>
+
+                                    <script>
+                                        document.getElementById("editForm").addEventListener("submit", async (event) => {
+                                            event.preventDefault();
+                                            const name = document.getElementById("productName").value;
+                                            const brand = document.getElementById("productBrand").value;
+                                            const material = document.getElementById("productMaterial").value;
+                                            const price= document.getElementById("productPrice").value;
+                                            const shortDescription = document.getElementById("productShortDescription").value;
+                                            const longDescription= document.getElementById("productLongDescription").value;
+
+                                            const product = {
+                                                name: name,
+                                                brandId: brand ,
+                                                material: material,
+                                                price: price,
+                                                shortDescription: shortDescription,
+                                                longDescription: longDescription
+                                            };
+
+
+                                            const categoryId = document.getElementById("productCategory").value;
+                                            const thumbnail = document.getElementById("thumbnail").files[0];
+                                            const picture1 = document.getElementById("picture1").files[0];
+                                            const picture2 = document.getElementById("picture2").files[0];
+                                            const picture3 = document.getElementById("picture3").files[0];
+
+
+                                            const formData = new FormData();
+                                            formData.append('product', new Blob([JSON.stringify(product)], { type: 'application/json' }));
+                                            formData.append('thumbnail', thumbnail);      // Hình ảnh
+                                            formData.append('picture1', picture1);        // Hình ảnh
+                                            formData.append('picture2', picture2);        // Hình ảnh
+                                            formData.append('picture3', picture3);        // Hình ảnh
+                                            formData.append('categoryId', new Blob([JSON.stringify(categoryId)], { type: 'application/json' }));    // ID Danh mục
+
+                                            const userInfoUrl = `http://localhost:8080/api/v1/products`;
+                                            const token = localStorage.getItem('token');
+                                            fetch(userInfoUrl, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Authorization': `Bearer ${token}`,
+                                                },
+                                                body : formData
+
+                                            })
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error("Create failed!");
+                                                    }
+
+                                                    // Chuyển hướng sau khi đăng nhập
+                                                    window.location.href = "/admin/product";
+                                                })
+                                                .catch(error => {
+                                                    console.error('Error:', error);
+                                                });
+                                        });
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            // Gọi API để lấy danh sách thương hiệu
+                                            fetch('/api/v1/brands') // Đường dẫn tương ứng với @GetMapping
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error('Network response was not ok');
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    const brandSelect = document.getElementById("editBrand");
+
+                                                    // Xóa các tùy chọn hiện tại (trừ tùy chọn "Chọn")
+                                                    brandSelect.innerHTML = '<option value="" selected>Chọn</option>';
+
+                                                    // Thêm các tùy chọn mới từ dữ liệu API
+                                                    data.forEach(brand => {
+                                                        const option = document.createElement("option");
+                                                        option.value = brand.id; // Giả sử BrandGetDto có thuộc tính `id`
+                                                        option.textContent = brand.name; // Giả sử BrandGetDto có thuộc tính `name`
+                                                        brandSelect.appendChild(option);
+                                                    });
+                                                })
+                                                .catch(error => console.error('Error fetching brand data:', error));
+                                        });
+
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            // Gọi API để lấy danh sách danh mục
+                                            fetch('/api/v1/categories') // Đường dẫn tương ứng với @GetMapping
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        throw new Error('Network response was not ok');
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    const categorySelect = document.getElementById("editCategory");
+
+                                                    // Xóa các tùy chọn hiện tại (trừ tùy chọn "Chọn")
+                                                    categorySelect.innerHTML = '<option value="" selected>Chọn</option>';
+
+                                                    // Thêm các tùy chọn mới từ dữ liệu API
+                                                    data.forEach(category => {
+                                                        const option = document.createElement("option");
+                                                        option.value = category.id; // Giả sử CategoryGetDto có thuộc tính `id`
+                                                        option.textContent = category.name; // Giả sử CategoryGetDto có thuộc tính `name`
+                                                        categorySelect.appendChild(option);
+                                                    });
+                                                })
+                                                .catch(error => console.error('Error fetching category data:', error));
+                                        });
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
               </div>
@@ -496,34 +749,96 @@
     </div>
 
     <script>
-      function DeleteFormjs(productId) {
-        if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-          document.getElementById('DeleteForm-' + productId).submit();
+        function DeleteFormjs(Id) {
+            if (confirm("Are you sure you want to remove this product?")) {
+                const userInfoUrl = `http://localhost:8080/api/v1/products/${Id}`;
+                const token = localStorage.getItem('token');
+                fetch(userInfoUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Create failed!");
+                        }
+
+                        // Chuyển hướng sau khi đăng nhập
+                        window.location.href = "/admin/product";
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
         }
-      }
 
 
-      function OpenModal() {
-        const form = document.getElementById('editForm');
-        form.style.display = form.style.display === 'block' ? 'none' : 'block';  // Toggle giữa hiển thị và ẩn
-      }
+        function OpenModal(id) {
+
+            const form = document.getElementById('editForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';  // Toggle giữa hiển thị và ẩn
+
+            const userInfoUrl = `http://localhost:8080/api/v1/products/${id}`;
+            const token = localStorage.getItem('token');
+
+            fetch(userInfoUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Hiển thị dữ liệu lên view
+                    document.getElementById('editName').value = data.name || "";
+                    document.getElementById('editBrand').value  = data.brand || "";
+                    document.getElementById('editCategory').value  = data.category || "";
+                    document.getElementById('editMaterial').value  = data.material || "";
+                    document.getElementById('editPrice').value  = data.price || "";
+                    document.getElementById('editShortDescription').value  = data.shortDescription || "";
+                    document.getElementById('editLongDescription').value  = data.longDescription || "";
+                    document.getElementById('editthumbnail').value  = data.thumbnail || "";
+                    document.getElementById('editpicture1').value  = data.picture1 ||"";
+                    document.getElementById('editpicture2').value  = data.picture2 ||"";
+                    document.getElementById('editpicture3').value  = data.picture3 ||"";
+
+                    const selectElement =  document.getElementById('editCategory');
+                    const selectedValue = data.category || "";
+
+                    for (let option of selectElement.options) {
+                        if (option.value === selectedValue) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+
+                    const selectElement1 = document.getElementById('editBrand');
+                    const selectedValue1 = data.brand  || "";
+
+                    for (let option of selectElement1.options) {
+                        if (option.value === selectedValue1) {
+                            option.selected = true;
+                            break;
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.error('Có lỗi xảy ra:', error);
+                });
+        }
 
       // Đóng modal
       function CloseModal() {
         document.getElementById('editForm').style.display = 'none';
       }
-    </script>
-
-
-    <script>
-      document.querySelector("form").addEventListener("submit", function (event) {
-        const productName = document.getElementById("productName").value.trim();
-
-        if (productName.length > 90) {
-          alert("Tên sản phẩm không được vượt quá 90 ký tự.");
-          event.preventDefault(); // Ngăn không cho form gửi đi
-        }
-      });
     </script>
 
  <!-- /.content-wrapper -->

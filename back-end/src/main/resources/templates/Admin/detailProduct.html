@@ -111,31 +111,31 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="product" class="nav-link" id="product">
+                        <a href="/admin/product" class="nav-link active" id="product">
                             <i class="nav-icon fa fa-shopping-cart"></i>
                             <p>Products</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="order" class="nav-link" id="order">
+                        <a href="/admin/order" class="nav-link" id="order">
                             <i class="nav-icon fa fa-shopping-bag"></i>
                             <p>Orders</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="comment" class="nav-link" id="comment">
+                        <a href="/admin/comment" class="nav-link" id="comment">
                             <i class="nav-icon fa fa-comment"></i>
                             <p>Rating & Comments</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="customer" class="nav-link" id="customer">
+                        <a href="/admin/customer" class="nav-link" id="customer">
                             <i class="nav-icon fa fa-user"></i>
                             <p>Customers</p>
                         </a>
                     </li>
                     <li class="nav-item" id="managerid" style="display: none;">
-                        <a href="manager" class="nav-link"  id="manager">
+                        <a href="/admin/manager" class="nav-link"  id="manager">
                             <i class="nav-icon fa fa-user-plus"></i>
                             <p>Managers</p>
                         </a>
@@ -164,19 +164,79 @@
    <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
-        <h2 class="mb-3">Sản Phẩm</h2>
+        <h2 class="mb-3">Product</h2>
         <div class="row">
           <div class="col-12">
             <div class="info-box">
-              <span class="info-box-icon w-25"><img src="<?= $data['product']->pimg; ?>" /></span>
+              <span class="info-box-icon w-25"><img src="" alt="product"  id="anh" /></span>
               <div class="info-box-content">
-                <span class="info-box-text">Tên sản phẩm: <?= $data['product']->ptitle; ?></span>
-                <span class="info-box-text">Giá: <?= $data['product']->pprice; ?></span>
-                <span class="info-box-text">Loại: <?= $data['product']->pkind; ?></span>
-                <span class="info-box-text">Giới tính: <?= $data['product']->pgender; ?></span>
-                <span class="info-box-text">Mô tả: <?= $data['product']->pdescription; ?></span>
-                <span class="info-box-text">Thời gian: <?= $data['product']->create_at; ?></span>
+                <span class="info-box-text" id="editName"></span>
+                <span class="info-box-text" id="editPrice"></span>
+                <span class="info-box-text" id="editCategory"></span>
+                <span class="info-box-text" id="editBrand"></span>
+                  <span class="info-box-text" id="editMaterial"></span>
+                <span class="info-box-text" id="editShortDescription"></span>
+                <span class="info-box-text" id="editLongDescription"></span>
               </div>
+                <script>
+                    const pathParts = window.location.pathname.split('/');
+                    const id = pathParts[pathParts.length - 1];
+
+                    const userInfoUrl = `http://localhost:8080/api/v1/products/${id}`;
+                    const token = localStorage.getItem('token');
+
+                    fetch(userInfoUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                        },
+                    })
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            // Hiển thị dữ liệu lên view
+                            document.getElementById('editName').innerText = "Name: " + (data.name || "");
+                            document.getElementById('editBrand').innerText  ="Brand: " + (data.brand || "");
+                            document.getElementById('editCategory').innerText  = "Category: " + (data.category || "");
+                            document.getElementById('editMaterial').innerText ="Material: " + (data.material || "");
+                            document.getElementById('editPrice').innerText = "Price: " + (data.price || "");
+                            document.getElementById('editShortDescription').innerText  ="Short description: " + (data.shortDescription || "");
+                            document.getElementById('editLongDescription').innerText  = "Long description: " + (data.longDescription || "");
+                            document.getElementById('anh').src = data.thumbnail;
+                            // document.getElementById('editthumbnail').innerHTML = data.thumbnail || "";
+                            // document.getElementById('editpicture1').innerHTML  = data.picture1 ||"";
+                            // document.getElementById('editpicture2').innerHTML  = data.picture2 ||"";
+                            // document.getElementById('editpicture3').innerHTML  = data.picture3 ||"";
+
+                            // const selectElement =  document.getElementById('editCategory');
+                            // const selectedValue = data.category || "";
+                            //
+                            // for (let option of selectElement.options) {
+                            //     if (option.value === selectedValue) {
+                            //         option.selected = true;
+                            //         break;
+                            //     }
+                            // }
+                            //
+                            // const selectElement1 = document.getElementById('editBrand');
+                            // const selectedValue1 = data.brand  || "";
+                            //
+                            // for (let option of selectElement1.options) {
+                            //     if (option.value === selectedValue1) {
+                            //         option.selected = true;
+                            //         break;
+                            //     }
+                            // }
+                        })
+                        .catch((error) => {
+                            console.error('Có lỗi xảy ra:', error);
+                        });
+                </script>
               <!-- /.info-box-content -->
             </div>
             <!-- /.info-box -->
@@ -190,15 +250,15 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Chi tiết sản phẩm</h1>
+            <h1>Product Quantity</h1>
           </div>
-          <button type="button" class="col-sm-2 ml-auto mr-5 btn btn-block btn-info" data-toggle="modal" data-target="#addProductModal">+ Thêm sản phẩm</button>
+          <button type="button" class="col-sm-2 ml-auto mr-5 btn btn-block btn-info" data-toggle="modal" data-target="#addProductModal">+ Add Product</button>
             <!-- Modal -->
             <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="addProductModalLabel">Thêm Size</h5>
+                    <h5 class="modal-title">Add Size</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -224,6 +284,7 @@
               </div>
             </div>
           <!-- /.col -->
+        </div>
       </div><!-- /.container-fluid -->
     </section>
 

@@ -97,6 +97,7 @@ public class ProductService
                 );
 
         productRepository.save(product);
+
     }
 
 
@@ -119,5 +120,15 @@ public class ProductService
                                                         () -> new ResourcesNotFound("Product not found")
                                                 )
                         );
+    }
+
+
+    public void deleteProduct(Long id)
+    {
+        /* Found user, but admin can't delete admin */
+        /*
+        As Address is set as cascadeType = REMOVE
+         */
+        productRepository.deleteById(id);
     }
 }
