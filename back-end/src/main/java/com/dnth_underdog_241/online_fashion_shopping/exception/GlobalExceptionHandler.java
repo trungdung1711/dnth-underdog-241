@@ -77,6 +77,14 @@ public class GlobalExceptionHandler
     }
 
 
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponseDto> handleResourceAlreadyExistException(ResourceAlreadyExistException ex)
+    {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorResponseDto> handleException(Exception ex)
