@@ -20,7 +20,7 @@
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        <img class="animation__shake" src="/img/logo.png" alt="AdminLTELogo">
     </div>
 
     <!-- Navbar -->
@@ -90,15 +90,15 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/admin" class="brand-link">
-            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <a href="admin" class="brand-link pt-3 pb-5">
+            <img src="/img/logo.png" alt="Admin Logo" class="brand-image" />
         </a>
+        <br>
 
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar Menu -->
-            <nav class="mt-2">
+            <nav>
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
@@ -175,7 +175,7 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addProductModalLabel">Create Account</h5>
+                                <h5 class="modal-title">Create Account</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -304,6 +304,64 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div class="modal fade" id="editAdminmodal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="addProductModalLabel">Chỉnh sửa sản phẩm</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="products/UpdateProduct/<?=$row->id?>" method="post" style="display: none;" id="editForm">
+                                                <div class="form-group">
+                                                    <label for="productName">Tên sản phẩm</label>
+                                                    <input type="text" class="form-control" id="productName" placeholder="name" name="productName" value="<?=$row->ptitle?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productCategory">Thể loại</label>
+                                                    <select class="form-control" name="productCategory">
+                                                        <option value="" disabled selected>Chọn</option>
+                                                        <option value="Quần" <?= $row->pkind === 'Quần' ? 'selected' : '' ?>>Quần</option>
+                                                        <option value="Áo" <?= $row->pkind === 'Áo' ? 'selected' : '' ?>>Áo</option>
+                                                        <option value="Mũ" <?= $row->pkind === 'Mũ' ? 'selected' : '' ?>>Mũ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productSex">Giới tính</label>
+                                                    <select class="form-control" name="productSex">
+                                                        <option value="" disabled selected>Chọn</option>
+                                                        <option value="Nam" <?= $row->pgender === 'Nam' ? 'selected' : '' ?>>Nam</option>
+                                                        <option value="Nữ" <?= $row->pgender === 'Nữ' ? 'selected' : '' ?>>Nữ</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productPrice">Giá</label>
+                                                    <input type="text" class="form-control" id="productPrice" placeholder="vnđ" name="productPrice" value="<?=$row->pprice?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productQuantity">Số lượng</label>
+                                                    <input type="text" class="form-control" id="productQuantity" placeholder="number" name="productQuantity" value="chưa có">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productImg">Ảnh</label>
+                                                    <input type="text" class="form-control" id="productImg" placeholder="URL" name="productImg" value="<?=$row->pimg?>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productDescription">Mô tả</label>
+                                                    <textarea class="form-control" id="productDescription" placeholder="Description" name="productDescription"><?=$row->pdescription?></textarea>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Hủy Bỏ</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
                                     const userInfoUrl = `http://localhost:8080/api/v1/admins`;
@@ -356,16 +414,24 @@
 
                                                     // Tạo nút Chỉnh sửa
                                                     const editButton = document.createElement('button');
-                                                    editButton.textContent = 'Chỉnh sửa';
+                                                    editButton.textContent = 'Edit';
                                                     editButton.className = 'btn btn-info';
                                                     editButton.setAttribute('data-toggle', 'modal');
-                                                    editButton.setAttribute('data-target', `#editAdmin-${manager.id}`);
+                                                    // editButton.setAttribute('data-target', `#editAdmin-${manager.id}`);
+                                                    editButton.setAttribute('data-target', `#editAdminmodal`);
+                                                    editButton.addEventListener('click', () => {
+                                                        OpenModal();
+                                                    });
                                                     actionCell.appendChild(editButton);
 
                                                     // Tạo nút Xóa
                                                     const deleteButton = document.createElement('button');
-                                                    deleteButton.textContent = 'Xóa';
+                                                    deleteButton.textContent = 'Delete';
                                                     deleteButton.className = 'btn btn-danger ml-2';
+                                                    deleteButton.setAttribute('id', `deleteAdmin-${manager.id}`);
+                                                    deleteButton.addEventListener('click', () => {
+                                                        DeleteFormjs(manager.id);
+                                                    });
                                                     actionCell.appendChild(deleteButton);
 
                                                     row.appendChild(actionCell);
@@ -394,9 +460,9 @@
                                             tableBody.appendChild(errorRow);
                                         });
                                 });
-
-
                             </script>
+
+
                         </div>
 
                         <!-- /.card-body -->
@@ -432,12 +498,30 @@
 
 
 <script>
-    function DeleteFormjs(productId) {
+    function DeleteFormjs(adminId) {
         if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-            document.getElementById('DeleteForm-' + productId).submit();
+            const userInfoUrl = `http://localhost:8080/api/v1/users/${adminId}`;
+            const token = localStorage.getItem('token');
+            fetch(userInfoUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+                    // if (!response.ok) {
+                    //     throw new Error("Create failed!");
+                    // }
+
+                    // Chuyển hướng sau khi đăng nhập
+                    window.location.href = "/admin/manager";
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     }
-
 
     function OpenModal() {
         const form = document.getElementById('editForm');

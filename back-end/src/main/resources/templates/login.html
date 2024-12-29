@@ -87,7 +87,7 @@
 
         <!-- Register buttons -->
         <div class="text-center">
-            <p>Not a member? <a href="#!" style=" text-decoration: none; color: dodgerblue;">Register</a></p>
+            <p>Not a member? <a href="/signup" style=" text-decoration: none; color: dodgerblue;">Register</a></p>
             <p>or sign up with:</p>
             <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
                 <i class="fab fa-facebook-f"></i>
@@ -138,10 +138,9 @@
                 if(roles === "ROLE_CUSTOMER"){
                     // Chuyển hướng sau khi đăng nhập
                     window.location.href = "/home";
+                }else{
+                    window.location.href = "/admin";
                 }
-
-                window.location.href = "/admin";
-
 
             } catch (error) {
                 console.error("Error:", error);
