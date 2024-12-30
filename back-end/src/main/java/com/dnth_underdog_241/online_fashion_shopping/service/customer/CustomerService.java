@@ -8,6 +8,7 @@ import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExists
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserNotFoundException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
+import com.dnth_underdog_241.online_fashion_shopping.model.Cart;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 
@@ -63,11 +65,20 @@ public class CustomerService
             throw new UserAlreadyExistsException("User already exists");
         }
 
-        WebUser webUser = signUpMapper.toCustomerEntity(signUpRequestDto);
+        Customer webUser = signUpMapper.toCustomerEntity(signUpRequestDto);
         webUser.setPassword(passwordEncoder.encode(webUser.getPassword()));
 
         Role roleCustomer = roleRepository.findByName(RoleEnum.ROLE_CUSTOMER).get();
         webUser.getRoles().add(roleCustomer);
+
+        webUser.setCart
+                (
+                        Cart
+                                .builder()
+                                .cartProducts(new ArrayList<>())
+                                .customer(webUser)
+                                .build()
+                );
 
         WebUser savedWebUser = webUserRepository.save(webUser);
         return signUpMapper.toDto(savedWebUser);
