@@ -85,6 +85,7 @@ public class CustomerService
                 );
 
         webUser.setAddresses(new ArrayList<>());
+        webUser.setOrders(new ArrayList<>());
 
         WebUser savedWebUser = webUserRepository.save(webUser);
         return signUpMapper.toDto(savedWebUser);
