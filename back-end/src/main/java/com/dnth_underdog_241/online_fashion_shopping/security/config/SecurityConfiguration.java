@@ -64,7 +64,7 @@ public class SecurityConfiguration {
                                         "/about",
                                         "/login",
                                         "/update-info",
-                                        "logout",
+                                        "/logout",
                                         "/signup",
                                         "/shop",
                                         "/details",

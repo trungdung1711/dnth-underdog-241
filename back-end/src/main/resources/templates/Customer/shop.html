@@ -74,6 +74,8 @@
                             // Nếu đã đăng nhập
                             document.getElementById('guest').classList.add('d-none'); // Ẩn phần "Sign in" và "Sign up"
                             document.getElementById('user').classList.remove('d-none'); // Hiển thị phần "User"
+                            document.getElementById('imgavatar').classList.remove('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.remove('d-none'); // Ẩn phần "User"
 
                             // Hiển thị tên người dùng nếu có
                             const username = phoneNumber || 'Guest'; // Nếu không có `phoneNumber`, hiển thị mặc định là "Guest"

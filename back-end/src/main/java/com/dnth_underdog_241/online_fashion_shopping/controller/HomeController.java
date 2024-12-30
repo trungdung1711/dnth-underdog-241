@@ -39,7 +39,7 @@ public class HomeController {
 
    @RequestMapping("/signup")
    public String signup() {
-      return "Customer/signup";
+      return "signup";
    }
 
    @RequestMapping("/shop")
