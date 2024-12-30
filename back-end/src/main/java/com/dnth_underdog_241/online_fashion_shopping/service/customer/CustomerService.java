@@ -1,6 +1,7 @@
 package com.dnth_underdog_241.online_fashion_shopping.service.customer;
 
 
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.ShippingCreateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
@@ -8,11 +9,13 @@ import com.dnth_underdog_241.online_fashion_shopping.exception.UserAlreadyExists
 import com.dnth_underdog_241.online_fashion_shopping.exception.UserNotFoundException;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.SignUpMapper;
+import com.dnth_underdog_241.online_fashion_shopping.model.Address;
 import com.dnth_underdog_241.online_fashion_shopping.model.Cart;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.repository.AddressRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,7 @@ public class CustomerService
 
 
     private final PasswordEncoder passwordEncoder;
+    private final AddressRepository addressRepository;
 
 
     public WebUserGetDTO getCustomerById(Long id)
@@ -79,6 +83,8 @@ public class CustomerService
                                 .customer(webUser)
                                 .build()
                 );
+
+        webUser.setAddresses(new ArrayList<>());
 
         WebUser savedWebUser = webUserRepository.save(webUser);
         return signUpMapper.toDto(savedWebUser);

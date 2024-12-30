@@ -23,20 +23,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/auth/")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController
+{
         private final CustomerService customerService;
 
         private final AuthenticationManager authenticationManager;
 
         private final JwtUtil jwtUtil;
 
+
         @PostMapping("sign-up")
-        public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody SignUpRequestDto signUpRequestDto) {
+        public ResponseEntity<SignUpResponseDto> registerNewWebUser(@RequestBody @Valid SignUpRequestDto signUpRequestDto)
+        {
                 SignUpResponseDto signUpResponseDto = customerService.createCustomer(signUpRequestDto);
                 return ResponseEntity
                                 .status(HttpStatus.OK)
                                 .body(signUpResponseDto);
         }
+
 
         @PostMapping("login")
         public ResponseEntity<LogInResponseDto> logIn(@RequestBody @Valid LogInRequestDto logInRequestDto) {
