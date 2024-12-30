@@ -85,6 +85,14 @@ public class GlobalExceptionHandler
     }
 
 
+    @ExceptionHandler(StockUnavailableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ErrorResponseDto> handleStockUnavailableException(StockUnavailableException ex)
+    {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ErrorResponseDto> handleException(Exception ex)
