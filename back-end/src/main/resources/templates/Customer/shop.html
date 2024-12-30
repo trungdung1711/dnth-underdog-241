@@ -51,7 +51,7 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                         </div>
                         <!-- User Name -->
                         <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
@@ -64,25 +64,30 @@
                         </div>
                     </div>
 
-
                     <script>
-                        // Kiểm tra xem người dùng đã đăng nhập hay chưa (ví dụ: kiểm tra token trong localStorage)
-                        const isLoggedIn = localStorage.getItem('token') !== null;
+                        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                        const token = localStorage.getItem('token');
+                        const phoneNumber = localStorage.getItem('phoneNumber');
+                        const isLoggedIn = token !== null && token.trim() !== '';
 
                         if (isLoggedIn) {
                             // Nếu đã đăng nhập
-                            document.getElementById('guest').classList.add('d-none'); // Ẩn phần tử chứa "Sign in" và "Sign up"
-                            document.getElementById('user').classList.remove('d-none'); // Hiển thị phần tử chứa tên người dùng
+                            document.getElementById('guest').classList.add('d-none'); // Ẩn phần "Sign in" và "Sign up"
+                            document.getElementById('user').classList.remove('d-none'); // Hiển thị phần "User"
 
-                            // Lấy tên người dùng (ví dụ: từ localStorage hoặc API)
-                            const username = localStorage.getItem('phoneNumber'); // Thay bằng cách lấy tên người dùng thực tế
+                            // Hiển thị tên người dùng nếu có
+                            const username = phoneNumber || 'Guest'; // Nếu không có `phoneNumber`, hiển thị mặc định là "Guest"
                             document.getElementById('username').textContent = username;
                         } else {
                             // Nếu chưa đăng nhập
-                            document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
-                            document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần "Sign in" và "Sign up"
+                            document.getElementById('user').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
                         }
                     </script>
+
+
                 </div>
             </div>
         </div>
@@ -98,7 +103,21 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                // Cập nhật đường dẫn cho liên kết "Home"
+                                const linkHome = document.getElementById('linkhome');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
                         <li class="active"><a href="./shop">Shop</a></li>
                         <li><a href="./contact">Contacts</a></li>
                         <li><a href="./about">About Us</a></li>
@@ -184,14 +203,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/categories`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -236,14 +253,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/brands`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -414,7 +429,7 @@
                                     method: 'GET',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                        // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                     },
                                 })
                                     .then((response) => {
@@ -583,16 +598,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

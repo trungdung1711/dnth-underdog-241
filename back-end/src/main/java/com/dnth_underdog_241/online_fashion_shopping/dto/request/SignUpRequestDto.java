@@ -3,12 +3,16 @@ package com.dnth_underdog_241.online_fashion_shopping.dto.request;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.*;
 
 import java.io.Serializable;
 
 
 @Value
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 public class SignUpRequestDto implements Serializable
 {
     @NotNull(message = "Phone number required")

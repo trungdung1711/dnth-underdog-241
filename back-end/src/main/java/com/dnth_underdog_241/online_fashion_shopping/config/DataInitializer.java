@@ -4,18 +4,21 @@ package com.dnth_underdog_241.online_fashion_shopping.config;
 import com.dnth_underdog_241.online_fashion_shopping.model.Category;
 import com.dnth_underdog_241.online_fashion_shopping.model.Size;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.CategoryEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
-import com.dnth_underdog_241.online_fashion_shopping.repository.CategoryRepository;
-import com.dnth_underdog_241.online_fashion_shopping.repository.SizeRepository;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Admin;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 
 import com.dnth_underdog_241.online_fashion_shopping.model.Colour;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
-import com.dnth_underdog_241.online_fashion_shopping.repository.ColourRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -108,6 +111,31 @@ public class DataInitializer
             }
         };
     }
+
+
+//    @Bean
+//    public CommandLineRunner createAdmin(WebUserRepository webUserRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder)
+//    {
+//        webUserRepository.deleteWebUserByPhoneNumber("123456789");
+//        return args ->
+//        {
+//            Role roleAdmin = roleRepository.findByName(RoleEnum.ROLE_ADMIN).get();
+//            WebUser userAdmin =
+//                    Admin
+//                            .builder()
+//                            .firstName("admin")
+//                            .lastName("admin")
+//                            .phoneNumber("123456789")
+//                            .password(passwordEncoder.encode("Admin"))
+//                            .build();
+//
+//            userAdmin.getRoles().add(roleAdmin);
+//
+//            webUserRepository.save(userAdmin);
+//
+//            log.info("Created admin user.");
+//        };
+//    }
 
 
     private void createSubcategories(Category parentCategory, String name, CategoryEnum categoryEnum, CategoryRepository categoryRepository)

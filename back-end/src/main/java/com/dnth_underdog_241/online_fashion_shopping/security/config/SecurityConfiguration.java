@@ -80,6 +80,9 @@ public class SecurityConfiguration {
                                 .requestMatchers("/css/**", "/plugins/**", "/dist/**","/js/**", "/img/**","/fonts/**","/favicon.ico", "/webjars/**")
                                 .permitAll()
 
+                                .requestMatchers("api/v1/products/**" )
+                                .permitAll()
+
                                 .requestMatchers("api/v1/categories/**")
                                 .permitAll()
 

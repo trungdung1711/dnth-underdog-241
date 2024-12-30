@@ -258,27 +258,101 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title">Add Size</h5>
+                    <h5 class="modal-title">Add Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
                     <!-- Nội dung modal -->
-                    <form action="<?= ROOT ?>detailProduct/addSize/<?= $data['product']->id;?>" method="post">
-                      <div class="form-group">
-                        <label for="productName">Size</label>
-                        <input type="text" class="form-control" id="productName" placeholder="" name="size">
-                      </div>
-                      <div class="form-group">
-                        <label for="productPrice">Số lượng</label>
-                        <input type="text" class="form-control" id="productPrice" placeholder="" name="quantity">
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy Bỏ</button>
-                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
-                      </div>
-                    </form>
+                      <form id="addForm">
+                          <div class="form-group">
+                              <label for="Stock">Stock</label>
+                              <input type="text" class="form-control" id="Stock" placeholder="" name="size">
+                          </div>
+                          <div class="form-group">
+                              <label for="Size">Size</label>
+                              <select id="Size" name="size" class="form-control">
+                                  <option value="#">Chọn</option>
+                                  <option value="L">L</option>
+                                  <option value="M">M</option>
+                                  <option value="S">S</option>
+                                  <option value="XL">XL</option>
+                                  <option value="XXL">XXL</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label for="colour">Colour</label>
+                              <select id="colour" name="color" class="form-control">
+                                  <option value="#">Chọn</option>
+                                  <option value="BEIGE">Beige</option>
+                                  <option value="BLACK">Black</option>
+                                  <option value="DARK_GREEN">Dark Green</option>
+                                  <option value="GRAY">Gray</option>
+                                  <option value="GREEN">Green</option>
+                                  <option value="NAVY">Navy</option>
+                                  <option value="PINK">Pink</option>
+                                  <option value="WHITE">White</option>
+                                  <option value="WINE">Wine</option>
+                              </select>
+                          </div>
+                          <div class="form-group">
+                              <label for="picture">Picture</label>
+                              <input type="file" class="form-control" id="picture" name="picture2" accept="image/*" required>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="submit" class="btn btn-primary">Confirm</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          </div>
+                      </form>
+
+                      <script>
+                          document.getElementById("addForm").addEventListener("submit", async (event) => {
+                              event.preventDefault();
+                              const stock = document.getElementById("Stock").value;
+                              const size = document.getElementById("Size").value;
+                              const colour = document.getElementById("colour").value;
+                              const picture = document.getElementById("picture").files[0];
+
+                              const pathParts = window.location.pathname.split('/');
+                              const id = pathParts[pathParts.length - 1];
+
+                              const variant = {
+                                  id: id,
+                                  stock: stock,
+                                  size: size,
+                                  colour: colour
+                              }
+
+
+                              const formData = new FormData();
+                              formData.append('variant', new Blob([JSON.stringify(variant)], { type: 'application/json' }));
+                              formData.append('picture', picture);
+
+
+                              const userInfoUrl = `http://localhost:8080/api/v1/products/${id}/variant`;
+                              const token = localStorage.getItem('token');
+                              fetch(userInfoUrl, {
+                                  method: 'POST',
+                                  headers: {
+                                      'Authorization': `Bearer ${token}`,
+                                  },
+                                  body : formData
+
+                              })
+                                  .then(response => {
+                                      if (!response.ok) {
+                                          throw new Error("Create failed!");
+                                      }
+
+                                      // Chuyển hướng sau khi đăng nhập
+                                      window.location.href = `/admin/product/detail/${id}`;
+                                  })
+                                  .catch(error => {
+                                      console.error('Error:', error);
+                                  });
+                          });
+                      </script>
                   </div>
                 </div>
               </div>
@@ -309,76 +383,61 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                  <thead>
-                    <thead>
-                      <th>STT</th>
-                      <th>Size</th>
-                      <th>Số lượng</th>
-                      <th></th>
-                    </thead>
-                  </thead>
-                  <tbody>
-                    <?php $count = 1 ?>
-                    <?php if (is_array($data['available'])): ?>
-										<?php foreach ($data['available'] as $row): ?>
-                    <tr>
-										<div class="row">
-											<a href="#">
-                        <td><?=$count?></td>
-                        <td><?=$row->size?></td>
-                        <td><?=$row->quantity?></td>
-                        <td class="col-3">
-                          <button type="button" class="btn btn-info float-left col-sm-2 mr-1" onclick="OpenModal()" data-toggle="modal" data-target="#editProductModal">Sửa</button>
-                          <!-- Modal -->
-                          <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="addProductModalLabel">Cập nhật</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <form action="<?= ROOT ?>detailProduct/updateSize/<?= $data['product']->id;?>" method="post" style="display: none;" id="editForm">
-                                      <div class="form-group">
-                                        <label for="productName">Size</label>
-                                        <input type="text" class="form-control" id="productName" placeholder="name" name="size" value="<?=$row->size?>">
-                                      </div>
-                                      <div class="form-group">
-                                        <label for="productPrice">Số lượng</label>
-                                        <input type="text" class="form-control" id="productPrice" placeholder="vnđ" name="quantity" value="<?=$row->quantity?>">
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Hủy Bỏ</button>                                        
-                                      </div>
-                                    </form>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <form action="<?= ROOT ?>detailProduct/deleteSize/<?= $data['product']->id;?>" method="post" id="DeleteForm-<?php echo $row->id; ?>">
-                            <input type="text" value="<?=$row->id?>" name="idsize" hidden />
-                            <button type="button" class="btn btn-danger col-sm-2" onclick="DeleteFormjs">Xóa</button>
-                          </form>
-                        </td>
-											</a>
-										</div>
-                    </tr>
-										<!-- /product -->
-                    <?php $count += 1 ?>
-										<?php endforeach; ?>
-										<?php else: ?>
-										<tr>
-                        <td colspan="4">
-                           <p class="text-center">Không tìm thấy sản phẩm</p>
-                        </td>
-                     </tr>
-										<?php endif; ?>
-                  </tbody>
-                </table>
+                  <table class="table table-hover text-nowrap" id="tabledetail">
+                      <thead>
+                      <tr>
+                          <th>STT</th>
+                          <th>Size</th>
+                          <th>Stock</th>
+                          <th>Color</th>
+                      </tr>
+                      </thead>
+                      <tbody id="tbodydetail">
+
+                      </tbody>
+                  </table>
+                  <script>
+                      document.addEventListener("DOMContentLoaded", function () {
+                          const pathParts = window.location.pathname.split('/');
+                          const id = pathParts[pathParts.length - 1];
+
+                          const userInfoUrl = `http://localhost:8080/api/v1/products/${id}/variant`;
+                          const token = localStorage.getItem('token');
+
+                          // Fetch dữ liệu từ API
+                          fetch(userInfoUrl, {
+                              method: 'GET',
+                              headers: {
+                                  'Content-Type': 'application/json',
+                                  'Authorization': `Bearer ${token}`,
+                              }
+                          })
+                              .then(response => response.json())
+                              .then(variants => {
+                                  const tableBody = document.querySelector('tbody');
+                                  tableBody.innerHTML = ''; // Xóa nội dung cũ trước khi thêm dữ liệu mới
+
+                                  // Xử lý từng item và thêm vào bảng
+                                  variants.forEach(variant => {
+                                      const row = document.createElement('tr');
+
+                                      row.innerHTML = `
+                                    <td>${variant.id}</td>
+                                    <td>${variant.size}</td>
+                                    <td>${variant.stock}</td>
+                                    <td>${variant.colour}</td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm edit-btn" data-toggle="modal" data-target="#editProductModal" onclick="OpenModal(${product.id})" id="editProduct-${product.id}">Edit</button>
+                                        <button class="btn btn-danger btn-sm delete-btn" onclick="DeleteFormjs(${product.id})" id="deleteProduct-${product.id}">Delete</button>
+                                    </td>
+                                `;
+                                      tableBody.appendChild(row);
+                                  });
+                              })
+                              .catch(error => console.error('Error:', error));
+                      });
+
+                  </script>
               </div>
               <!-- /.card-body -->
             </div>

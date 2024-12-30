@@ -39,7 +39,6 @@ public class FileService
 
         Path uploadPath = Paths.get(uploadDir);
 
-        // Sanitize file name
         String sanitizedFileName = sanitizeFileName(Objects.requireNonNull(file.getOriginalFilename()));
         String fileName = UUID.randomUUID() + "_" + sanitizedFileName;
 
@@ -64,7 +63,6 @@ public class FileService
 
         Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-        // Return public path
         return "/public/images/" + (fileLocation == FileLocation.BRAND ? uploadBrandDir : uploadProductDir) + "/" + fileName;
     }
 

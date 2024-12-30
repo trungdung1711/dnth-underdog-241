@@ -16,5 +16,4 @@ public interface BrandMapper
     BrandCreateResponseDto toDto1(Brand brand);
 
     BrandGetDto toDto2(Brand brand);
-
 }

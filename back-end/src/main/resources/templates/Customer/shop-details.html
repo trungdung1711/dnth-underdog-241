@@ -51,7 +51,7 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;"  id="imgavatar">
                         </div>
                         <!-- User Name -->
                         <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
@@ -81,6 +81,8 @@
                             // Nếu chưa đăng nhập
                             document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
                             document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
                         }
                     </script>
                 </div>
@@ -92,13 +94,31 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                    <a href="" id="linklogo"><img src="/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                // Cập nhật đường dẫn cho liên kết "Home"
+                                const linkHome = document.getElementById('linkhome');
+                                const linklogo = document.getElementById('linklogo');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                                if (linklogo) {
+                                    linklogo.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
                         <li><a href="./shop">Shop</a></li>
                         <li><a href="./contact">Contacts</a></li>
                         <li><a href="./about">About Us</a></li>
