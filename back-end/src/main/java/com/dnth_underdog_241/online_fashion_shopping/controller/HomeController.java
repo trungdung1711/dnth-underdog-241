@@ -17,7 +17,7 @@ public class HomeController {
       return "index";
    }
 
-   @RequestMapping("/home")
+   @GetMapping("/home")
    public String home() {
       return "Customer/home";
    }

@@ -123,20 +123,34 @@
     <script>
         document.getElementById("loginForm").addEventListener("submit", async (event) => {
             event.preventDefault();
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            const password = document.getElementById("password").value;
+
+            // Lấy thông tin từ form
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Kiểm tra dữ liệu nhập
+            if (!phoneNumber || !password) {
+                alert("Please enter both phone number and password.");
+                return;
+            }
 
             try {
+                // Gửi yêu cầu tới server
                 const response = await fetch("/api/v1/auth/login", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     body: JSON.stringify({ phoneNumber, password }),
                 });
 
+                // Xử lý lỗi phản hồi từ server
                 if (!response.ok) {
-                    throw new Error("Login failed!");
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || "Login failed!");
                 }
 
+                // Lấy dữ liệu phản hồi
                 const data = await response.json();
                 console.log("Login successful", data);
 
@@ -145,22 +159,48 @@
                 localStorage.setItem("token", data.jwttoken);
                 localStorage.setItem("id", data.id);
 
-                const roles = data.roles[0].name;
+                const roles = data.roles[0]?.name || ""; // Kiểm tra nếu roles tồn tại
                 localStorage.setItem("role", roles);
 
-                if(roles === "ROLE_CUSTOMER"){
-                    // Chuyển hướng sau khi đăng nhập
+                // Chuyển hướng dựa trên vai trò
+                if (roles === "ROLE_CUSTOMER") {
                     window.location.href = "/home";
+                } else if (roles === "ROLE_ADMIN") {
+                    window.location.href = "/admin";
+                } else {
+                    throw new Error("Unrecognized role.");
                 }
-
-                window.location.href = "/admin";
-
 
             } catch (error) {
                 console.error("Error:", error);
-                alert("Invalid credentials");
+                alert(error.message || "An error occurred. Please try again.");
             }
+
+            // const token = localStorage.getItem("token");
+            // fetch("/home", {
+            //     method: "GET",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "Authorization": `Bearer ${token}`
+            //     }
+            // })
+            //     .then(async (response) => {
+            //         if (!response.ok) {
+            //             const errorData = await response.json();
+            //             throw new Error(errorData.message || "Failed to load the home page.");
+            //         }
+            //
+            //         window.location.href = "/home";
+            //     })
+            //     .catch((error) => {
+            //         console.error("Error:", error);
+            //         alert("Access denied. Please log in again.");
+            //         window.location.href = "/login";
+            //     });
+
         });
+
+
 
     </script>
 
