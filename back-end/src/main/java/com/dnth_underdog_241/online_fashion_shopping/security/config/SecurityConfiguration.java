@@ -58,26 +58,36 @@ public class SecurityConfiguration {
                                 .requestMatchers(
                                         "api/v1/auth/**",
                                         "public/**",
-                                        "/home",
                                         "/index",
                                         "/contact",
                                         "/about",
                                         "/login",
-                                        "/update-info",
-                                        "logout",
                                         "/signup",
                                         "/shop",
                                         "/details",
+                                        "/update-info",
                                         "/checkout",
                                         "/cart",
-                                        "/admin/**"
+                                        "/logout",
+                                        "/home"
                                 ).permitAll()
+
+//                                .requestMatchers(
+//                                        "/update-info",
+//                                        "/checkout",
+//                                        "/cart",
+//                                        "/logout",
+//                                        "/home"
+//                                ).hasRole("CUSTOMER")
 
                                 .requestMatchers(
                                         "/admin/**"
                                 ).permitAll()
 
                                 .requestMatchers("/css/**", "/plugins/**", "/dist/**","/js/**", "/img/**","/fonts/**","/favicon.ico", "/webjars/**")
+                                .permitAll()
+
+                                .requestMatchers("api/v1/products/**" )
                                 .permitAll()
 
                                 .requestMatchers("api/v1/categories/**")
@@ -100,6 +110,9 @@ public class SecurityConfiguration {
 
                                 .requestMatchers("api/v1/customers/**")
                                 .hasAnyRole("CUSTOMER", "ADMIN", "EMPLOYEE")
+
+                                .requestMatchers("api/v1/customers/**")
+                                .hasRole("CUSTOMER")
 
                                 .anyRequest()
                                 .authenticated()

@@ -17,7 +17,7 @@ public class HomeController {
       return "index";
    }
 
-   @RequestMapping("/home")
+   @GetMapping("/home")
    public String home() {
       return "Customer/home";
    }
@@ -39,7 +39,7 @@ public class HomeController {
 
    @RequestMapping("/signup")
    public String signup() {
-      return "Customer/signup";
+      return "signup";
    }
 
    @RequestMapping("/shop")

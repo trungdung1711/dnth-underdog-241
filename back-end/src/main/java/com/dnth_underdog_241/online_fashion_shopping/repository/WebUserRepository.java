@@ -15,4 +15,7 @@ public interface WebUserRepository extends JpaRepository<WebUser, Long>
 
 
     boolean existsByPhoneNumber(String phoneNumber);
+
+
+    void deleteWebUserByPhoneNumber(String phoneNumber);
 }

@@ -2,15 +2,23 @@ package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.VariantProductCreateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.BrandGetDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.VariantProductGetResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.ProductMapper;
+import com.dnth_underdog_241.online_fashion_shopping.mapper.VariantProductMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
+import com.dnth_underdog_241.online_fashion_shopping.model.VariantProduct;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.Material;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ProductRepository;
+import com.dnth_underdog_241.online_fashion_shopping.repository.VariantProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.service.ProductService;
+import com.dnth_underdog_241.online_fashion_shopping.service.VariantProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -89,5 +97,37 @@ public class ProductAllController {
                         (
                                 productService.getProductById(productId)
                         );
+    }
+
+    private final VariantProductService variantProductService;
+    private  final VariantProductRepository variantProductRepository;
+    private  final VariantProductMapper variantProductMapper;
+
+    @PostMapping(value = "{productId}/variant", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Void> addProductVariant
+            (
+                    @RequestPart("variant") VariantProductCreateRequestDto variantProductCreateRequestDto,
+                    @RequestPart("picture") MultipartFile picture
+            ) throws IOException
+    {
+        variantProductService.createVariantProduct(variantProductCreateRequestDto, picture);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+    }
+
+    @GetMapping("{productId}/variant")
+    public ResponseEntity<List<VariantProductGetResponseDto>>  getProductVariant
+            (
+                    @PathVariable Long productId
+            )
+    {
+        List<VariantProductGetResponseDto> variants = variantProductService.getVariantProduct(productId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(
+                        variants
+                );
     }
 }

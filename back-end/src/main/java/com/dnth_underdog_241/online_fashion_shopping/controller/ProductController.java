@@ -2,9 +2,15 @@ package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductUpdateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.request.VariantProductCreateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.VariantProductGetResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
 import com.dnth_underdog_241.online_fashion_shopping.service.ProductService;
+import com.dnth_underdog_241.online_fashion_shopping.service.VariantProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +30,7 @@ import java.io.IOException;
 public class ProductController
 {
     private final ProductService productService;
+    private final VariantProductService variantProductService;
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -43,6 +50,28 @@ public class ProductController
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(null);
+    }
+
+
+    @PutMapping(value ="{productId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<Void> updateProduct
+            (
+                @RequestPart(value = "product") ProductUpdateRequestDto productUpdateRequestDto,
+                @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail,
+                @RequestPart(value = "picture1", required = false) MultipartFile picture1,
+                @RequestPart(value = "picture2", required = false) MultipartFile picture2,
+                @RequestPart(value = "picture3", required = false) MultipartFile picture3,
+                @RequestPart(value = "video", required = false) MultipartFile video,
+                @PathVariable Long categoryId,
+                @PathVariable Long productId
+            ) throws IOException
+    {
+        productService.updateProduct(productUpdateRequestDto, thumbnail, picture1, picture2, picture3, video, categoryId, productId);
+
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
                 .body(null);
     }
 
@@ -79,4 +108,35 @@ public class ProductController
                                 productService.getProductById(productId)
                         );
     }
+
+
+    @PostMapping(value = "{productId}/variant", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
+    public ResponseEntity<Void> addProductVariant
+            (
+                    @RequestPart("variant") VariantProductCreateRequestDto variantProductCreateRequestDto,
+                    @RequestPart("picture") MultipartFile picture,
+                    @PathVariable Long categoryId,
+                    @PathVariable Long productId
+            ) throws IOException
+    {
+        variantProductService.createVariantProduct(variantProductCreateRequestDto, picture);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(null);
+    }
+
+
+    @DeleteMapping("{productId}")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId, @PathVariable Long categoryId)
+    {
+        productService.deleteProduct(productId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
+    }
+
+
+
 }

@@ -22,6 +22,20 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 
+    <style>
+        .dropdown-menu .dropdown-item {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #d9d9d9;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -48,13 +62,13 @@
                         </div>
                     </div>
 
-                    <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
+                    <div class="header__top__right d-flex align-items-center justify-content-end" id="user" >
                         <!-- Avatar -->
                         <div class="header__user">
                             <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
                         </div>
                         <!-- User Name -->
-                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
                             <span id="username"></span>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
                                 <a class="dropdown-item" href="/update-info">Update Info</a>
@@ -62,27 +76,89 @@
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
                             </div>
                         </div>
+
+                        <script>
+                            function logout() {
+                                // Gửi yêu cầu logout đến backend
+                                fetch('/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                                })
+                                    .then(response => {
+                                        // Nếu logout thành công, xóa thông tin từ localStorage
+                                        if (response.ok) {
+                                            localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('id');
+                                            localStorage.removeItem('role');
+                                            window.location.href = '/index';  // Điều hướng về trang /index
+                                        } else {
+                                            alert('Logout thất bại');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Có lỗi khi thực hiện logout:', error);
+                                    });
+                            }
+
+                        </script>
+
+                        <script>
+                            // Lấy dữ liệu từ localStorage
+                            const userData = localStorage.getItem("phoneNumber");
+                            console.log("Phone Number Data:", userData);
+
+                            if (userData) {
+                                document.getElementById("username").innerText = userData;
+                            } else {
+                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                            }
+
+
+                            document.getElementById("userDropdown").addEventListener("click", () => {
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                dropdownMenu.classList.toggle("show");
+                            });
+
+                            // Close the dropdown when clicking outside
+                            window.addEventListener("click", (event) => {
+                                if (!document.getElementById("userDropdown").contains(event.target)) {
+                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                }
+                            });
+
+                        </script>
                     </div>
 
-
                     <script>
-                        // Kiểm tra xem người dùng đã đăng nhập hay chưa (ví dụ: kiểm tra token trong localStorage)
-                        const isLoggedIn = localStorage.getItem('token') !== null;
+                        // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                        const token = localStorage.getItem('token');
+                        const phoneNumber = localStorage.getItem('phoneNumber');
+                        const isLoggedIn = token !== null && token.trim() !== '';
 
                         if (isLoggedIn) {
                             // Nếu đã đăng nhập
-                            document.getElementById('guest').classList.add('d-none'); // Ẩn phần tử chứa "Sign in" và "Sign up"
-                            document.getElementById('user').classList.remove('d-none'); // Hiển thị phần tử chứa tên người dùng
+                            // document.getElementById('guest').classList.add('d-none'); // Ẩn phần "Sign in" và "Sign up"
+                            document.getElementById('guest').style.display = "none";
+                            document.getElementById('user').style.display = "block";
+                            // document.getElementById('user').classList.remove('d-none'); // Hiển thị phần "User"
+                            // document.getElementById('imgavatar').classList.remove('d-none'); // Ẩn phần "User"
+                            // document.getElementById('userDropdown').classList.remove('d-none'); // Ẩn phần "User"
 
-                            // Lấy tên người dùng (ví dụ: từ localStorage hoặc API)
-                            const username = localStorage.getItem('phoneNumber'); // Thay bằng cách lấy tên người dùng thực tế
+                            // Hiển thị tên người dùng nếu có
+                            const username = phoneNumber || 'Guest'; // Nếu không có `phoneNumber`, hiển thị mặc định là "Guest"
                             document.getElementById('username').textContent = username;
                         } else {
                             // Nếu chưa đăng nhập
-                            document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
-                            document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('guest').style.display = "block";
+                            document.getElementById('user').style.display = "none";
+                            // document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần "Sign in" và "Sign up"
+                            // document.getElementById('user').classList.add('d-none'); // Ẩn phần "User"
+                            // document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            // document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
                         }
                     </script>
+
                 </div>
             </div>
         </div>
@@ -98,7 +174,21 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                // Cập nhật đường dẫn cho liên kết "Home"
+                                const linkHome = document.getElementById('linkhome');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
                         <li class="active"><a href="./shop">Shop</a></li>
                         <li><a href="./contact">Contacts</a></li>
                         <li><a href="./about">About Us</a></li>
@@ -184,14 +274,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/categories`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -236,14 +324,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/brands`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -420,7 +506,7 @@
                                     method: 'GET',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${token}`,
+                                        'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                     },
                                 })
                                 .then(response => {
@@ -627,16 +713,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>
