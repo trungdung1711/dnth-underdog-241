@@ -104,6 +104,9 @@ public class SecurityConfiguration {
                                 .requestMatchers("api/v1/customers/**")
                                 .hasRole("CUSTOMER")
 
+                                .requestMatchers("api/v1/payment/**")
+                                .permitAll()
+
                                 .anyRequest()
                                 .authenticated()
                 )

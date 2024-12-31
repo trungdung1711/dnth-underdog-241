@@ -26,6 +26,10 @@ public class Order
     private Long id;
 
 
+    @Column(name = "paypal_id", unique = true)
+    private String paypalId;
+
+
     @Column(name = "message")
     private String message;
 
