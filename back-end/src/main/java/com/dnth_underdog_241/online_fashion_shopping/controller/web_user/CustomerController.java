@@ -1,19 +1,17 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ShippingCreateRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.CustomerGetAllRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ShippingAddressGetResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
-import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
-import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
-import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
 import com.dnth_underdog_241.online_fashion_shopping.service.AddressService;
+import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,34 +19,25 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
 
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 
 @Controller
 @RequestMapping("api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController
 {
-   private final WebUserRepository webUserRepository;
-
-   private  final CustomerMapper customerMapper;
-
-   private  final WebUserMapper webUserMapper;
    private final AddressService addressService;
 
 
-   @GetMapping("/index")
-   public ResponseEntity<List<WebUserGetDTO>> getAllCustomers()
-   {
-      List<WebUser> brands = webUserRepository.findAll();
+   private final CustomerService customerService;
 
+
+   @GetMapping
+   @PreAuthorize("hasRole('ADMIN')")
+   public ResponseEntity<Page<CustomerGetAllRequestDto>> getAllCustomers(Pageable pageable)
+   {
       return ResponseEntity
               .status(HttpStatus.OK)
-              .body(
-                      brands
-                              .stream()
-                              .map(webUserMapper::toDto)
-                              .collect(Collectors.toList())
-              );
+              .body(customerService.getAllCustomers(pageable));
    }
 
 
