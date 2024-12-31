@@ -6,13 +6,18 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllR
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
 import com.dnth_underdog_241.online_fashion_shopping.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
 
@@ -31,6 +36,9 @@ public class AdminController
 
     private  final WebUserMapper webUserMapper;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
 
     @PostMapping
     ResponseEntity<SignUpResponseDto> createAdmin(@RequestBody SignUpRequestDto signUpRequestDto)
@@ -42,14 +50,32 @@ public class AdminController
     }
 
 
+//    @GetMapping
+//    public ResponseEntity<List<WebUserGetDTO>> getAllManager()
+//    {
+//        List<WebUser> brands = webUserRepository.findAll();
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(
+//                        brands
+//                                .stream()
+//                                .map(webUserMapper::toDto)
+//                                .collect(Collectors.toList())
+//                );
+//    }
+
     @GetMapping
-    public ResponseEntity<List<WebUserGetDTO>> getAllManager()
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<WebUserGetDTO>> getAllAdmin()
     {
-        List<WebUser> brands = webUserRepository.findAll();
+        Role roleEmployee = roleRepository
+                .findByName(RoleEnum.ROLE_ADMIN)
+                .get();
+        List<WebUser> webUser = webUserRepository.findByRoles(roleEmployee);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(
-                        brands
+                        webUser
                                 .stream()
                                 .map(webUserMapper::toDto)
                                 .collect(Collectors.toList())
