@@ -34,6 +34,28 @@ public class CartController
     }
 
 
+    public enum Color {
+        BEIGE,
+        BLACK,
+        DARK_GREEN,
+        GRAY,
+        GREEN,
+        NAVY,
+        PINK,
+        WHITE,
+        WINE;
+    }
+
+    public enum Size {
+        S,     // Small
+        M,     // Medium
+        L,     // Large
+        XL,    // Extra Large
+        XXL    // Double Extra Large
+    }
+
+
+
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<Void> addProductToCart

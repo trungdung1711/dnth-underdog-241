@@ -32,6 +32,27 @@ public class CartProductService
     private final WebUserRepository webUserRepository;
     private final VariantProductRepository variantProductRepository;
 
+    public enum Color1 {
+        BEIGE,
+        BLACK,
+        DARK_GREEN,
+        GRAY,
+        GREEN,
+        NAVY,
+        PINK,
+        WHITE,
+        WINE;
+    }
+
+    public enum Size1 {
+        S,     // Small
+        M,     // Medium
+        L,     // Large
+        XL,    // Extra Large
+        XXL    // Double Extra Large
+    }
+
+
 
     public void addCartProduct(Long id, Long variantProductId, Long quantity)
     {
