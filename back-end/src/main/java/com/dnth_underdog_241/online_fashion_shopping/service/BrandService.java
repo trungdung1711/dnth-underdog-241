@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Service
@@ -47,4 +48,5 @@ public class BrandService
         Brand brand = brandRepository.findBrandByName(name).orElseThrow(() -> new ResourcesNotFound("Brand not found"));
         return brandMapper.toDto2(brand);
     }
+
 }

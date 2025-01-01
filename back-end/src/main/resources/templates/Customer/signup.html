@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" type="text/css">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+
+
+</head>
+<body>
+<!-- Header Section Begin -->
+<header class="header" style="background-color: #95999c">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-9">
+                <div class="header__top__right">
+                    <h1>Sign Up</h1>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+
+<!-- Main Content Begin -->
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+    <form class="w-50" id="signupForm">
+        <!-- Name input -->
+        <div class="row">
+            <!-- First Name input -->
+            <div data-mdb-input-init class="col-md-6 form-outline mb-4">
+                <label class="form-label" for="FirstName">First Name</label>
+                <input type="text" id="FirstName" class="form-control" />
+            </div>
+
+            <!-- Last Name input -->
+            <div data-mdb-input-init class="col-md-6 form-outline mb-4">
+                <label class="form-label" for="LastName">Last Name</label>
+                <input type="text" id="LastName" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Phone Number input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="PhoneNumber">Phone Number</label>
+            <input type="text" id="PhoneNumber" class="form-control" />
+        </div>
+
+        <!-- Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="Password">Password</label>
+            <input type="password" id="Password" class="form-control" />
+        </div>
+
+        <!-- Confirm Password input -->
+        <div data-mdb-input-init class="form-outline mb-4">
+            <label class="form-label" for="ConfirmPassword">Confirm Password</label>
+            <input type="password" id="ConfirmPassword" class="form-control" />
+        </div>
+
+        <!-- Terms and Conditions Checkbox -->
+        <div class="row mb-4">
+            <div class="col d-flex justify-content-sm-start">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="Terms" checked />
+                    <label class="form-check-label" for="Terms"> I agree to the terms and conditions </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+
+        <!-- Social Media buttons -->
+        <div class="text-center">
+            <p>Already a member? <a href="#!" style="text-decoration: none; color: dodgerblue;">Sign In</a></p>
+            <p>or sign up with:</p>
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-facebook-f"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-google"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-twitter"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-github"></i>
+            </button>
+        </div>
+    </form>
+
+
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const firstName = document.getElementById("FirstName").value;
+            const lastName = document.getElementById("LastName").value;
+            const phoneNumber = document.getElementById("PhoneNumber").value;
+            const password = document.getElementById("Password").value;
+
+            try {
+                const response = await fetch("/api/v1/auth/sign-up", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phoneNumber, password, firstName, lastName }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Sign Up failed!");
+                }
+
+                const data = await response.json();
+                console.log("Sign Up successful", data);
+
+                // Save token in localStorage
+                localStorage.setItem("phoneNumber", data.phoneNumber);
+
+                // Redirect after successful sign-up
+                window.location.href = "/login";
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Invalid credentials or error occurred");
+            }
+        });
+
+    </script>
+</div>
+<!-- Main Content End -->
+
+
+<!-- Footer Section Begin -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="footer__about">
+                    <div class="footer__logo">
+                        <a href="#"><img src="/img/footer-logo.png" alt=""></a>
+                    </div>
+                    <p>The customer is at the heart of our unique business model, which includes design.</p>
+                    <a href="#"><img src="/img/payment.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Clothing Store</a></li>
+                        <li><a href="#">Trending Shoes</a></li>
+                        <li><a href="#">Accessories</a></li>
+                        <li><a href="#">Sale</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Shopping</h6>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Payment Methods</a></li>
+                        <li><a href="#">Delivery</a></li>
+                        <li><a href="#">Return & Exchanges</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                <div class="footer__widget">
+                    <h6>Newsletter</h6>
+                    <div class="footer__newslatter">
+                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                        <form action="#">
+                            <input type="text" placeholder="Your email">
+                            <button type="submit"><span class="icon_mail_alt"></span></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="footer__copyright__text">
+                    <p>Copyright ©
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>2020
+                        All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Footer Section End -->
+
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+</body>
+
+</html>
+

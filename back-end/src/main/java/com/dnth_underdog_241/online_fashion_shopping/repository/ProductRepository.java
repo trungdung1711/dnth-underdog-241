@@ -15,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
 {
     @Query("select p from Product p where p.category.id = :categoryId")
     Page<Product> findAllByCategoryId(Pageable pageable, @Param("categoryId") Long categoryId);
+
+
+    Product findProductById(Long id);
 }

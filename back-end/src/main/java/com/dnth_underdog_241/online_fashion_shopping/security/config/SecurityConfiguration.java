@@ -1,6 +1,5 @@
 package com.dnth_underdog_241.online_fashion_shopping.security.config;
 
-
 import com.dnth_underdog_241.online_fashion_shopping.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,20 +22,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.List;
 
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration
-{
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+public class SecurityConfiguration {
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+        private final AuthenticationEntryPoint authenticationEntryPoint;
 
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-
-
-    private final AccessDeniedHandler accessDeniedHandler;
-
+        private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
     public SecurityFilterChain createSecurityFilterChain(HttpSecurity httpSecurity)
@@ -59,10 +55,29 @@ public class SecurityConfiguration
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(AMRMRegistry ->
                         AMRMRegistry
-                                .requestMatchers("api/v1/auth/**")
-                                .permitAll()
+                                .requestMatchers(
+                                        "api/v1/auth/**",
+                                        "public/**",
+                                        "/home",
+                                        "/index",
+                                        "/contact",
+                                        "/about",
+                                        "/login",
+                                        "/update-info",
+                                        "logout",
+                                        "/signup",
+                                        "/shop",
+                                        "/details",
+                                        "/checkout",
+                                        "/cart",
+                                        "/admin/**"
+                                ).permitAll()
 
-                                .requestMatchers("public/**")
+                                .requestMatchers(
+                                        "/admin/**"
+                                ).permitAll()
+
+                                .requestMatchers("/css/**", "/plugins/**", "/dist/**","/js/**", "/img/**","/fonts/**","/favicon.ico", "/webjars/**")
                                 .permitAll()
 
                                 .requestMatchers("api/v1/categories/**")
@@ -85,6 +100,12 @@ public class SecurityConfiguration
 
                                 .requestMatchers("api/v1/customers/**")
                                 .hasAnyRole("CUSTOMER", "ADMIN", "EMPLOYEE")
+
+                                .requestMatchers("api/v1/customers/**")
+                                .hasRole("CUSTOMER")
+
+                                .requestMatchers("api/v1/payment/**")
+                                .permitAll()
 
                                 .anyRequest()
                                 .authenticated()
@@ -115,3 +136,5 @@ public class SecurityConfiguration
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
+
+

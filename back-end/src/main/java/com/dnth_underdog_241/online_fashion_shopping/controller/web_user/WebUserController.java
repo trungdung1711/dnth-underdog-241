@@ -1,6 +1,5 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
-
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.WebUserUpdateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.service.WebUserService;
@@ -9,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -44,8 +42,7 @@ public class WebUserController
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteWebUser(@PathVariable Long id)
-    {
+    public void deleteWebUser(@PathVariable Long id) {
         webUserService.deleteWebUser(id);
     }
 }
