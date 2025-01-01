@@ -22,13 +22,89 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 
+    <style>
+        .dropdown-menu .dropdown-item {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #d9d9d9;
+            color: black;
+            text-decoration: none;
+        }
+        /*------------------*/
+        .form-check-input {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            appearance: none;
+            border: 2px solid black;  /* Border for the radio button */
+            border-radius: 50%;        /* Circular radio button */
+            background-color: white;    /* Default background color */
+
+            position: relative;        /* Định vị nút radio */
+            top: 25%;                 /* Đặt vị trí cách giữa từ trên */
+            left: 52%;                /* Đặt vị trí cách giữa từ trái */
+            transform: translate(-50%, -50%);  /* Điều chỉnh vị trí để phần tử nằm đúng trung tâm */
+        }
+
+        .form-check-label {
+            margin-left: 8px;  /* Adjusts the space between the label and the radio button */
+            color: #495057;    /* Default color for the label */
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;        /* Circular label */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-check-input:checked {
+            border-color: #007bff;
+            background-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+    /*    -------------------------*/
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        label.btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input:checked + label {
+            background-color: #737373; /* Màu nền khi được chọn */
+            color: #fff; /* Màu chữ khi được chọn */
+            border-color: #737373; /* Màu viền khi được chọn */
+        }
+
+        label.btn:hover {
+            background-color: #e9ecef; /* Hiệu ứng hover */
+        }
+
+
+
+
+    </style>
+
 </head>
 
 <body>
-<!-- Page Preloder -->
-<div id="preloder">
-    <div class="loader"></div>
-</div>
+<!--&lt;!&ndash; Page Preloder &ndash;&gt;-->
+<!--<div id="preloder">-->
+<!--    <div class="loader"></div>-->
+<!--</div>-->
 
 <!-- Header Section Begin -->
 <header class="header">
@@ -51,10 +127,10 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                            <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                         </div>
                         <!-- User Name -->
-                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
                             <span id="username"></span>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
                                 <a class="dropdown-item" href="/update-info">Update Info</a>
@@ -62,6 +138,58 @@
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
                             </div>
                         </div>
+
+                        <script>
+                            function logout() {
+                                // Gửi yêu cầu logout đến backend
+                                fetch('/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                                })
+                                    .then(response => {
+                                        // Nếu logout thành công, xóa thông tin từ localStorage
+                                        if (response.ok) {
+                                            localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('id');
+                                            localStorage.removeItem('role');
+                                            window.location.href = '/index';  // Điều hướng về trang /index
+                                        } else {
+                                            alert('Logout thất bại');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Có lỗi khi thực hiện logout:', error);
+                                    });
+                            }
+
+                        </script>
+
+                        <script>
+                            // Lấy dữ liệu từ localStorage
+                            const userData = localStorage.getItem("phoneNumber");
+                            console.log("Phone Number Data:", userData);
+
+                            if (userData) {
+                                document.getElementById("username").innerText = userData;
+                            } else {
+                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                            }
+
+
+                            document.getElementById("userDropdown").addEventListener("click", () => {
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                dropdownMenu.classList.toggle("show");
+                            });
+
+                            // Close the dropdown when clicking outside
+                            window.addEventListener("click", (event) => {
+                                if (!document.getElementById("userDropdown").contains(event.target)) {
+                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                }
+                            });
+
+                        </script>
                     </div>
 
 
@@ -81,6 +209,8 @@
                             // Nếu chưa đăng nhập
                             document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
                             document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
                         }
                     </script>
                 </div>
@@ -92,13 +222,31 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                    <a href="" id="linklogo"><img src="/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                // Cập nhật đường dẫn cho liên kết "Home"
+                                const linkHome = document.getElementById('linkhome');
+                                const linklogo = document.getElementById('linklogo');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                                if (linklogo) {
+                                    linklogo.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
                         <li><a href="./shop">Shop</a></li>
                         <li><a href="./contact">Contacts</a></li>
                         <li><a href="./about">About Us</a></li>
@@ -109,14 +257,14 @@
                 <div class="header__nav__option d-flex align-items-center justify-content-between">
                     <!-- Search Form -->
                     <form action="#" class="d-flex align-items-center flex-grow-1">
-                        <input type="text" class="form-control" placeholder="Search..." style="border-radius: 0;"/>
+                        <input type="text" class="form-control" placeholder="Search..." style="border-radius: 0;" />
                         <button type="submit" class="btn btn-light">
                             <span class="icon_search"></span>
                         </button>
                     </form>
 
                     <!-- Cart Icon -->
-                    <a href="#" class="ml-3">
+                    <a href="/cart" class="ml-3">
                         <img src="/img/icon/cart.png" alt="Cart">
                     </a>
                 </div>
@@ -146,25 +294,28 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
-                                    <div class="product__thumb__pic set-bg" data-setbg="img/shop-details/thumb-1.png">
+                                    <div class="product__thumb__pic set-bg">
+                                        <img src="" alt="" id="picture1" style="width: 80%; height: 80%">
                                     </div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
-                                    <div class="product__thumb__pic set-bg" data-setbg="img/shop-details/thumb-2.png">
+                                    <div class="product__thumb__pic set-bg">
+                                        <img src="" alt="" id="picture2" style="width: 80%; height: 80%">
                                     </div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
-                                    <div class="product__thumb__pic set-bg" data-setbg="img/shop-details/thumb-3.png">
+                                    <div class="product__thumb__pic set-bg">
+                                        <img src="" alt="" id="picture3" style="width: 80%; height: 80%">
                                     </div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
-                                    <div class="product__thumb__pic set-bg" data-setbg="img/shop-details/thumb-4.png">
+                                    <div class="product__thumb__pic set-bg" id="video">
                                         <i class="fa fa-play"></i>
                                     </div>
                                 </a>
@@ -175,22 +326,22 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="img/shop-details/product-big-2.png" alt="">
+                                    <img src="" alt="" id="picture11" style="width: 70%; height: 70%">
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="img/shop-details/product-big-3.png" alt="">
+                                    <img src="" alt="" id="picture22" style="width: 70%; height: 70%">
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="img/shop-details/product-big.png" alt="">
+                                    <img src="" alt="" id="picture33" style="width: 70%; height: 70%">
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-4" role="tabpanel">
                                 <div class="product__details__pic__item">
-                                    <img src="img/shop-details/product-big-4.png" alt="">
+                                    <img src="/img/shop-details/product-big-4.png" alt="">
                                     <a href="https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1" class="video-popup"><i class="fa fa-play"></i></a>
                                 </div>
                             </div>
@@ -204,7 +355,7 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
                         <div class="product__details__text">
-                            <h4>Hooded thermal anorak</h4>
+                            <h4 id="productTitle"></h4>
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -213,65 +364,65 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>$270.00 <span>70.00</span></h3>
-                            <p>Coat with quilted lining and an adjustable hood. Featuring long sleeves with adjustable
-                                cuff tabs, adjustable asymmetric hem with elastic side tabs and a front zip fastening
-                            with placket.</p>
+                            <h3 id="productPrice"></h3>
+                            <p id="productshortDescription"></p>
                             <div class="product__details__option">
-                                <div class="product__details__option__size">
-                                    <span>Size:</span>
-                                    <label for="xxl">xxl
-                                        <input type="radio" id="xxl">
-                                    </label>
-                                    <label class="active" for="xl">xl
-                                        <input type="radio" id="xl">
-                                    </label>
-                                    <label for="l">l
-                                        <input type="radio" id="l">
-                                    </label>
-                                    <label for="sm">s
-                                        <input type="radio" id="sm">
-                                    </label>
+                                <div class="d-inline-block" id="listsize">
+<!--                                    <div class="form-check form-check-inline">-->
+<!--                                        <input class="form-check-input visually-hidden" type="radio" name="size" id="xxl">-->
+<!--                                        <label class="form-check-label btn btn-outline-secondary" for="xxl">XXL</label>-->
+<!--                                    </div>-->
                                 </div>
-                                <div class="product__details__option__color">
-                                    <span>Color:</span>
-                                    <label class="c-1" for="sp-1">
-                                        <input type="radio" id="sp-1">
-                                    </label>
-                                    <label class="c-2" for="sp-2">
-                                        <input type="radio" id="sp-2">
-                                    </label>
-                                    <label class="c-3" for="sp-3">
-                                        <input type="radio" id="sp-3">
-                                    </label>
-                                    <label class="c-4" for="sp-4">
-                                        <input type="radio" id="sp-4">
-                                    </label>
-                                    <label class="c-9" for="sp-9">
-                                        <input type="radio" id="sp-9">
-                                    </label>
+
+                                <!--                                <br>-->
+                                <div class="form-check d-flex justify-content-center" style="position: relative; margin-top: 5%" id="listcolor">
+<!--                                    <label class="form-check-label c-1">-->
+<!--                                        <input type="radio" class="form-check-input" id="sp-1" name="color">-->
+<!--                                    </label>-->
                                 </div>
                             </div>
                             <div class="product__details__cart__option">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
+                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                    <label for="decrease" class="mb-0 me-2 mr-3">Quantity:</label>
+                                    <div class="input-group" style="width: auto;">
+                                        <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                        <input
+                                                type="text"
+                                                class="form-control text-center"
+                                                value="1"
+                                                id="quantity"
+                                                min="1"
+                                                aria-label="Quantity"
+                                                style="width: 70px;">
+                                        <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
                                     </div>
                                 </div>
-                                <a href="#" class="primary-btn">add to cart</a>
-                            </div>
-                            <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
-                                <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
+
+
+                                <script>
+                                    document.getElementById('decrease').addEventListener('click', function () {
+                                        const quantityInput = document.getElementById('quantity');
+                                        let currentValue = parseInt(quantityInput.value, 10);
+                                        if (!isNaN(currentValue) && currentValue > 1) {
+                                            quantityInput.value = currentValue - 1;
+                                        }
+                                    });
+
+                                    document.getElementById('increase').addEventListener('click', function () {
+                                        const quantityInput = document.getElementById('quantity');
+                                        let currentValue = parseInt(quantityInput.value, 10);
+                                        if (!isNaN(currentValue)) {
+                                            quantityInput.value = currentValue + 1;
+                                        }
+                                    });
+
+                                </script>
+                                <button class="primary-btn" id="btncart">add to cart</button>
                             </div>
                             <div class="product__details__last__option">
-                                <h5><span>Guaranteed Safe Checkout</span></h5>
-                                <img src="img/shop-details/details-payment.png" alt="">
-                                <ul>
-                                    <li><span>SKU:</span> 3812912</li>
-                                    <li><span>Categories:</span> Clothes</li>
-                                    <li><span>Tag:</span> Clothes, Skin, Body</li>
-                                </ul>
+                                <div>Material: <span id="productMaterial"></span></div>
+                                <div>Brand: <span id="productBrand"></span></div>
+                                <div>Categories: <span id="productCategory"></span></div>
                             </div>
                         </div>
                     </div>
@@ -288,106 +439,30 @@
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
                                     Previews(5)</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional
-                                    information</a>
-                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                        pharetras loremos.</p>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                            a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
-                                        </div>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                            worn all year round.</p>
-                                        </div>
+                                        <p class="note" id="productlongDescription"></p>
+<!--                                        <div class="product__details__tab__content__item">-->
+<!--                                            <h5>Products Infomation</h5>-->
+<!--                                            <p>A Pocket PC is a handheld computer, which features many of the same-->
+<!--                                                capabilitid.</p>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
                                     <div class="product__details__tab__content">
                                         <div class="product__details__tab__content__item">
                                             <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
+                                            <p>A Pocket PC is a hs many of the same
+                                                capabilities as a st feature
                                             a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
                                         </div>
                                         <div class="product__details__tab__content__item">
                                             <h5>Material used</h5>
                                             <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                            worn all year round.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane" id="tabs-7" role="tabpanel">
-                                    <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                        pharetras loremos.</p>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                            a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
-                                        </div>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
+                                                from sner party jacket and can be
                                             worn all year round.</p>
                                         </div>
                                     </div>
@@ -398,6 +473,163 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const pathParts = window.location.pathname.split('/');
+                const id = pathParts[pathParts.length - 1];
+                const userInfoUrl = `http://localhost:8080/api/v1/products/${id}`;
+
+                fetch(userInfoUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        // Hiển thị dữ liệu lên view
+                        document.getElementById('picture1').src = data.pictures[0];
+                        document.getElementById('picture2').src = data.pictures[1];
+                        document.getElementById('picture3').src = data.pictures[2];
+                        document.getElementById('video').src = data.video;
+                        document.getElementById('picture11').src = data.pictures[0];
+                        document.getElementById('picture22').src = data.pictures[1];
+                        document.getElementById('picture33').src = data.pictures[2];
+                        document.getElementById('productTitle').innerText = data.name;
+                        document.getElementById('productPrice').innerText = data.price;
+                        document.getElementById('productshortDescription').innerText = data.shortDescription;
+                        document.getElementById('productlongDescription').innerText = data.longDescription;
+                        document.getElementById('productBrand').innerText = data.brand;
+                        document.getElementById('productCategory').innerText = data.category;
+                        document.getElementById('productMaterial').innerText = data.material;
+
+
+                    })
+                    .catch((error) => {
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const pathParts = window.location.pathname.split('/');
+                const id = pathParts[pathParts.length - 1];
+
+                const userInfoUrl1 = `http://localhost:8080/api/v1/products/${id}/variant`;
+
+                // Fetch dữ liệu từ API
+                fetch(userInfoUrl1, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                        }
+                        return response.json();
+                    })
+                    .then(variants => {
+                        const sizecontainer = document.getElementById('listsize');
+                        const colorcontainer = document.getElementById('listcolor');
+                        sizecontainer.innerHTML = ''; // Xóa nội dung cũ trước khi thêm dữ liệu mới
+                        colorcontainer.innerHTML = ''; // Xóa nội dung cũ trước khi thêm dữ liệu mới
+
+                        const spansize = document.createElement('span');
+                        spansize.innerText="Size: ";
+                        spansize.classList.add('d-inline-block', 'me-2');
+                        sizecontainer.appendChild(spansize);
+
+                        const spancolor = document.createElement('span');
+                        spancolor.innerText="color: ";
+                        colorcontainer.appendChild(spancolor);
+
+
+                        // Xử lý từng item và thêm vào bảng
+                        variants.forEach(variant => {
+                            const labelsize = document.createElement('label');
+                            labelsize.htmlFor = variant.size;
+                            labelsize.innerText = variant.size;
+                            labelsize.classList.add('form-check-label','btn','btn-outline-secondary');
+
+                            const inputsize = document.createElement('input');
+                            inputsize.type="radio";
+                            inputsize.value = variant.size;
+                            inputsize.name="size";
+                            inputsize.id=variant.size;
+                            inputsize.classList.add('form-check-input','visually-hidden');
+
+
+                            const divsize = document.createElement('div');
+                            divsize.classList.add('form-check','form-check-inline');
+                            divsize.appendChild(inputsize);
+                            divsize.appendChild(labelsize);
+                            sizecontainer.appendChild(divsize);
+
+                            const labelcolor = document.createElement('label');
+                            labelcolor.classList.add('form-check-label');
+                            labelcolor.style.backgroundColor = variant.colour; // Replace "lightblue" with any desired color
+
+                            const inputcolor = document.createElement('input');
+                            inputcolor.type="radio";
+                            inputcolor.value=variant.colour;
+                            inputcolor.name="color";
+                            inputcolor.classList.add('form-check-input');
+
+                            labelcolor.appendChild(inputcolor);
+                            colorcontainer.appendChild(labelcolor);
+
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+
+            });
+
+            document.getElementById('btncart').addEventListener('click', function (event) {
+                // event.preventDefault(); // Ngăn chặn hành động submit mặc định của form
+
+                const pathParts = window.location.pathname.split('/');
+                const productid = pathParts[pathParts.length - 1];
+
+                const userid = localStorage.getItem('id');
+                const variantProductId = productid;
+                const quantity = document.getElementById('quantity').value;
+                const color = document.getElementsByName('color')[0].value;
+                const size = document.getElementsByName('size')[0].value;
+
+                const token = localStorage.getItem('token');
+                const userInfoUrl = `http://localhost:8080/api/v1/customers/${userid}/cart?variantProductId=${variantProductId}&quantity=${quantity}&color=${color}&size=${size}`;
+
+                fetch(userInfoUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                        }
+                        alert('Product has been successfully added to your cart!');
+                    })
+                    .then(() => {
+                        console.log('Sản phẩm đã được thêm vào giỏ hàng:');
+                    })
+                    .catch((error) => {
+                        alert("Product is out of stock.")
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+            });
+
+        </script>
     </section>
     <!-- Shop Details Section End -->
 
@@ -412,12 +644,12 @@
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-1.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/img/product/product-1.jpg">
                             <span class="label">New</span>
                             <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/heart.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="/img/icon/search.png" alt=""></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -447,11 +679,11 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/img/product/product-2.jpg">
                             <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/heart.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="/img/icon/search.png" alt=""></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -481,12 +713,12 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item sale">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/img/product/product-3.jpg">
                             <span class="label">Sale</span>
                             <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/heart.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="/img/icon/search.png" alt=""></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -516,11 +748,11 @@
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/product-4.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/img/product/product-4.jpg">
                             <ul class="product__hover">
-                                <li><a href="#"><img src="img/icon/heart.png" alt=""></a></li>
-                                <li><a href="#"><img src="img/icon/compare.png" alt=""> <span>Compare</span></a></li>
-                                <li><a href="#"><img src="img/icon/search.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/heart.png" alt=""></a></li>
+                                <li><a href="#"><img src="/img/icon/compare.png" alt=""> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="/img/icon/search.png" alt=""></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -560,10 +792,10 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="/img/footer-logo.png" alt=""></a>
                         </div>
                         <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="img/payment.png" alt=""></a>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -632,16 +864,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+<!--    <script src="/js/main.js"></script>-->
 </body>
 
 </html>

@@ -149,7 +149,6 @@
 
 .product__details__option__size {
     display: inline-block;
-    margin-right: 50px;
 
     span {
         color: $heading-color;
@@ -168,11 +167,10 @@
         margin-bottom: 0;
         margin-right: 5px;
         cursor: pointer;
+        transition: all 0.3s ease;
 
-        &.active {
-            background: $heading-color;
-            color: $white-color;
-            border-color: $heading-color;
+        &:hover {
+            background: #f9f9f9;
         }
 
         input {
@@ -180,7 +178,14 @@
             visibility: hidden;
         }
     }
+
+    input[type="radio"]:checked + label {
+        background: red;
+        color: red;
+        border-color: $heading-color;
+    }
 }
+
 
 .product__details__option__color {
     display: inline-block;
@@ -204,23 +209,23 @@
         margin-bottom: 0;
         display: inline-block;
         cursor: pointer;
-        
+
         &.c-1 {
             background: #0b090c;
         }
-        
+
         &.c-2 {
             background: #20315f;
         }
-        
+
         &.c-3 {
             background: #f1af4d;
         }
-        
+
         &.c-4 {
             background: #ed1c24;
         }
-        
+
         &.c-9 {
             background: #ffffff;
         }
@@ -240,8 +245,13 @@
             position: absolute;
             visibility: hidden;
         }
+
+        input:checked + label {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);  // Shadow đậm khi chọn
+        }
     }
 }
+
 
 .product__details__cart__option {
     margin-bottom: 25px;

@@ -40,7 +40,20 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                    <a href="" id="linkhome"><img src="/img/logo.png" alt=""></a>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                            const token = localStorage.getItem('token');
+                            const isLoggedIn = token !== null && token.trim() !== '';
+
+                            // Cập nhật đường dẫn cho liên kết "Home"
+                            const linkHome = document.getElementById('linkhome');
+                            if (linkHome) {
+                                linkHome.href = isLoggedIn ? "./home" : "./index";
+                            }
+                        });
+                    </script>
                 </div>
             </div>
             <div class="col-lg-9 col-md-9">
@@ -87,7 +100,7 @@
 
         <!-- Register buttons -->
         <div class="text-center">
-            <p>Not a member? <a href="#!" style=" text-decoration: none; color: dodgerblue;">Register</a></p>
+            <p>Not a member? <a href="./signup" style=" text-decoration: none; color: dodgerblue;">Register</a></p>
             <p>or sign up with:</p>
             <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
                 <i class="fab fa-facebook-f"></i>
@@ -110,20 +123,34 @@
     <script>
         document.getElementById("loginForm").addEventListener("submit", async (event) => {
             event.preventDefault();
-            const phoneNumber = document.getElementById("phoneNumber").value;
-            const password = document.getElementById("password").value;
+
+            // Lấy thông tin từ form
+            const phoneNumber = document.getElementById("phoneNumber").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // Kiểm tra dữ liệu nhập
+            if (!phoneNumber || !password) {
+                alert("Please enter both phone number and password.");
+                return;
+            }
 
             try {
+                // Gửi yêu cầu tới server
                 const response = await fetch("/api/v1/auth/login", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                     body: JSON.stringify({ phoneNumber, password }),
                 });
 
+                // Xử lý lỗi phản hồi từ server
                 if (!response.ok) {
-                    throw new Error("Login failed!");
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || "Login failed!");
                 }
 
+                // Lấy dữ liệu phản hồi
                 const data = await response.json();
                 console.log("Login successful", data);
 
@@ -132,22 +159,48 @@
                 localStorage.setItem("token", data.jwttoken);
                 localStorage.setItem("id", data.id);
 
-                const roles = data.roles[0].name;
+                const roles = data.roles[0]?.name || ""; // Kiểm tra nếu roles tồn tại
                 localStorage.setItem("role", roles);
 
-                if(roles === "ROLE_CUSTOMER"){
-                    // Chuyển hướng sau khi đăng nhập
+                // Chuyển hướng dựa trên vai trò
+                if (roles === "ROLE_CUSTOMER") {
                     window.location.href = "/home";
+                } else if (roles === "ROLE_ADMIN" || roles === "ROLE_EMPLOYEE") {
+                    window.location.href = "/admin";
+                } else {
+                    throw new Error("Unrecognized role.");
                 }
-
-                window.location.href = "/admin";
-
 
             } catch (error) {
                 console.error("Error:", error);
-                alert("Invalid credentials");
+                alert(error.message || "An error occurred. Please try again.");
             }
+
+            // const token = localStorage.getItem("token");
+            // fetch("/home", {
+            //     method: "GET",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "Authorization": `Bearer ${token}`
+            //     }
+            // })
+            //     .then(async (response) => {
+            //         if (!response.ok) {
+            //             const errorData = await response.json();
+            //             throw new Error(errorData.message || "Failed to load the home page.");
+            //         }
+            //
+            //         window.location.href = "/home";
+            //     })
+            //     .catch((error) => {
+            //         console.error("Error:", error);
+            //         alert("Access denied. Please log in again.");
+            //         window.location.href = "/login";
+            //     });
+
         });
+
+
 
     </script>
 
@@ -232,4 +285,3 @@
 </body>
 
 </html>
-

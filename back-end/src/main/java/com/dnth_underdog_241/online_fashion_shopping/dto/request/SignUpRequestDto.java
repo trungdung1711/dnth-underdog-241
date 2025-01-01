@@ -29,7 +29,7 @@ public class SignUpRequestDto implements Serializable
 
     @NotNull(message = "Last name required")
     String lastName;
-    
+
     @NotNull(message = "First name required")
     String firstName;
 }

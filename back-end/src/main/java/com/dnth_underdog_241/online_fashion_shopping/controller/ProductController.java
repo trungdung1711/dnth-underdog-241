@@ -86,7 +86,7 @@ public class ProductController
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.getAllProducts(page, size, categoryId));
+                .body(productService.getAllProducts(page, size));
     }
 
 
@@ -103,7 +103,7 @@ public class ProductController
 
 
     @PostMapping(value = "{productId}/variant", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<Void> addProductVariant
             (
                     @RequestPart("variant") VariantProductCreateRequestDto variantProductCreateRequestDto,
@@ -114,7 +114,7 @@ public class ProductController
     {
         variantProductService.createOrAddVariantProduct(variantProductCreateRequestDto, picture);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(null);
     }
 
@@ -130,21 +130,5 @@ public class ProductController
     }
 
 
-    @GetMapping("{productId}/variant")
-    public ResponseEntity<VariantProductGetResponseDto> getProductVariant
-            (
-                    @PathVariable Long productId,
-                    @PathVariable String categoryId,
-                    @RequestParam SizeEnum size,
-                    @RequestParam ColourEnum colour
-            )
-    {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body
-                        (
-                                variantProductService
-                                        .getVariantProduct(productId, size, colour)
-                        );
-    }
+ToanBA
 }

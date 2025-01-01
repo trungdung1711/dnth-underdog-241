@@ -36,7 +36,7 @@ public class BrandController
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<BrandCreateResponseDto> createBrand
             (
                     @RequestPart(name = "brand") BrandCreateRequestDto brandUploadBrandRequestDto,

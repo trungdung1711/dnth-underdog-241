@@ -5,7 +5,6 @@ public enum CategoryEnum
     MEN,
     WOMEN,
     KIDS,
-
     OUTERWEAR,
     SWEATERS_AND_CARDIGANS,
     T_SHIRTS_SWEATS_AND_FLEECE,

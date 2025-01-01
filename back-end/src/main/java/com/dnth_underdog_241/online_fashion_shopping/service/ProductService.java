@@ -11,6 +11,7 @@ import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Category;
 import com.dnth_underdog_241.online_fashion_shopping.model.Picture;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.CategoryEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.FileLocation;
 import com.dnth_underdog_241.online_fashion_shopping.repository.BrandRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.CategoryRepository;
@@ -98,6 +99,7 @@ public class ProductService
                 );
 
         productRepository.save(product);
+
     }
 
 
@@ -156,9 +158,21 @@ public class ProductService
     }
 
 
-    public Page<ProductGetAllResponseDto> getAllProducts(int page, int size, Long categoryId)
+    public Page<ProductGetAllResponseDto> getAllProducts(int page, int size)
+    {
+        Page<Product> productPage = productRepository.findAllProduct(PageRequest.of(page, size));
+        return productPage.map(productMapper::toProductGetAllDto);
+    }
+
+    public Page<ProductGetAllResponseDto> getAllProductsByCategory(int page, int size, Long categoryId)
     {
         Page<Product> productPage = productRepository.findAllByCategoryId(PageRequest.of(page, size), categoryId);
+        return productPage.map(productMapper::toProductGetAllDto);
+    }
+
+    public Page<ProductGetAllResponseDto> getAllProductsByBrand(int page, int size, Long brandId)
+    {
+        Page<Product> productPage = productRepository.findAllByBrandId(PageRequest.of(page, size), brandId);
         return productPage.map(productMapper::toProductGetAllDto);
     }
 
@@ -176,6 +190,7 @@ public class ProductService
                                                 )
                         );
     }
+
 
 
     public void deleteProduct(Long productId)

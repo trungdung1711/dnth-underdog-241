@@ -5,7 +5,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -17,7 +19,7 @@ public class HomeController {
       return "index";
    }
 
-   @RequestMapping("/home")
+   @GetMapping("/home")
    public String home() {
       return "Customer/home";
    }
@@ -39,7 +41,7 @@ public class HomeController {
 
    @RequestMapping("/signup")
    public String signup() {
-      return "Customer/signup";
+      return "signup";
    }
 
    @RequestMapping("/shop")
@@ -47,13 +49,19 @@ public class HomeController {
       return "Customer/shop";
    }
 
+   @RequestMapping("/checkout")
+   public String checkout() {
+      return "Customer/checkout";
+   }
+
    @RequestMapping("/cart")
    public String cart() {
       return "Customer/shopping-cart";
    }
 
-   @RequestMapping("/details")
-   public String details() {
+   @RequestMapping("/detail/{id}")
+   public String details(@PathVariable Long id, Model model) {
+      model.addAttribute("productId", id);
       return "Customer/shop-details";
    }
 

@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,6 +42,7 @@ public class VariantProductService
         Size size = sizeRepository.findById(variantProductCreateRequestDto.getSize()).orElseThrow(() -> new ResourcesNotFound("Size not found"));
         Colour colour = colourRepository.findById(variantProductCreateRequestDto.getColour()).orElseThrow(() -> new ResourcesNotFound("Colour not found"));
 
+
         if (variantProductRepository.existsByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size, colour))
         {
             VariantProduct variantProduct = variantProductRepository.findByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size.getSize(), colour.getColour()).get();
@@ -49,15 +52,16 @@ public class VariantProductService
             importTransactionService.createImportTransaction(variantProduct.getProduct().getPrice(), variantProductCreateRequestDto.getStock(), variantProduct);
             return;
         }
+main
 
         Product product = productRepository.findProductById(variantProductCreateRequestDto.getId());
 
         VariantProduct variantProduct = variantProductMapper.toVariantProduct(variantProductCreateRequestDto);
 
         variantProduct.setProduct(product);
-        product.getVariantProducts().add(variantProduct);
 
         variantProduct.setSize(size);
+
         variantProduct.setColour(colour);
 
         variantProduct.setPicture(fileService.uploadFile(picture, FileLocation.PRODUCT));
@@ -68,10 +72,13 @@ public class VariantProductService
     }
 
 
-    public VariantProductGetResponseDto getVariantProduct(Long productId, SizeEnum size, ColourEnum colour)
+    public List<VariantProductGetResponseDto> getVariantProduct(Long productId)
     {
-        VariantProduct variantProduct = variantProductRepository.findByProductIdAndSizeAndColour(productId, size, colour).orElseThrow(() -> new ResourcesNotFound("Product not found"));
+        List<VariantProduct> variantProduct = variantProductRepository.findByProductId(productId);
 
-        return variantProductMapper.toVariantProductGetResponseDto(variantProduct);
+        return variantProduct.stream()
+                .map(variantProductMapper::toVariantProductGetResponseDto)
+                .collect(Collectors.toList());
     }
+
 }

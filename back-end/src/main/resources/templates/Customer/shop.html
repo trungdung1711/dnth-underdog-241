@@ -22,6 +22,21 @@
     <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css" type="text/css">
 
+    <style>
+        .dropdown-menu .dropdown-item {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #d9d9d9;
+            color: black;
+            text-decoration: none;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -51,10 +66,10 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;">
+                            <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                         </div>
                         <!-- User Name -->
-                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;">
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
                             <span id="username"></span>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
                                 <a class="dropdown-item" href="/update-info">Update Info</a>
@@ -62,6 +77,58 @@
                                 <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
                             </div>
                         </div>
+
+                        <script>
+                            function logout() {
+                                // Gửi yêu cầu logout đến backend
+                                fetch('/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                                })
+                                    .then(response => {
+                                        // Nếu logout thành công, xóa thông tin từ localStorage
+                                        if (response.ok) {
+                                            localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('id');
+                                            localStorage.removeItem('role');
+                                            window.location.href = '/index';  // Điều hướng về trang /index
+                                        } else {
+                                            alert('Logout thất bại');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Có lỗi khi thực hiện logout:', error);
+                                    });
+                            }
+
+                        </script>
+
+                        <script>
+                            // Lấy dữ liệu từ localStorage
+                            const userData = localStorage.getItem("phoneNumber");
+                            console.log("Phone Number Data:", userData);
+
+                            if (userData) {
+                                document.getElementById("username").innerText = userData;
+                            } else {
+                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                            }
+
+
+                            document.getElementById("userDropdown").addEventListener("click", () => {
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                dropdownMenu.classList.toggle("show");
+                            });
+
+                            // Close the dropdown when clicking outside
+                            window.addEventListener("click", (event) => {
+                                if (!document.getElementById("userDropdown").contains(event.target)) {
+                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                }
+                            });
+
+                        </script>
                     </div>
 
 
@@ -81,8 +148,12 @@
                             // Nếu chưa đăng nhập
                             document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
                             document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
                         }
                     </script>
+
+
                 </div>
             </div>
         </div>
@@ -92,13 +163,30 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./home"><img src="/img/logo.png" alt=""></a>
+                    <a href="" id="linklogo"><img src="/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="./home">Home</a></li>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                const linkHome = document.getElementById('linkhome');
+                                const linklogo = document.getElementById('linklogo');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                                if (linklogo) {
+                                    linklogo.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
                         <li class="active"><a href="./shop">Shop</a></li>
                         <li><a href="./contact">Contacts</a></li>
                         <li><a href="./about">About Us</a></li>
@@ -116,7 +204,7 @@
                     </form>
 
                     <!-- Cart Icon -->
-                    <a href="#" class="ml-3">
+                    <a href="/cart" class="ml-3">
                         <img src="/img/icon/cart.png" alt="Cart">
                     </a>
                 </div>
@@ -168,15 +256,6 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll" id="listCategory">
-<!--                                                    <li><a href="#">Men (20)</a></li>-->
-<!--                                                    <li><a href="#">Women (20)</a></li>-->
-<!--                                                    <li><a href="#">Bags (20)</a></li>-->
-<!--                                                    <li><a href="#">Clothing (20)</a></li>-->
-<!--                                                    <li><a href="#">Shoes (20)</a></li>-->
-<!--                                                    <li><a href="#">Accessories (20)</a></li>-->
-<!--                                                    <li><a href="#">Kids (20)</a></li>-->
-<!--                                                    <li><a href="#">Kids (20)</a></li>-->
-<!--                                                    <li><a href="#">Kids (20)</a></li>-->
                                                 </ul>
                                             </div>
                                         </div>
@@ -184,14 +263,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/categories`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -205,8 +282,149 @@
                                                     categories.forEach(category => {
                                                         const listItem = document.createElement('li');
                                                         const link = document.createElement('a');
-                                                        link.href = category.link;
+                                                        link.href = "#";
                                                         link.textContent = category.name;
+
+                                                        link.addEventListener('click',() => {
+                                                            const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                                                            const token = localStorage.getItem('token');
+                                                            const page = 0;
+                                                            const userInfoUrl = `http://localhost:8080/api/v1/products/category?page=${page}&size=12&categoryId=${category.id}`;
+
+                                                            let currentPage = 0; // Trang hiện tại
+                                                            const limit = 20; // Số sản phẩm mỗi trang
+
+                                                            function fetchProducts(page) {
+                                                                fetch(`${userInfoUrl}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                                                    },
+                                                                })
+                                                                    .then(response => {
+                                                                        if (!response.ok) {
+                                                                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                                                        }
+                                                                        return response.json();
+                                                                    })
+                                                                    .then(data => {
+                                                                        const products = data.content;
+                                                                        const totalProducts = data.total;
+                                                                        const totalPages = data.totalPages;
+
+                                                                        // Clear the product list before adding new products
+                                                                        const productList = document.getElementById('product-list');
+                                                                        productList.innerHTML = '';
+
+                                                                        // Thêm sản phẩm vào danh sách
+                                                                        products.forEach(product => {
+                                                                            // Tạo container cho sản phẩm
+                                                                            const productContainer = document.createElement('div');
+                                                                            productContainer.classList.add('col-lg-4', 'col-md-6', 'col-sm-6', 'mb-4'); // Thêm margin-bottom
+
+                                                                            const productCard = document.createElement('div');
+                                                                            productCard.classList.add('card', 'h-100', 'shadow-sm'); // Card Bootstrap với shadow
+
+                                                                            // Ảnh sản phẩm
+                                                                            const productImg = document.createElement('div');
+                                                                            productImg.classList.add('card-img-top', 'bg-cover');
+                                                                            productImg.style.backgroundImage = `url(${product.thumbnail})`;
+                                                                            productImg.style.height = '200px'; // Đặt chiều cao cố định
+                                                                            productImg.style.backgroundSize = 'cover';
+                                                                            productImg.style.backgroundPosition = 'center';
+
+                                                                            // Thêm overlay nếu cần (hiệu ứng hover)
+                                                                            const overlay = document.createElement('div');
+                                                                            overlay.classList.add('overlay', 'd-flex', 'justify-content-center', 'align-items-center', 'text-white');
+                                                                            overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+                                                                            overlay.style.height = '100%';
+                                                                            overlay.style.opacity = '0';
+                                                                            // overlay.style.transition = 'opacity 0.3s';
+                                                                            productImg.appendChild(overlay);
+
+                                                                            // productImg.addEventListener('mouseover', () => (overlay.style.opacity = '1'));
+                                                                            // productImg.addEventListener('mouseout', () => (overlay.style.opacity = '0'));
+
+                                                                            productCard.appendChild(productImg);
+
+                                                                            // Nội dung sản phẩm
+                                                                            const productBody = document.createElement('div');
+                                                                            productBody.classList.add('card-body', 'text-center');
+
+                                                                            const productTitle = document.createElement('h5');
+                                                                            productTitle.classList.add('card-title', 'text-truncate');
+                                                                            productTitle.textContent = product.name;
+                                                                            productBody.appendChild(productTitle);
+
+                                                                            const productPrice = document.createElement('p');
+                                                                            productPrice.classList.add('card-text', 'text-success', 'font-weight-bold');
+                                                                            productPrice.textContent = `$${product.price}`;
+                                                                            productBody.appendChild(productPrice);
+
+                                                                            // Đánh giá
+                                                                            const productRating = document.createElement('div');
+                                                                            productRating.classList.add('d-flex', 'justify-content-center', 'mb-2');
+                                                                            for (let i = 0; i < 5; i++) {
+                                                                                const star = document.createElement('i');
+                                                                                star.classList.add('fa', 'mr-1', i < product.rating ? 'fa-star' : 'fa-star-o');
+                                                                                productRating.appendChild(star);
+                                                                            }
+                                                                            productBody.appendChild(productRating);
+
+                                                                            // Nút "Add To Cart"
+
+                                                                            const addToCartButton = document.createElement('button');
+                                                                            addToCartButton.classList.add('btn', 'btn-white', 'btn-block', 'shadow-sm', 'position-relative');
+                                                                            addToCartButton.textContent = 'View Product';
+
+                                                                            // Thêm hiệu ứng khi hover
+                                                                            addToCartButton.addEventListener('mouseover', () => {
+                                                                                addToCartButton.classList.add('shadow-lg'); // Đổ bóng lớn khi hover
+                                                                            });
+                                                                            addToCartButton.addEventListener('mouseout', () => {
+                                                                                addToCartButton.classList.remove('shadow-lg'); // Quay lại đổ bóng nhỏ
+                                                                            });
+
+                                                                            addToCartButton.addEventListener('click', () => {
+                                                                                window.location.href=`./detail/${product.id}`;
+                                                                            });
+                                                                            productBody.appendChild(addToCartButton);
+                                                                            productCard.appendChild(productBody);
+                                                                            productContainer.appendChild(productCard);
+                                                                            productList.appendChild(productContainer);
+                                                                        });
+
+                                                                        // Tạo phân trang
+                                                                        createPagination(totalPages, page);
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Có lỗi xảy ra:', error);
+                                                                    });
+                                                            }
+
+                                                            function createPagination(totalPages, currentPage) {
+                                                                const pagination = document.getElementById('pagination');
+                                                                pagination.innerHTML = ''; // Clear previous pagination
+
+                                                                for (let i = 0; i < totalPages; i++) {
+                                                                    const pageButton = document.createElement('button');
+                                                                    pageButton.textContent = i;
+                                                                    pageButton.classList.add('page-btn');
+                                                                    if (i === currentPage) {
+                                                                        pageButton.classList.add('active');
+                                                                    }
+                                                                    pageButton.addEventListener('click', () => {
+                                                                        fetchProducts(i);
+                                                                    });
+                                                                    pagination.appendChild(pageButton);
+                                                                }
+                                                            }
+
+                                                            // Fetch products for the first page
+                                                            fetchProducts(currentPage);
+                                                        });
+
                                                         listItem.appendChild(link);
                                                         categoryList.appendChild(listItem);
                                                     });
@@ -225,10 +443,6 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
                                                 <ul id="listBrands">
-<!--                                                    <li><a href="#">Louis Vuitton</a></li>-->
-<!--                                                    <li><a href="#">Chanel</a></li>-->
-<!--                                                    <li><a href="#">Hermes</a></li>-->
-<!--                                                    <li><a href="#">Gucci</a></li>-->
                                                 </ul>
                                             </div>
                                         </div>
@@ -236,14 +450,12 @@
                                     <script>
                                         document.addEventListener('DOMContentLoaded', function () {
                                             const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                            const token = localStorage.getItem('token');
                                             const userInfoUrl = `http://localhost:8080/api/v1/brands`;
 
                                             fetch(userInfoUrl, {
                                                 method: 'GET',
                                                 headers: {
                                                     'Content-Type': 'application/json',
-                                                    // 'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                                 },
                                             })
                                                 .then((response) => {
@@ -257,8 +469,147 @@
                                                     brands.forEach(brand => {
                                                         const listItem = document.createElement('li');
                                                         const link = document.createElement('a');
-                                                        link.href = brand.link;
+                                                        link.href = "#";
                                                         link.textContent = brand.name;
+                                                        link.addEventListener('click',() => {
+                                                            const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                                                            const token = localStorage.getItem('token');
+                                                            const page = 0;
+                                                            const userInfoUrl = `http://localhost:8080/api/v1/products/brand?page=${page}&size=12&brandId=${brand.id}`;
+
+                                                            let currentPage = 0; // Trang hiện tại
+                                                            const limit = 20; // Số sản phẩm mỗi trang
+
+                                                            function fetchProducts(page) {
+                                                                fetch(`${userInfoUrl}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'Content-Type': 'application/json',
+                                                                        'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                                                    },
+                                                                })
+                                                                    .then(response => {
+                                                                        if (!response.ok) {
+                                                                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                                                        }
+                                                                        return response.json();
+                                                                    })
+                                                                    .then(data => {
+                                                                        const products = data.content;
+                                                                        const totalProducts = data.total;
+                                                                        const totalPages = data.totalPages;
+
+                                                                        // Clear the product list before adding new products
+                                                                        const productList = document.getElementById('product-list');
+                                                                        productList.innerHTML = '';
+
+                                                                        // Thêm sản phẩm vào danh sách
+                                                                        products.forEach(product => {
+                                                                            // Tạo container cho sản phẩm
+                                                                            const productContainer = document.createElement('div');
+                                                                            productContainer.classList.add('col-lg-4', 'col-md-6', 'col-sm-6', 'mb-4'); // Thêm margin-bottom
+
+                                                                            const productCard = document.createElement('div');
+                                                                            productCard.classList.add('card', 'h-100', 'shadow-sm'); // Card Bootstrap với shadow
+
+                                                                            // Ảnh sản phẩm
+                                                                            const productImg = document.createElement('div');
+                                                                            productImg.classList.add('card-img-top', 'bg-cover');
+                                                                            productImg.style.backgroundImage = `url(${product.thumbnail})`;
+                                                                            productImg.style.height = '200px'; // Đặt chiều cao cố định
+                                                                            productImg.style.backgroundSize = 'cover';
+                                                                            productImg.style.backgroundPosition = 'center';
+
+                                                                            // Thêm overlay nếu cần (hiệu ứng hover)
+                                                                            const overlay = document.createElement('div');
+                                                                            overlay.classList.add('overlay', 'd-flex', 'justify-content-center', 'align-items-center', 'text-white');
+                                                                            overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+                                                                            overlay.style.height = '100%';
+                                                                            overlay.style.opacity = '0';
+                                                                            // overlay.style.transition = 'opacity 0.3s';
+                                                                            productImg.appendChild(overlay);
+
+                                                                            // productImg.addEventListener('mouseover', () => (overlay.style.opacity = '1'));
+                                                                            // productImg.addEventListener('mouseout', () => (overlay.style.opacity = '0'));
+
+                                                                            productCard.appendChild(productImg);
+
+                                                                            // Nội dung sản phẩm
+                                                                            const productBody = document.createElement('div');
+                                                                            productBody.classList.add('card-body', 'text-center');
+
+                                                                            const productTitle = document.createElement('h5');
+                                                                            productTitle.classList.add('card-title', 'text-truncate');
+                                                                            productTitle.textContent = product.name;
+                                                                            productBody.appendChild(productTitle);
+
+                                                                            const productPrice = document.createElement('p');
+                                                                            productPrice.classList.add('card-text', 'text-success', 'font-weight-bold');
+                                                                            productPrice.textContent = `$${product.price}`;
+                                                                            productBody.appendChild(productPrice);
+
+                                                                            // Đánh giá
+                                                                            const productRating = document.createElement('div');
+                                                                            productRating.classList.add('d-flex', 'justify-content-center', 'mb-2');
+                                                                            for (let i = 0; i < 5; i++) {
+                                                                                const star = document.createElement('i');
+                                                                                star.classList.add('fa', 'mr-1', i < product.rating ? 'fa-star' : 'fa-star-o');
+                                                                                productRating.appendChild(star);
+                                                                            }
+                                                                            productBody.appendChild(productRating);
+
+                                                                            // Nút "Add To Cart"
+
+                                                                            const addToCartButton = document.createElement('button');
+                                                                            addToCartButton.classList.add('btn', 'btn-white', 'btn-block', 'shadow-sm', 'position-relative');
+                                                                            addToCartButton.textContent = 'View Product';
+
+                                                                            // Thêm hiệu ứng khi hover
+                                                                            addToCartButton.addEventListener('mouseover', () => {
+                                                                                addToCartButton.classList.add('shadow-lg'); // Đổ bóng lớn khi hover
+                                                                            });
+                                                                            addToCartButton.addEventListener('mouseout', () => {
+                                                                                addToCartButton.classList.remove('shadow-lg'); // Quay lại đổ bóng nhỏ
+                                                                            });
+
+                                                                            addToCartButton.addEventListener('click', () => {
+                                                                                window.location.href=`./detail/${product.id}`;
+                                                                            });
+                                                                            productBody.appendChild(addToCartButton);
+                                                                            productCard.appendChild(productBody);
+                                                                            productContainer.appendChild(productCard);
+                                                                            productList.appendChild(productContainer);
+                                                                        });
+
+                                                                        // Tạo phân trang
+                                                                        createPagination(totalPages, page);
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Có lỗi xảy ra:', error);
+                                                                    });
+                                                            }
+
+                                                            function createPagination(totalPages, currentPage) {
+                                                                const pagination = document.getElementById('pagination');
+                                                                pagination.innerHTML = ''; // Clear previous pagination
+
+                                                                for (let i = 0; i < totalPages; i++) {
+                                                                    const pageButton = document.createElement('button');
+                                                                    pageButton.textContent = i;
+                                                                    pageButton.classList.add('page-btn');
+                                                                    if (i === currentPage) {
+                                                                        pageButton.classList.add('active');
+                                                                    }
+                                                                    pageButton.addEventListener('click', () => {
+                                                                        fetchProducts(i);
+                                                                    });
+                                                                    pagination.appendChild(pageButton);
+                                                                }
+                                                            }
+
+                                                            // Fetch products for the first page
+                                                            fetchProducts(currentPage);
+                                                        });
                                                         listItem.appendChild(link);
                                                         brandsList.appendChild(listItem);
                                                     });
@@ -284,79 +635,6 @@
                                                     <li><a href="#">$200.00 - $250.00</a></li>
                                                     <li><a href="#">250.00+</a></li>
                                                 </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFour">Size</a>
-                                    </div>
-                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__size">
-                                                <label for="xs">xs
-                                                    <input type="radio" id="xs">
-                                                </label>
-                                                <label for="sm">s
-                                                    <input type="radio" id="sm">
-                                                </label>
-                                                <label for="md">m
-                                                    <input type="radio" id="md">
-                                                </label>
-                                                <label for="xl">xl
-                                                    <input type="radio" id="xl">
-                                                </label>
-                                                <label for="2xl">2xl
-                                                    <input type="radio" id="2xl">
-                                                </label>
-                                                <label for="xxl">xxl
-                                                    <input type="radio" id="xxl">
-                                                </label>
-                                                <label for="3xl">3xl
-                                                    <input type="radio" id="3xl">
-                                                </label>
-                                                <label for="4xl">4xl
-                                                    <input type="radio" id="4xl">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
-                                    </div>
-                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__color">
-                                                <label class="c-1" for="sp-1">
-                                                    <input type="radio" id="sp-1">
-                                                </label>
-                                                <label class="c-2" for="sp-2">
-                                                    <input type="radio" id="sp-2">
-                                                </label>
-                                                <label class="c-3" for="sp-3">
-                                                    <input type="radio" id="sp-3">
-                                                </label>
-                                                <label class="c-4" for="sp-4">
-                                                    <input type="radio" id="sp-4">
-                                                </label>
-                                                <label class="c-5" for="sp-5">
-                                                    <input type="radio" id="sp-5">
-                                                </label>
-                                                <label class="c-6" for="sp-6">
-                                                    <input type="radio" id="sp-6">
-                                                </label>
-                                                <label class="c-7" for="sp-7">
-                                                    <input type="radio" id="sp-7">
-                                                </label>
-                                                <label class="c-8" for="sp-8">
-                                                    <input type="radio" id="sp-8">
-                                                </label>
-                                                <label class="c-9" for="sp-9">
-                                                    <input type="radio" id="sp-9">
-                                                </label>
                                             </div>
                                         </div>
                                     </div>
@@ -403,101 +681,175 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" id="product-list">
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                                const token = localStorage.getItem('token');
-                                const userInfoUrl = `http://localhost:8080/api/v1/products`;
 
-                                fetch(userInfoUrl, {
+                    <div class="row" id="product-list"></div>
+                    <div id="pagination"></div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                            const token = localStorage.getItem('token');
+                            const userInfoUrl = `http://localhost:8080/api/v1/products`;
+
+                            let currentPage = 0; // Trang hiện tại
+                            const limit = 20; // Số sản phẩm mỗi trang
+
+                            function fetchProducts(page) {
+                                fetch(`${userInfoUrl}?page=${page}&limit=${limit}`, {
                                     method: 'GET',
                                     headers: {
                                         'Content-Type': 'application/json',
                                         'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                     },
                                 })
-                                    .then((response) => {
-                                        if (!response.ok) {
-                                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    const products = data.content;
+                                    const totalProducts = data.total;
+                                    const totalPages = data.totalPages;
+
+                                    // Clear the product list before adding new products
+                                    const productList = document.getElementById('product-list');
+                                    productList.innerHTML = '';
+
+                                    // Thêm sản phẩm vào danh sách
+                                    products.forEach(product => {
+                                        // Tạo container cho sản phẩm
+                                        const productContainer = document.createElement('div');
+                                        productContainer.classList.add('col-lg-4', 'col-md-6', 'col-sm-6', 'mb-4'); // Thêm margin-bottom
+
+                                        const productCard = document.createElement('div');
+                                        productCard.classList.add('card', 'h-100', 'shadow-sm'); // Card Bootstrap với shadow
+
+                                        // Ảnh sản phẩm
+                                        const productImg = document.createElement('div');
+                                        productImg.classList.add('card-img-top', 'bg-cover');
+                                        productImg.style.backgroundImage = `url(${product.thumbnail})`;
+                                        productImg.style.height = '200px'; // Đặt chiều cao cố định
+                                        productImg.style.backgroundSize = 'cover';
+                                        productImg.style.backgroundPosition = 'center';
+
+                                        // Thêm overlay nếu cần (hiệu ứng hover)
+                                        const overlay = document.createElement('div');
+                                        overlay.classList.add('overlay', 'd-flex', 'justify-content-center', 'align-items-center', 'text-white');
+                                        overlay.style.background = 'rgba(0, 0, 0, 0.5)';
+                                        overlay.style.height = '100%';
+                                        overlay.style.opacity = '0';
+                                        // overlay.style.transition = 'opacity 0.3s';
+                                        productImg.appendChild(overlay);
+
+                                        // productImg.addEventListener('mouseover', () => (overlay.style.opacity = '1'));
+                                        // productImg.addEventListener('mouseout', () => (overlay.style.opacity = '0'));
+
+                                        productCard.appendChild(productImg);
+
+                                        // Nội dung sản phẩm
+                                        const productBody = document.createElement('div');
+                                        productBody.classList.add('card-body', 'text-center');
+
+                                        const productTitle = document.createElement('h5');
+                                        productTitle.classList.add('card-title', 'text-truncate');
+                                        productTitle.textContent = product.name;
+                                        productBody.appendChild(productTitle);
+
+                                        const productPrice = document.createElement('p');
+                                        productPrice.classList.add('card-text', 'text-success', 'font-weight-bold');
+                                        productPrice.textContent = `$${product.price}`;
+                                        productBody.appendChild(productPrice);
+
+                                        // Đánh giá
+                                        const productRating = document.createElement('div');
+                                        productRating.classList.add('d-flex', 'justify-content-center', 'mb-2');
+                                        for (let i = 0; i < 5; i++) {
+                                            const star = document.createElement('i');
+                                            star.classList.add('fa', 'mr-1', i < product.rating ? 'fa-star' : 'fa-star-o');
+                                            productRating.appendChild(star);
                                         }
-                                        return response.json();
-                                    })
-                                    .then(products => {
-                                        products.forEach(product => {
-                                            const productContainer = document.createElement('div');
-                                            productContainer.classList.add('col-lg-4', 'col-md-6', 'col-sm-6');
+                                        productBody.appendChild(productRating);
 
-                                            const productItem = document.createElement('div');
-                                            productItem.classList.add('product__item');
-                                            productContainer.appendChild(productItem);
+                                        // Nút "Add To Cart"
 
-                                            const productPic = document.createElement('div');
-                                            productPic.classList.add('product__item__pic', 'set-bg');
-                                            productPic.style.backgroundImage = `url(${product.thumbnail})`; // Sử dụng thumbnail
+                                        const addToCartButton = document.createElement('button');
+                                        addToCartButton.classList.add('btn', 'btn-white', 'btn-block', 'shadow-sm', 'position-relative');
+                                        addToCartButton.textContent = 'View Product';
 
-                                            const productHover = document.createElement('ul');
-                                            productHover.classList.add('product__hover');
-                                            // ... (Thêm các phần tử con của productHover nếu cần)
-
-                                            productPic.appendChild(productHover);
-                                            productItem.appendChild(productPic);
-
-                                            const productText = document.createElement('div');
-                                            productText.classList.add('product__item__text');
-                                            productItem.appendChild(productText);
-
-                                            const productTitle = document.createElement('h6');
-                                            productTitle.id = 'title'; // Giữ ID nếu cần
-                                            productTitle.textContent = product.name;
-                                            productText.appendChild(productTitle);
-
-                                            const productPrice = document.createElement('h5');
-                                            productPrice.textContent = `$${product.price}`;
-                                            productText.appendChild(productPrice);
-
-                                            // Thêm phần tử đánh giá (ví dụ: sử dụng stars)
-                                            const productRating = document.createElement('div');
-                                            productRating.classList.add('rating');
-                                            for (let i = 0; i < 5; i++) {
-                                                const star = document.createElement('i');
-                                                star.classList.add('fa','ml-2', i < product.rating ? 'fa-star' : 'fa-star-o');
-                                                productRating.appendChild(star);
-                                            }
-                                            productText.appendChild(productRating);
-
-                                            // Thêm nút "Add To Cart"
-                                            const addToCartButton = document.createElement('button');
-                                            addToCartButton.textContent = 'Add To Cart';
-                                            addToCartButton.classList.add('add-cart');
-                                            addToCartButton.addEventListener('click', () => {
-                                                // Xử lý logic thêm vào giỏ hàng ở đây
-                                                console.log('Thêm sản phẩm', product.id, 'vào giỏ hàng');
-                                            });
-                                            productText.appendChild(addToCartButton);
-                                            document.getElementById('product-list').appendChild(productContainer);
+                                        // Thêm hiệu ứng khi hover
+                                        addToCartButton.addEventListener('mouseover', () => {
+                                            addToCartButton.classList.add('shadow-lg'); // Đổ bóng lớn khi hover
                                         });
-                                    })
-                                    .catch((error) => {
-                                        console.error('Có lỗi xảy ra:', error);
+                                        addToCartButton.addEventListener('mouseout', () => {
+                                            addToCartButton.classList.remove('shadow-lg'); // Quay lại đổ bóng nhỏ
+                                        });
+
+                                        addToCartButton.addEventListener('click', () => {
+                                            window.location.href=`./detail/${product.id}`;
+                                        });
+                                        productBody.appendChild(addToCartButton);
+                                        productCard.appendChild(productBody);
+                                        productContainer.appendChild(productCard);
+                                        productList.appendChild(productContainer);
                                     });
-                            });
-                        </script>
-                    </div>
 
+                                    // Tạo phân trang
+                                    createPagination(totalPages, page);
+                                })
+                                .catch(error => {
+                                    console.error('Có lỗi xảy ra:', error);
+                                });
+                            }
 
+                            function createPagination(totalPages, currentPage) {
+                                const pagination = document.getElementById('pagination');
+                                pagination.innerHTML = ''; // Clear previous pagination
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="product__pagination">
-                                <a class="active" href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <span>...</span>
-                                <a href="#">21</a>
-                            </div>
-                        </div>
-                    </div>
+                                for (let i = 0; i < totalPages; i++) {
+                                    const pageButton = document.createElement('button');
+                                    pageButton.textContent = i;
+                                    pageButton.classList.add('page-btn');
+                                    if (i === currentPage) {
+                                        pageButton.classList.add('active');
+                                    }
+                                    pageButton.addEventListener('click', () => {
+                                        fetchProducts(i);
+                                    });
+                                    pagination.appendChild(pageButton);
+                                }
+                            }
+
+                            // Fetch products for the first page
+                            fetchProducts(currentPage);
+                        });
+                    </script>
+
+                    <style>
+                        #pagination {
+                            display: flex;
+                            justify-content: center;
+                            margin-top: 20px;
+                        }
+
+                        .page-btn {
+                            padding: 10px;
+                            margin: 0 5px;
+                            cursor: pointer;
+                            border: 1px solid #ddd;
+                            background-color: #fff;
+                        }
+
+                        .page-btn.active {
+                            background-color: #ffb13a;
+                            color: white;
+                        }
+
+                        .page-btn:hover {
+                            background-color: #ddd;
+                        }
+                    </style>
                 </div>
             </div>
         </div>
@@ -583,16 +935,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

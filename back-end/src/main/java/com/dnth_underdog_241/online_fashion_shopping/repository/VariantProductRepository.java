@@ -10,18 +10,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
 @Repository
 public interface VariantProductRepository extends JpaRepository<VariantProduct, Long>
 {
-    boolean existsByProductIdAndSizeAndColour(Long productId, Size size, Colour colour);
+    boolean existsByProductId(Long productId);
 
 
     @Query("select v from VariantProduct v " +
-            "where v.product.id = :productId " +
-            "and v.size.size = :size " +
-            "and v.colour.colour = :colour")
-    Optional<VariantProduct> findByProductIdAndSizeAndColour(Long productId, SizeEnum size, ColourEnum colour);
+            "where v.product.id = :productId and v.colour = :color and v.size = :size")
+    VariantProduct findByIdProduct(Long productId, Colour color, Size size );
+
+
+    @Query("select v from VariantProduct v " +
+            "where v.product.id = :productId ")
+    List<VariantProduct> findByProductId(Long productId);
 }
