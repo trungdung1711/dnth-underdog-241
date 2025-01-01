@@ -56,7 +56,7 @@ public class VariantProductService
             importTransaction.setStatus("SUCCESSFUL");
             importTransaction.setSupplierEnum(SupplierEnum.getRandomSupplier());
 
-            importTransaction.setUnitCost();
+            importTransaction.setUnitCost(variantProductCreateRequestDto.getStock());
 
             return;
         }
