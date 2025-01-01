@@ -52,9 +52,9 @@ public class EmployeeController
                 .body(signUpResponseDto);
     }
 
-    @GetMapping
+    @GetMapping("/asdfladsfj")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<WebUserGetDTO>> getAllEmployee() {
+    public ResponseEntity<List<WebUserGetDTO>> getAllEmployeesdfdsfdfs() {
         Role roleEmployee = roleRepository
                 .findByName(RoleEnum.ROLE_EMPLOYEE)
                 .get();

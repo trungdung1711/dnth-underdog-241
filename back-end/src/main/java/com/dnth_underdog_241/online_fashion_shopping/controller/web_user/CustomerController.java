@@ -42,11 +42,12 @@ public class CustomerController
    private  final WebUserMapper webUserMapper;
    private final AddressService addressService;
    private final RoleRepository roleRepository;
+
    private final CustomerService customerService;
 
    // Lấy danh sách khách hàng
    @GetMapping("/index")
-   public ResponseEntity<List<WebUserGetDTO>> getAllCustomers() {
+   public ResponseEntity<List<WebUserGetDTO>> getAllCustomersUpdate() {
       List<WebUser> brands = webUserRepository.findAll();
        return null;
    }
@@ -99,8 +100,8 @@ public class CustomerController
               .body(null);
    }
 
-   @GetMapping
-   public ResponseEntity<List<WebUserGetDTO>> getAllCustomer()
+   @GetMapping("/sdfsdfsdf")
+   public ResponseEntity<List<WebUserGetDTO>> getAllCustomerUpdatesdffdsf()
    {
       Role roleEmployee = roleRepository
               .findByName(RoleEnum.ROLE_CUSTOMER)
