@@ -120,7 +120,7 @@ public class ProductController
                     @PathVariable Long productId
             ) throws IOException
     {
-        variantProductService.createVariantProduct(variantProductCreateRequestDto, picture);
+        variantProductService.createOrAddVariantProduct(variantProductCreateRequestDto, picture);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(null);

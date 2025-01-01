@@ -6,13 +6,11 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.response.VariantProduct
 import com.dnth_underdog_241.online_fashion_shopping.exception.ResourceAlreadyExistException;
 import com.dnth_underdog_241.online_fashion_shopping.exception.ResourcesNotFound;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.VariantProductMapper;
-import com.dnth_underdog_241.online_fashion_shopping.model.Colour;
-import com.dnth_underdog_241.online_fashion_shopping.model.Product;
-import com.dnth_underdog_241.online_fashion_shopping.model.Size;
-import com.dnth_underdog_241.online_fashion_shopping.model.VariantProduct;
+import com.dnth_underdog_241.online_fashion_shopping.model.*;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.FileLocation;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SupplierEnum;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ColourRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.SizeRepository;
@@ -23,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 
 @Service
@@ -38,13 +37,29 @@ public class VariantProductService
     private final VariantProductRepository variantProductRepository;
 
 
-    public void createVariantProduct(VariantProductCreateRequestDto variantProductCreateRequestDto, MultipartFile picture) throws IOException
+    public void createOrAddVariantProduct(VariantProductCreateRequestDto variantProductCreateRequestDto, MultipartFile picture) throws IOException
     {
         Size size = sizeRepository.findById(variantProductCreateRequestDto.getSize()).orElseThrow(() -> new ResourcesNotFound("Size not found"));
         Colour colour = colourRepository.findById(variantProductCreateRequestDto.getColour()).orElseThrow(() -> new ResourcesNotFound("Colour not found"));
 
+        ImportTransaction importTransaction = new ImportTransaction();
+
+        importTransaction.setDate(LocalDate.now());
+
         if (variantProductRepository.existsByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size, colour))
-            throw new ResourceAlreadyExistException("Product variant already exists");
+        {
+            VariantProduct variantProduct = variantProductRepository.findByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size.getSize(), colour.getColour()).get();
+
+            variantProduct.setStock(variantProduct.getStock() + variantProductCreateRequestDto.getStock());
+
+
+            importTransaction.setStatus("SUCCESSFUL");
+            importTransaction.setSupplierEnum(SupplierEnum.getRandomSupplier());
+
+            importTransaction.setUnitCost();
+
+            return;
+        }
 
         Product product = productRepository.findProductById(variantProductCreateRequestDto.getId());
 
