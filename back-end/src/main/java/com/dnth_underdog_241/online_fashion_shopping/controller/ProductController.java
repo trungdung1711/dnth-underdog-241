@@ -76,14 +76,6 @@ public class ProductController
     }
 
 
-    @PostMapping
-    @PostAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<Void> createVariantProduct()
-    {
-        return null;
-    }
-
-
     @GetMapping()
     public ResponseEntity<Page<ProductGetAllResponseDto>> getAllProducts
             (
@@ -120,7 +112,7 @@ public class ProductController
                     @PathVariable Long productId
             ) throws IOException
     {
-        variantProductService.createVariantProduct(variantProductCreateRequestDto, picture);
+        variantProductService.createOrAddVariantProduct(variantProductCreateRequestDto, picture);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(null);
@@ -138,5 +130,5 @@ public class ProductController
     }
 
 
-
+ToanBA
 }
