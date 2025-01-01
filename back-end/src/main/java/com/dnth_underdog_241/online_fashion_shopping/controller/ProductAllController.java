@@ -12,6 +12,7 @@ import com.dnth_underdog_241.online_fashion_shopping.mapper.VariantProductMapper
 import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
 import com.dnth_underdog_241.online_fashion_shopping.model.VariantProduct;
+import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.CategoryEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.Material;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
@@ -45,20 +46,43 @@ public class ProductAllController {
 
 
     @GetMapping
-    public ResponseEntity<List<ProductGetAllResponseDto>> getBranchAll()
+    public ResponseEntity<Page<ProductGetAllResponseDto>> getProductAllL(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size
+    )
     {
-        List<Product> brands = productRepository.findAll();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(
-                        brands
-                                .stream()
-                                .map(productMapper::toProductGetAllDto)
-                                .collect(Collectors.toList())
-                );
+                .body(productService.getAllProducts(page, size));
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<Page<ProductGetAllResponseDto>> getProductAllByCategory(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam Long categoryId
+    )
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getAllProductsByCategory(page, size, categoryId));
+    }
+
+
+    @GetMapping("/brand")
+    public ResponseEntity<Page<ProductGetAllResponseDto>> getProductAllByBrand(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam Long brandId
+    )
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getAllProductsByBrand(page, size, brandId));
     }
 
     private final ProductService productService;
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostAuthorize("hasRole('EMPLOYEE') or hasRole('ADMIN')")
     public ResponseEntity<Void> createProduct

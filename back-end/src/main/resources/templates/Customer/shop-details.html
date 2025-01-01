@@ -127,7 +127,7 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
+                            <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                         </div>
                         <!-- User Name -->
                         <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
@@ -521,7 +521,7 @@
                 const pathParts = window.location.pathname.split('/');
                 const id = pathParts[pathParts.length - 1];
 
-                const userInfoUrl1 = `http://localhost:8080/api/v1/products/12/variant`;
+                const userInfoUrl1 = `http://localhost:8080/api/v1/products/${id}/variant`;
 
                 // Fetch dữ liệu từ API
                 fetch(userInfoUrl1, {
@@ -554,7 +554,6 @@
 
                         // Xử lý từng item và thêm vào bảng
                         variants.forEach(variant => {
-                            console.log("uhsdusf");
                             const labelsize = document.createElement('label');
                             labelsize.htmlFor = variant.size;
                             labelsize.innerText = variant.size;
@@ -602,9 +601,11 @@
                 const userid = localStorage.getItem('id');
                 const variantProductId = productid;
                 const quantity = document.getElementById('quantity').value;
+                const color = document.getElementsByName('color')[0].value;
+                const size = document.getElementsByName('size')[0].value;
 
                 const token = localStorage.getItem('token');
-                const userInfoUrl = `http://localhost:8080/api/v1/customers/${userid}/cart?variantProductId=${variantProductId}&quantity=${quantity}`;
+                const userInfoUrl = `http://localhost:8080/api/v1/customers/${userid}/cart?variantProductId=${variantProductId}&quantity=${quantity}&color=${color}&size=${size}`;
 
                 fetch(userInfoUrl, {
                     method: 'POST',
@@ -623,6 +624,7 @@
                         console.log('Sản phẩm đã được thêm vào giỏ hàng:');
                     })
                     .catch((error) => {
+                        alert("Product is out of stock.")
                         console.error('Có lỗi xảy ra:', error);
                     });
             });

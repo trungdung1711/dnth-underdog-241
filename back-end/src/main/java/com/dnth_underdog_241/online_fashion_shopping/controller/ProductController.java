@@ -94,7 +94,7 @@ public class ProductController
     {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.getAllProducts(page, size, categoryId));
+                .body(productService.getAllProducts(page, size));
     }
 
 

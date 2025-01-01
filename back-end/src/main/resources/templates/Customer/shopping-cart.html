@@ -65,7 +65,7 @@
                     <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                         <!-- Avatar -->
                         <div class="header__user">
-                            <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
+                            <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                         </div>
                         <!-- User Name -->
                         <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
@@ -266,20 +266,21 @@
 
                                 try {
                                     const response = await fetch(apiUrl, {
-                                    method: 'GET',
-                                    headers: {
-                                    'Authorization': `Bearer ${token}`,
-                                    'Content-Type': 'application/json',
-                                    },
-                                });
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${token}`
+                                        }
+                                    });
 
-                                if (!response.ok) {
-                                    throw new Error(`Error fetching cart data: ${response.statusText}`);
-                                }
+                                    if (!response.ok) {
+                                        throw new Error(`Error fetching cart data: ${response.statusText}`);
+                                    }
 
-                                const data = await response.json();
+                                    const data = await response.json();
                                     populateCartTable(data.content); // `data.content` chứa danh sách sản phẩm
-                                } catch (error) {
+                                }
+                                catch (error) {
                                     console.error('Error:', error.message);
                                     alert('Failed to fetch cart data. Please try again later.');
                                 }
@@ -325,8 +326,8 @@
                                     vtotal += parseFloat(price * quantity);
                                 });
 
-                                document.getElementById('subtotal').innerText = "$"+vtotal;
-                                document.getElementById('total').innerText = "$"+vtotal;
+                                document.getElementById('subtotal').innerText = "$"+vtotal.toFixed(2);
+                                document.getElementById('total').innerText = "$"+vtotal.toFixed(2);
 
                                 // Add event listeners for increase and decrease buttons
                                 document.querySelectorAll('.quantity-btn').forEach(button => {

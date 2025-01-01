@@ -2,6 +2,8 @@ package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.CartProductGetResponseDto;
+import com.dnth_underdog_241.online_fashion_shopping.model.Colour;
+import com.dnth_underdog_241.online_fashion_shopping.model.Size;
 import com.dnth_underdog_241.online_fashion_shopping.service.CartProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,37 +36,19 @@ public class CartController
     }
 
 
-    public enum Color {
-        BEIGE,
-        BLACK,
-        DARK_GREEN,
-        GRAY,
-        GREEN,
-        NAVY,
-        PINK,
-        WHITE,
-        WINE;
-    }
-
-    public enum Size {
-        S,     // Small
-        M,     // Medium
-        L,     // Large
-        XL,    // Extra Large
-        XXL    // Double Extra Large
-    }
-
     
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<Void> addProductToCart
+    public <color> ResponseEntity<Void> addProductToCart
             (
                     @PathVariable Long id,
                     @RequestParam Long variantProductId,
-                    @RequestParam Long quantity
+                    @RequestParam Long quantity,
+                    @RequestParam Colour color,
+                    @RequestParam Size size
             )
     {
-        cartProductService.addCartProduct(id, variantProductId, quantity);
+        cartProductService.addCartProduct(id, variantProductId, quantity, color, size);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

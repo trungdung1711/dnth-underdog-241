@@ -21,6 +21,11 @@ public interface VariantProductRepository extends JpaRepository<VariantProduct, 
 
 
     @Query("select v from VariantProduct v " +
+            "where v.product.id = :productId and v.colour = :color and v.size = :size")
+    VariantProduct findByIdProduct(Long productId, Colour color, Size size );
+
+
+    @Query("select v from VariantProduct v " +
             "where v.product.id = :productId ")
     List<VariantProduct> findByProductId(Long productId);
 }

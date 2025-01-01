@@ -65,7 +65,7 @@
                         <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
                             <!-- Avatar -->
                             <div class="header__user">
-                                <img src="/img/logo.png" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
+                                <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
                             </div>
                             <!-- User Name -->
                             <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
@@ -167,7 +167,7 @@
                             <li><a href="./home">Home</a></li>
                             <li><a href="./shop">Shop</a></li>
                             <li><a href="./contact">Contacts</a></li>
-                            <li class="active"><a href="./about">About Us</a></li>
+                            <li><a href="./about">About Us</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -200,11 +200,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
-                        <h4>About Us</h4>
-                        <div class="breadcrumb__links">
-                            <a href="../index.html">Home</a>
-                            <span>About Us</span>
-                        </div>
+                        <h4>Information Account</h4>
                     </div>
                 </div>
             </div>
@@ -217,7 +213,7 @@
 
         <div class="col-lg-4">
             <form id="avatar-form"  class="d-flex flex-column align-items-center" style="margin-top: 50px;">
-                <img id="avatar-img" src="/img/icon/cart.png" alt="Avatar" style="width: 80%; height: 80%; border-radius: 50%; border: 2px solid #ddd; object-fit: cover; margin-bottom: 20px;">
+                <img id="avatar-img" src="/img/avatar.jpg" alt="Avatar" style="width: 80%; height: 80%; border-radius: 50%; border: 2px solid #ddd; object-fit: cover; margin-bottom: 20px;">
                 <input type="file" id="upload-avatar" name="avatar" accept="image/*" style="display: none;">
                 <button type="button" id="change-avatar-btn" class="btn btn-primary mt-3" style=" margin-bottom:20px" onclick="setupChangeAvatarButton('change-avatar-btn', 'upload-avatar', 'avatar-img', 'avatar-form');">Thay đổi ảnh đại diện</button>
             </form>
