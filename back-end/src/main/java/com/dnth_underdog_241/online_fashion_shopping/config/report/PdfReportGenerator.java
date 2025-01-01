@@ -69,7 +69,7 @@ public class PdfReportGenerator
             // Add the border to all pages using a page event (after content)
     
             // Return the path to the generated report
-            return "public/reports/" + fileName;
+            return "/public/reports/" + fileName;
     
         } 
         catch (IOException e) 
@@ -439,7 +439,8 @@ public class PdfReportGenerator
 
 
     // Helper to get alternating row colors
-    private Color getRowColor(boolean isAlternateRow) {
+    private Color getRowColor(boolean isAlternateRow)
+    {
         return isAlternateRow ? new DeviceRgb(240, 240, 240) : ColorConstants.WHITE;
     }
 
