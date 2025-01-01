@@ -54,8 +54,7 @@ public class CartController
         XXL    // Double Extra Large
     }
 
-
-
+    
     @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<Void> addProductToCart
@@ -68,7 +67,7 @@ public class CartController
         cartProductService.addCartProduct(id, variantProductId, quantity);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(null);
     }
 

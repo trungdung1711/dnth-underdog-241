@@ -66,6 +66,34 @@
             background-color: #007bff;
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
         }
+    /*    -------------------------*/
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        label.btn {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        input:checked + label {
+            background-color: #737373; /* Màu nền khi được chọn */
+            color: #fff; /* Màu chữ khi được chọn */
+            border-color: #737373; /* Màu viền khi được chọn */
+        }
+
+        label.btn:hover {
+            background-color: #e9ecef; /* Hiệu ứng hover */
+        }
+
+
 
 
     </style>
@@ -236,7 +264,7 @@
                     </form>
 
                     <!-- Cart Icon -->
-                    <a href="#" class="ml-3">
+                    <a href="/cart" class="ml-3">
                         <img src="/img/icon/cart.png" alt="Cart">
                     </a>
                 </div>
@@ -339,22 +367,14 @@
                             <h3 id="productPrice"></h3>
                             <p id="productshortDescription"></p>
                             <div class="product__details__option">
-                                <div class="product__details__option__size" id="listsize">
-<!--                                    <span>Size:</span>-->
-<!--                                    <label for="xxl">xxl-->
-<!--                                        <input type="radio" id="xxl">-->
-<!--                                    </label>-->
-<!--                                    <label class="active" for="xl">xl-->
-<!--                                        <input type="radio" id="xl">-->
-<!--                                    </label>-->
-<!--                                    <label for="l">l-->
-<!--                                        <input type="radio" id="l">-->
-<!--                                    </label>-->
-<!--                                    <label for="sm">s-->
-<!--                                        <input type="radio" id="sm">-->
-<!--                                    </label>-->
+                                <div class="d-inline-block" id="listsize">
+<!--                                    <div class="form-check form-check-inline">-->
+<!--                                        <input class="form-check-input visually-hidden" type="radio" name="size" id="xxl">-->
+<!--                                        <label class="form-check-label btn btn-outline-secondary" for="xxl">XXL</label>-->
+<!--                                    </div>-->
                                 </div>
-<!--                                <br>-->
+
+                                <!--                                <br>-->
                                 <div class="form-check d-flex justify-content-center" style="position: relative; margin-top: 5%" id="listcolor">
 <!--                                    <label class="form-check-label c-1">-->
 <!--                                        <input type="radio" class="form-check-input" id="sp-1" name="color">-->
@@ -362,12 +382,42 @@
                                 </div>
                             </div>
                             <div class="product__details__cart__option">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" name="quantity" />
+                                <div class="d-flex align-items-center justify-content-center mb-3">
+                                    <label for="decrease" class="mb-0 me-2 mr-3">Quantity:</label>
+                                    <div class="input-group" style="width: auto;">
+                                        <button class="btn btn-outline-secondary" type="button" id="decrease">-</button>
+                                        <input
+                                                type="text"
+                                                class="form-control text-center"
+                                                value="1"
+                                                id="quantity"
+                                                min="1"
+                                                aria-label="Quantity"
+                                                style="width: 70px;">
+                                        <button class="btn btn-outline-secondary" type="button" id="increase">+</button>
                                     </div>
                                 </div>
-                                <button type="submit" class="primary-btn">add to cart</button>
+
+
+                                <script>
+                                    document.getElementById('decrease').addEventListener('click', function () {
+                                        const quantityInput = document.getElementById('quantity');
+                                        let currentValue = parseInt(quantityInput.value, 10);
+                                        if (!isNaN(currentValue) && currentValue > 1) {
+                                            quantityInput.value = currentValue - 1;
+                                        }
+                                    });
+
+                                    document.getElementById('increase').addEventListener('click', function () {
+                                        const quantityInput = document.getElementById('quantity');
+                                        let currentValue = parseInt(quantityInput.value, 10);
+                                        if (!isNaN(currentValue)) {
+                                            quantityInput.value = currentValue + 1;
+                                        }
+                                    });
+
+                                </script>
+                                <button class="primary-btn" id="btncart">add to cart</button>
                             </div>
                             <div class="product__details__last__option">
                                 <div>Material: <span id="productMaterial"></span></div>
@@ -494,6 +544,7 @@
 
                         const spansize = document.createElement('span');
                         spansize.innerText="Size: ";
+                        spansize.classList.add('d-inline-block', 'me-2');
                         sizecontainer.appendChild(spansize);
 
                         const spancolor = document.createElement('span');
@@ -507,15 +558,21 @@
                             const labelsize = document.createElement('label');
                             labelsize.htmlFor = variant.size;
                             labelsize.innerText = variant.size;
+                            labelsize.classList.add('form-check-label','btn','btn-outline-secondary');
 
                             const inputsize = document.createElement('input');
                             inputsize.type="radio";
                             inputsize.value = variant.size;
                             inputsize.name="size";
                             inputsize.id=variant.size;
+                            inputsize.classList.add('form-check-input','visually-hidden');
 
-                            labelsize.appendChild(inputsize);
-                            sizecontainer.appendChild(labelsize);
+
+                            const divsize = document.createElement('div');
+                            divsize.classList.add('form-check','form-check-inline');
+                            divsize.appendChild(inputsize);
+                            divsize.appendChild(labelsize);
+                            sizecontainer.appendChild(divsize);
 
                             const labelcolor = document.createElement('label');
                             labelcolor.classList.add('form-check-label');
@@ -536,39 +593,39 @@
 
             });
 
-            // document.addEventListener('submit', function (event) {
-            //     event.preventDefault(); // Ngăn chặn hành động submit mặc định của form
-            //
-            //     const userid = localStorage.getItem('id');
-            //     const variantProductId = document.getElementsByName('variantid')[0].value;
-            //     const quantity = document.getElementsByName('quantity')[0].value;
-            //     const token = localStorage.getItem('token');
-            //     const userInfoUrl = `http://localhost:8080/api/v1/customers/${userid}/cart`;
-            //
-            //     fetch(userInfoUrl, {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //             'Authorization': `Bearer ${token}`
-            //         },
-            //         body: JSON.stringify({
-            //             variantProductId: variantProductId,
-            //             quantity: quantity
-            //         })
-            //     })
-            //         .then((response) => {
-            //             if (!response.ok) {
-            //                 throw new Error('Lỗi khi gọi API: ' + response.statusText);
-            //             }
-            //             return response.json();
-            //         })
-            //         .then((data) => {
-            //             console.log('Sản phẩm đã được thêm vào giỏ hàng:', data);
-            //         })
-            //         .catch((error) => {
-            //             console.error('Có lỗi xảy ra:', error);
-            //         });
-            // });
+            document.getElementById('btncart').addEventListener('click', function (event) {
+                // event.preventDefault(); // Ngăn chặn hành động submit mặc định của form
+
+                const pathParts = window.location.pathname.split('/');
+                const productid = pathParts[pathParts.length - 1];
+
+                const userid = localStorage.getItem('id');
+                const variantProductId = productid;
+                const quantity = document.getElementById('quantity').value;
+
+                const token = localStorage.getItem('token');
+                const userInfoUrl = `http://localhost:8080/api/v1/customers/${userid}/cart?variantProductId=${variantProductId}&quantity=${quantity}`;
+
+                fetch(userInfoUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                        }
+                        alert('Product has been successfully added to your cart!');
+                    })
+                    .then(() => {
+                        console.log('Sản phẩm đã được thêm vào giỏ hàng:');
+                    })
+                    .catch((error) => {
+                        console.error('Có lỗi xảy ra:', error);
+                    });
+            });
 
         </script>
     </section>
@@ -814,7 +871,7 @@
     <script src="/js/jquery.slicknav.js"></script>
     <script src="/js/mixitup.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/main.js"></script>
+<!--    <script src="/js/main.js"></script>-->
 </body>
 
 </html>

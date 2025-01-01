@@ -219,7 +219,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="shopping__cart__table">
-                        <table>
+                        <table id="cartTable">
                             <thead>
                                 <tr>
                                     <th>Product</th>
@@ -228,89 +228,137 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-1.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>T-shirt Contrast Pocket</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-2.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Diagonal Textured Cap</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 32.50</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-3.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 47.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
-                                <tr>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="img/shopping-cart/cart-4.jpg" alt="">
-                                        </div>
-                                        <div class="product__cart__item__text">
-                                            <h6>Basic Flowing Scarf</h6>
-                                            <h5>$98.49</h5>
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="pro-qty-2">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">$ 30.00</td>
-                                    <td class="cart__close"><i class="fa fa-close"></i></td>
-                                </tr>
+                            <tbody id="tbdcart">
+<!--                                <tr>-->
+<!--                                    <td class="product__cart__item">-->
+<!--                                        <div class="product__cart__item__pic">-->
+<!--                                            <img src="img/shopping-cart/cart-1.jpg" alt="">-->
+<!--                                        </div>-->
+<!--                                        <div class="product__cart__item__text">-->
+<!--                                            <h6>T-shirt Contrast Pocket</h6>-->
+<!--                                            <h5>$98.49</h5>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                    <td class="quantity__item">-->
+<!--                                        <div class="quantity">-->
+<!--                                            <div class="pro-qty-2">-->
+<!--                                                <input type="text" value="1">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                    <td class="cart__price">$ 30.00</td>-->
+<!--                                    <td class="cart__close"><i class="fa fa-close"></i></td>-->
+<!--                                </tr>-->
                             </tbody>
                         </table>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', async function () {
+                                const userId = localStorage.getItem('id'); // Lấy userId từ localStorage
+                                const token = localStorage.getItem('token'); // Lấy token từ localStorage
+
+                                if (!userId || !token) {
+                                    alert('Please log in to view your cart.');
+                                    return;
+                                }
+
+                                const apiUrl = `http://localhost:8080/api/v1/customers/${userId}/cart?page=0&size=10`;
+
+                                try {
+                                    const response = await fetch(apiUrl, {
+                                    method: 'GET',
+                                    headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                    },
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`Error fetching cart data: ${response.statusText}`);
+                                }
+
+                                const data = await response.json();
+                                    populateCartTable(data.content); // `data.content` chứa danh sách sản phẩm
+                                } catch (error) {
+                                    console.error('Error:', error.message);
+                                    alert('Failed to fetch cart data. Please try again later.');
+                                }
+                            });
+
+                            function populateCartTable(products) {
+                                const cartTableBody = document.getElementById('tbdcart');
+                                cartTableBody.innerHTML = ''; // Xóa dữ liệu cũ (nếu có)
+
+                                if (!products || products.length === 0) {
+                                    cartTableBody.innerHTML = '<tr><td colspan="4">Your cart is empty.</td></tr>';
+                                    return;
+                                }
+
+                                products.forEach(product => {
+                                    const { id, name, price, quantity, thumbnail } = product;
+
+                                    const row = document.createElement('tr');
+                                    row.innerHTML = `
+                                        <td class="product__cart__item">
+                                            <div class="product__cart__item__pic">
+                                                <img src="${thumbnail}" alt="${name}" style="width: 100px; height: auto;" />
+                                            </div>
+                                            <div class="product__cart__item__text">
+                                                <h6>${name}</h6>
+                                                <h5>${price}</h5>
+                                            </div>
+                                        </td>
+                                        <div class="quantity-control">
+                                            <button class="quantity-btn decrease" data-id="${id}">-</button>
+                                            <input type="number" id="quantity-${id}" value="${quantity}" min="1" style="width: 60px;">
+                                            <button class="quantity-btn increase" data-id="${id}">+</button>
+                                        </div>
+                                        <td>${price*quantity}</td>
+                                        <td>
+                                            <button class="remove-btn" data-id="${id}">Remove</button>
+                                        </td>
+                                    `;
+                                    cartTableBody.appendChild(row);
+                                });
+
+                                // Thêm sự kiện click cho nút Remove
+                                document.querySelectorAll('.remove-btn').forEach(button => {
+                                        button.addEventListener('click', function () {
+                                        const productId = this.dataset.id;
+                                        removeProductFromCart(productId);
+                                        });
+                                    });
+                            }
+
+                            async function removeProductFromCart(productId) {
+                                const userId = localStorage.getItem('id');
+                                const token = localStorage.getItem('token');
+
+                                const apiUrl = `http://localhost:8080/api/v1/customers/${userId}/cart/${productId}`;
+
+                                try {
+                                    const response = await fetch(apiUrl, {
+                                    method: 'DELETE',
+                                    headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                    },
+                                });
+
+                                if (!response.ok) {
+                                    throw new Error(`Error removing product: ${response.statusText}`);
+                                }
+
+                                alert('Product removed successfully.');
+                                location.reload(); // Reload lại trang sau khi xóa thành công
+                                } catch (error) {
+                                    console.error('Error:', error.message);
+                                    alert('Failed to remove product. Please try again later.');
+                                }
+                            }
+
+                        </script>
+
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
