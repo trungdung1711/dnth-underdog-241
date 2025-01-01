@@ -76,14 +76,6 @@ public class ProductController
     }
 
 
-    @PostMapping
-    @PostAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<Void> createVariantProduct()
-    {
-        return null;
-    }
-
-
     @GetMapping()
     public ResponseEntity<Page<ProductGetAllResponseDto>> getAllProducts
             (
@@ -155,5 +147,4 @@ public class ProductController
                                         .getVariantProduct(productId, size, colour)
                         );
     }
-
 }

@@ -2,6 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.model;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SupplierEnum;
+import com.dnth_underdog_241.online_fashion_shopping.model.user.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,7 +41,7 @@ public class ImportTransaction
 
 
     @Column(name = "unit_cost", nullable = false)
-    private String unitCost;
+    private Double unitCost;
 
 
     @Column(name = "tax", nullable = false)
@@ -53,4 +54,9 @@ public class ImportTransaction
 
     @Column(name = "total_cost", nullable = false)
     private Double totalCost;
+
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "variant_product_id", nullable = false)
+    private VariantProduct variantProduct;
 }

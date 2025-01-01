@@ -44,7 +44,7 @@ public class ImportCostCalculatorUtil
      * @param quantity     the number of units being imported.
      * @return the total cost including shipping and taxes.
      */
-    public static double calculateTotalCost(double unitCost, int quantity)
+    public static double calculateTotalCost(Double unitCost, Long quantity)
     {
         double productCost = unitCost * quantity;
         double taxRate = generateRandomTaxRate();
