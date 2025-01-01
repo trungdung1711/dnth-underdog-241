@@ -236,7 +236,7 @@
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
-            <div class="checkout__form">
+<!--            <div class="checkout__form">-->
                 <form action="#">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
@@ -247,100 +247,86 @@
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Fist Name<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" id="FirstName">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Last Name<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" id="LastName">
                                     </div>
                                 </div>
                             </div>
                             <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
                                 <p>Address<span>*</span></p>
                                 <input type="text" placeholder="Street Address" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Phone<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" id="PhoneNumber">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Email<span>*</span></p>
-                                        <input type="text">
+                                        <input type="text" id="email">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc">
-                                    Create an account?
-                                    <input type="checkbox" id="acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Note about your order, e.g, special noe for delivery
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
                             </div>
                             <div class="checkout__input">
                                 <p>Order notes<span>*</span></p>
                                 <input type="text"
                                 placeholder="Notes about your order, e.g. special notes for delivery.">
                             </div>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                                    const userInfoUrl = `http://localhost:8080/api/v1/users/${userId}/info`;
+                                    const token = localStorage.getItem('token');
+
+                                    fetch(userInfoUrl, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                        },
+                                    })
+                                        .then((response) => {
+                                            if (!response.ok) {
+                                                throw new Error('Lỗi khi gọi API: ' + response.statusText);
+                                            }
+                                            return response.json();
+                                        })
+                                        .then((data) => {
+                                            // Hiển thị dữ liệu lên view
+                                            document.getElementById('FirstName').value = data.firstName ? data.firstName : "";
+                                            document.getElementById('LastName').value  = data.lastName ? data.lastName : "";
+                                            document.getElementById('PhoneNumber').value  = data.phoneNumber ? data.phoneNumber : "";
+                                            document.getElementById('email').value  = data.email ? data.email : "";
+                                        })
+                                        .catch((error) => {
+                                            console.error('Có lỗi xảy ra:', error);
+                                        });
+                                });
+                            </script>
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
                                 <h4 class="order__title">Your order</h4>
                                 <div class="checkout__order__products">Product <span>Total</span></div>
-                                <ul class="checkout__total__products">
-                                    <li>01. Vanilla salted caramel <span>$ 300.0</span></li>
-                                    <li>02. German chocolate <span>$ 170.0</span></li>
-                                    <li>03. Sweet autumn <span>$ 170.0</span></li>
-                                    <li>04. Cluten free mini dozen <span>$ 110.0</span></li>
+                                <ul class="checkout__total__products" id="tbdcart">
+<!--                                    <li>01. Vanilla salted caramel <span>$ 300.0</span></li>-->
+<!--                                    <li>02. German chocolate <span>$ 170.0</span></li>-->
+<!--                                    <li>03. Sweet autumn <span>$ 170.0</span></li>-->
+<!--                                    <li>04. Cluten free mini dozen <span>$ 110.0</span></li>-->
                                 </ul>
                                 <ul class="checkout__total__all">
-                                    <li>Subtotal <span>$750.99</span></li>
-                                    <li>Total <span>$750.99</span></li>
+                                    <li>Subtotal <span id="subtotal"></span></li>
+                                    <li>Total <span id="total"></span></li>
                                 </ul>
-                                <div class="checkout__input__checkbox">
-                                    <label for="acc-or">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-or">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
                                 <div class="checkout__input__checkbox">
                                     <label for="payment">
                                         Check Payment
@@ -358,6 +344,68 @@
                                 <button type="submit" class="site-btn">PLACE ORDER</button>
                             </div>
                         </div>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', async function () {
+                                const userId = localStorage.getItem('id'); // Lấy userId từ localStorage
+                                const token = localStorage.getItem('token'); // Lấy token từ localStorage
+
+                                if (!userId || !token) {
+                                    alert('Please log in to view your cart.');
+                                    return;
+                                }
+
+                                const apiUrl = `http://localhost:8080/api/v1/customers/${userId}/cart?page=0&size=10`;
+
+                                try {
+                                    const response = await fetch(apiUrl, {
+                                        method: 'GET',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json',
+                                        },
+                                    });
+
+                                    if (!response.ok) {
+                                        throw new Error(`Error fetching cart data: ${response.statusText}`);
+                                    }
+
+                                    const data = await response.json();
+                                    populateCartTable(data.content); // `data.content` chứa danh sách sản phẩm
+                                } catch (error) {
+                                    console.error('Error:', error.message);
+                                    alert('Failed to fetch cart data. Please try again later.');
+                                }
+                            });
+
+                            function populateCartTable(products) {
+                                const cartTableBody = document.getElementById('tbdcart');
+                                cartTableBody.innerHTML = ''; // Xóa dữ liệu cũ (nếu có)
+
+                                if (!products || products.length === 0) {
+                                    const li = document.createElement('li');
+                                    li.innerText = "Your bill is empty."
+                                    cartTableBody.appendChild(li);
+                                    return;
+                                }
+
+                                let vtotal = 0;
+                                let count = 0;
+                                products.forEach(product => {
+                                    const { id, name, price, quantity, thumbnail } = product;
+
+                                    const li = document.createElement('li');
+                                    li.innerHTML = `
+                                        ${count}.${name} x${quantity} <span>${price}</span>
+                                    `;
+                                    cartTableBody.appendChild(li);
+                                    vtotal += parseFloat(price * quantity);
+                                    count += 1;
+                                });
+
+                                document.getElementById('subtotal').innerText = "$"+vtotal;
+                                document.getElementById('total').innerText = "$"+vtotal;
+                            }
+                        </script>
                     </div>
                 </form>
             </div>

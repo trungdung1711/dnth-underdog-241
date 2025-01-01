@@ -165,7 +165,7 @@
                 // Chuyển hướng dựa trên vai trò
                 if (roles === "ROLE_CUSTOMER") {
                     window.location.href = "/home";
-                } else if (roles === "ROLE_ADMIN") {
+                } else if (roles === "ROLE_ADMIN" || roles === "ROLE_EMPLOYEE") {
                     window.location.href = "/admin";
                 } else {
                     throw new Error("Unrecognized role.");

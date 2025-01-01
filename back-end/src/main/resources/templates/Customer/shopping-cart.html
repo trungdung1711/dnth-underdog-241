@@ -294,6 +294,7 @@
                                     return;
                                 }
 
+                                let vtotal = 0;
                                 products.forEach(product => {
                                     const { id, name, price, quantity, thumbnail } = product;
 
@@ -315,13 +316,48 @@
                                                 <button class="btn btn-secondary btn-sm quantity-btn increase" data-id="${id}">+</button>
                                             </div>
                                         </td>
-                                        <td>${(price * quantity).toFixed(2)}</td>
+                                        <td id="price-${id}">${(price * quantity).toFixed(2)}</td>
                                         <td>
                                             <button class="btn btn-white btn-sm shadow-sm remove-btn" data-id="${id}">Remove</button>
                                         </td>
                                     `;
                                     cartTableBody.appendChild(row);
+                                    vtotal += parseFloat(price * quantity);
                                 });
+
+                                document.getElementById('subtotal').innerText = "$"+vtotal;
+                                document.getElementById('total').innerText = "$"+vtotal;
+
+                                // Add event listeners for increase and decrease buttons
+                                document.querySelectorAll('.quantity-btn').forEach(button => {
+                                    button.addEventListener('click', function() {
+                                        const productId = this.dataset.id;
+                                        const input = document.getElementById(`quantity-${productId}`);
+                                        let newQuantity = parseInt(input.value);
+                                        let currentQuantity = newQuantity;
+                                        if (this.classList.contains('increase')) {
+                                            newQuantity += 1;
+                                        } else if (this.classList.contains('decrease')) {
+                                            newQuantity = Math.max(1, newQuantity - 1);
+                                        }
+                                        input.value = newQuantity;
+
+                                        // Update price and subtotal
+                                        const price = parseFloat(document.querySelector(`#price-${productId}`).innerText);
+                                        const updatedPrice = newQuantity * (price/currentQuantity);
+                                        document.querySelector(`#price-${productId}`).innerText = updatedPrice.toFixed(2);
+                                        updateSubtotal();
+                                    });
+                                });
+                                // Function to update the subtotal
+                                function updateSubtotal() {
+                                    let total = 0;
+                                    document.querySelectorAll('td[id^="price-"]').forEach(priceElem => {
+                                        total += parseFloat(priceElem.innerText);
+                                    });
+                                    document.getElementById('subtotal').innerText = "$" + total.toFixed(2);
+                                    document.getElementById('total').innerText = "$" + total.toFixed(2);
+                                }
 
                                 // Thêm sự kiện click cho nút Remove
                                 document.querySelectorAll('.remove-btn').forEach(button => {
@@ -331,30 +367,7 @@
                                         });
                                     });
 
-                                // Thêm sự kiện click cho nút giảm số lượng
-                                document.querySelectorAll('.decrease').forEach(button => {
-                                    button.addEventListener('click', function () {
-                                        const productId = this.dataset.id;
-                                        const input = document.getElementById(`quantity-${productId}`);
-                                        let newQuantity = parseInt(input.value) - 1;
-                                        if (newQuantity < 1) newQuantity = 1;
-                                        input.value = newQuantity;
-                                        updateProductQuantity(productId, newQuantity);
-                                    });
-                                });
-
-                                // Thêm sự kiện click cho nút tăng số lượng
-                                document.querySelectorAll('.increase').forEach(button => {
-                                    button.addEventListener('click', function () {
-                                        const productId = this.dataset.id;
-                                        const input = document.getElementById(`quantity-${productId}`);
-                                        let newQuantity = parseInt(input.value) + 1;
-                                        input.value = newQuantity;
-                                        updateProductQuantity(productId, newQuantity);
-                                    });
-                                });
                             }
-
                             async function removeProductFromCart(productId) {
                                 const userId = localStorage.getItem('id');
                                 const token = localStorage.getItem('token');
@@ -388,12 +401,7 @@
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="continue__btn">
-                                <a href="#">Continue Shopping</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="continue__btn update__btn">
-                                <a href="#"><i class="fa fa-spinner"></i> Update cart</a>
+                                <a href="/shop">Continue Shopping</a>
                             </div>
                         </div>
                     </div>
@@ -409,10 +417,15 @@
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>$ 169.50</span></li>
-                            <li>Total <span>$ 169.50</span></li>
+                            <li>Subtotal <span id="subtotal"></span></li>
+                            <li>Total <span id="total"></span></li>
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <a href="#" id="checkout" class="primary-btn">Proceed to checkout</a>
+                        <script>
+                            document.getElementById('checkout').addEventListener('click' , async function () {
+                               window.location.href = "/checkout";
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
