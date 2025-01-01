@@ -308,14 +308,16 @@
                                                 <h5>${price}</h5>
                                             </div>
                                         </td>
-                                        <div class="quantity-control">
-                                            <button class="quantity-btn decrease" data-id="${id}">-</button>
-                                            <input type="number" id="quantity-${id}" value="${quantity}" min="1" style="width: 60px;">
-                                            <button class="quantity-btn increase" data-id="${id}">+</button>
-                                        </div>
-                                        <td>${price*quantity}</td>
                                         <td>
-                                            <button class="remove-btn" data-id="${id}">Remove</button>
+                                            <div class="quantity-control d-flex align-items-center">
+                                                <button class="btn btn-secondary btn-sm quantity-btn decrease" data-id="${id}">-</button>
+                                                <input type="number" id="quantity-${id}" value="${quantity}" min="1" class="form-control" style="width: 60px;">
+                                                <button class="btn btn-secondary btn-sm quantity-btn increase" data-id="${id}">+</button>
+                                            </div>
+                                        </td>
+                                        <td>${(price * quantity).toFixed(2)}</td>
+                                        <td>
+                                            <button class="btn btn-white btn-sm shadow-sm remove-btn" data-id="${id}">Remove</button>
                                         </td>
                                     `;
                                     cartTableBody.appendChild(row);
@@ -328,6 +330,29 @@
                                         removeProductFromCart(productId);
                                         });
                                     });
+
+                                // Thêm sự kiện click cho nút giảm số lượng
+                                document.querySelectorAll('.decrease').forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        const productId = this.dataset.id;
+                                        const input = document.getElementById(`quantity-${productId}`);
+                                        let newQuantity = parseInt(input.value) - 1;
+                                        if (newQuantity < 1) newQuantity = 1;
+                                        input.value = newQuantity;
+                                        updateProductQuantity(productId, newQuantity);
+                                    });
+                                });
+
+                                // Thêm sự kiện click cho nút tăng số lượng
+                                document.querySelectorAll('.increase').forEach(button => {
+                                    button.addEventListener('click', function () {
+                                        const productId = this.dataset.id;
+                                        const input = document.getElementById(`quantity-${productId}`);
+                                        let newQuantity = parseInt(input.value) + 1;
+                                        input.value = newQuantity;
+                                        updateProductQuantity(productId, newQuantity);
+                                    });
+                                });
                             }
 
                             async function removeProductFromCart(productId) {
