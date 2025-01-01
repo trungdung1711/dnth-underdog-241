@@ -37,7 +37,7 @@ public class Product
     private String shortDescription;
 
 
-    @Column(name = "long_description", columnDefinition = "TEXT")
+    @Column(name = "long_description", length = 1000)
     private String longDescription;
 
 

@@ -2,6 +2,7 @@ package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
+import com.dnth_underdog_241.online_fashion_shopping.dto.response.EmployeeGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
@@ -13,6 +14,8 @@ import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepositor
 import com.dnth_underdog_241.online_fashion_shopping.service.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,8 +54,7 @@ public class EmployeeController
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<WebUserGetDTO>> getAllEmployee()
-    {
+    public ResponseEntity<List<WebUserGetDTO>> getAllEmployee() {
         Role roleEmployee = roleRepository
                 .findByName(RoleEnum.ROLE_EMPLOYEE)
                 .get();
@@ -65,5 +67,14 @@ public class EmployeeController
                                 .map(webUserMapper::toDto)
                                 .collect(Collectors.toList())
                 );
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Page<EmployeeGetAllResponseDto>> getAllEmployees(Pageable pageable)
+    {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(employeeService.getAllEmployees(pageable));
     }
 }

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class WebUserController {
+public class WebUserController
+{
     private final WebUserService webUserService;
+
 
     @PutMapping("/{id}/info")
     @PreAuthorize("authentication.principal.getId() == #id")
@@ -25,6 +27,7 @@ public class WebUserController {
                 .body(responseWebUserUpdateWebUserRequestDto);
     }
 
+
     @GetMapping("/{id}/info")
     @PreAuthorize("hasRole('ADMIN') or authentication.principal.getId() == #id ")
     public ResponseEntity<WebUserGetDTO> getWebUser(@PathVariable Long id)
@@ -34,6 +37,7 @@ public class WebUserController {
                 .status(HttpStatus.OK)
                 .body(getWebUserResponseDTO);
     }
+
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")

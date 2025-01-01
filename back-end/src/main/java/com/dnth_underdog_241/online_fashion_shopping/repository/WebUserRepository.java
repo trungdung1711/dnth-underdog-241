@@ -3,6 +3,8 @@ package com.dnth_underdog_241.online_fashion_shopping.repository;
 
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +21,4 @@ public interface WebUserRepository extends JpaRepository<WebUser, Long>
 
 
     boolean existsByPhoneNumber(String phoneNumber);
-
-
-    void deleteWebUserByPhoneNumber(String phoneNumber);
 }
