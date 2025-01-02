@@ -17,6 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     @Query("select p from Product p where p.category.id = :categoryId")
     Page<Product> findAllByCategoryId(Pageable pageable, @Param("categoryId") Long categoryId);
 
+
     @Query("select p from Product p where p.brand.id = :brandId")
     Page<Product> findAllByBrandId(Pageable pageable, @Param("brandId") Long brandId);
 
@@ -26,4 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
 
 
     Product findProductById(Long id);
+
+
+    void removeProductById(Long productId);
 }

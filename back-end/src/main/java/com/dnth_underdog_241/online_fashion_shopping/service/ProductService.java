@@ -164,11 +164,13 @@ public class ProductService
         return productPage.map(productMapper::toProductGetAllDto);
     }
 
+
     public Page<ProductGetAllResponseDto> getAllProductsByCategory(int page, int size, Long categoryId)
     {
         Page<Product> productPage = productRepository.findAllByCategoryId(PageRequest.of(page, size), categoryId);
         return productPage.map(productMapper::toProductGetAllDto);
     }
+
 
     public Page<ProductGetAllResponseDto> getAllProductsByBrand(int page, int size, Long brandId)
     {
@@ -195,6 +197,7 @@ public class ProductService
 
     public void deleteProduct(Long productId)
     {
-        productRepository.deleteById(productId);
+
+        productRepository.removeProductById(productId);
     }
 }

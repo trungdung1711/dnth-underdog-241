@@ -38,7 +38,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/products")
 @RequiredArgsConstructor
-public class ProductAllController {
+public class ProductAllController
+{
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -132,10 +133,10 @@ public class ProductAllController {
     public ResponseEntity<Void> addProductVariant
             (
                     @RequestPart("variant") VariantProductCreateRequestDto variantProductCreateRequestDto,
-                    @RequestPart("picture") MultipartFile picture
-            ) throws IOException
+                    @RequestPart("picture") MultipartFile picture,
+                    @PathVariable String productId) throws IOException
     {
-        variantProductService.createVariantProduct(variantProductCreateRequestDto, picture);
+        variantProductService.createOrAddVariantProduct(variantProductCreateRequestDto, picture);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(null);

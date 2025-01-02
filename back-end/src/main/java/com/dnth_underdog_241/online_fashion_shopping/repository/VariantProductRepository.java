@@ -17,9 +17,6 @@ import java.util.Optional;
 @Repository
 public interface VariantProductRepository extends JpaRepository<VariantProduct, Long>
 {
-    boolean existsByProductId(Long productId);
-
-
     @Query("select v from VariantProduct v " +
             "where v.product.id = :productId and v.colour = :color and v.size = :size")
     VariantProduct findByIdProduct(Long productId, Colour color, Size size );
@@ -28,4 +25,14 @@ public interface VariantProductRepository extends JpaRepository<VariantProduct, 
     @Query("select v from VariantProduct v " +
             "where v.product.id = :productId ")
     List<VariantProduct> findByProductId(Long productId);
+
+
+    boolean existsByProductIdAndSizeAndColour(Long productId, Size size, Colour colour);
+
+
+    @Query("select v from VariantProduct v " +
+            "where v.product.id = :productId " +
+            "and v.size.size = :size " +
+            "and v.colour.colour = :colour")
+    Optional<VariantProduct> findByProductIdAndSizeAndColour(Long productId, SizeEnum size, ColourEnum colour);
 }
