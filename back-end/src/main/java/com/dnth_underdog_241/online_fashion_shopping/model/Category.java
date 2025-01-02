@@ -37,9 +37,11 @@ public class Category
 
 
     @OneToMany(mappedBy = "parent", orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Category> children = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "category", orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 }

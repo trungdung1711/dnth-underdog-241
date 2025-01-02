@@ -1,23 +1,9 @@
 package com.dnth_underdog_241.online_fashion_shopping.config;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.Category;
-import com.dnth_underdog_241.online_fashion_shopping.model.Size;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.CategoryEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
-import com.dnth_underdog_241.online_fashion_shopping.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-
-import com.dnth_underdog_241.online_fashion_shopping.model.Colour;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 @Slf4j

@@ -54,6 +54,7 @@ public class Product
 
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @Builder.Default
     private List<Picture> pictures = new ArrayList<>();
 
 
@@ -68,10 +69,12 @@ public class Product
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<VariantProduct> variantProducts = new ArrayList<>();
 
 

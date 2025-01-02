@@ -37,6 +37,7 @@ public class OrderItem
 
 
     @Column(name = "sku", nullable = false)
+    @Builder.Default
     private String sku = "OFS_";
 
 

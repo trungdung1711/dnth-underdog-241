@@ -13,12 +13,9 @@ import com.dnth_underdog_241.online_fashion_shopping.model.Order;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.repository.CartProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.OrderRepository;
-import com.dnth_underdog_241.online_fashion_shopping.repository.VariantProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
-import com.dnth_underdog_241.online_fashion_shopping.service.customer.CustomerService;
 import com.dnth_underdog_241.online_fashion_shopping.util.WebUserUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,7 +30,6 @@ public class OrderService
     private final OrderMapper orderMapper;
     private final WebUserUtil webUserUtil;
     private final WebUserRepository webUserRepository;
-    private final VariantProductRepository variantProductRepository;
     private final CartProductRepository cartProductRepository;
     private final OrderRepository orderRepository;
 

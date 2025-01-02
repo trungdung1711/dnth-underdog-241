@@ -11,7 +11,6 @@ import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Category;
 import com.dnth_underdog_241.online_fashion_shopping.model.Picture;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.CategoryEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.FileLocation;
 import com.dnth_underdog_241.online_fashion_shopping.repository.BrandRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.CategoryRepository;

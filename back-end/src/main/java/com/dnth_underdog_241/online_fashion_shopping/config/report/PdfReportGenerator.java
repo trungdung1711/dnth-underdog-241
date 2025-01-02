@@ -11,7 +11,6 @@ import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
-import com.itextpdf.kernel.colors.WebColors;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -512,30 +511,5 @@ public class PdfReportGenerator
                 .setFontSize(12)
                 .setTextAlignment(TextAlignment.LEFT)
                 .setMarginBottom(20));
-    }
-
-
-    private Table createTableTemplate(String[] headers)
-    {
-        Table table = new Table(headers.length)
-                .setWidth(UnitValue.createPercentValue(90))
-                .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                .setBorder(new SolidBorder(1));
-
-        for (String header : headers) {
-            table.addHeaderCell(createHeaderCell(header));
-        }
-
-        return table;
-    }
-
-
-    private Cell createHeaderCell(String content)
-    {
-        return new Cell()
-                .add(new Paragraph(content).setBold().setFontColor(WebColors.getRGBColor("#2C3E50")))
-                .setBackgroundColor(WebColors.getRGBColor("#ECF0F1"))
-                .setTextAlignment(TextAlignment.CENTER)
-                .setPadding(8);
     }
 }

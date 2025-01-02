@@ -2,12 +2,9 @@ package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.SignUpRequestDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.SignUpResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
-import com.dnth_underdog_241.online_fashion_shopping.model.Product;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.RoleRepository;

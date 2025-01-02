@@ -1,7 +1,6 @@
 package com.dnth_underdog_241.online_fashion_shopping.dto.response;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.Picture;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.Material;
 import lombok.*;
 
@@ -25,6 +24,7 @@ public class ProductGetResponseDto
     private String name;
     private String thumbnail;
     private String video;
+    @Builder.Default
     private List<String> pictures = new ArrayList<>();
     private String brand;
     private String category;

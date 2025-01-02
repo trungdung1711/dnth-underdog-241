@@ -46,6 +46,7 @@ public class VariantProduct
 
 
     @OneToMany(mappedBy = "variantProduct", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @Builder.Default
     private List<CartProduct> cartProducts = new ArrayList<>();
 
 }
