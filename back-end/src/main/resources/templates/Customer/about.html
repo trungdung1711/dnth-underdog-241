@@ -202,9 +202,23 @@
                         </form>
 
                         <!-- Cart Icon -->
-                        <a href="#" class="ml-3">
-                            <img src="/img/icon/cart.png" alt="Cart">
+                        <!-- Cart Icon -->
+                        <a class="ml-3" id="cart">
+                            <img src="/img/icon/cart.png" alt="Cart" style="width: 1.5rem; height: 1.5rem; cursor: pointer;">
                         </a>
+                        <script>
+                            document.getElementById('cart').addEventListener('click', function (){
+                                const token = localStorage.getItem('token');
+                                if(token != null){
+                                    window.location.href = "/cart";
+                                }
+                                else {
+                                    alert("You need to log in to view the shopping cart.");
+                                    window.location.href = "/login";
+
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
 

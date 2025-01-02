@@ -158,9 +158,22 @@
                     </form>
 
                     <!-- Cart Icon -->
-                    <a href="/cart" class="ml-3">
-                        <img src="/img/icon/cart.png" alt="Cart" style="width: 1.5rem; height: 1.5rem;">
+                    <a class="ml-3" id="cart">
+                        <img src="/img/icon/cart.png" alt="Cart" style="width: 1.5rem; height: 1.5rem; cursor: pointer;">
                     </a>
+                    <script>
+                        document.getElementById('cart').addEventListener('click', function (){
+                            const token = localStorage.getItem('token');
+                            if(token != null){
+                                window.location.href = "/cart";
+                            }
+                            else {
+                                alert("You need to log in to view the shopping cart.");
+                                window.location.href = "/login";
+
+                            }
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -182,7 +195,7 @@
                             <h2>Fall - Winter Collections 2030</h2>
                             <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
                                 commitment to exceptional quality.</p>
-                            <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                            <a href="/shop" class="primary-btn">Shop now <span class="arrow_right"></span></a>
                             <div class="hero__social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>

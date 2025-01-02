@@ -257,11 +257,6 @@
                                 const userId = localStorage.getItem('id'); // Lấy userId từ localStorage
                                 const token = localStorage.getItem('token'); // Lấy token từ localStorage
 
-                                if (!userId || !token) {
-                                    alert('Please log in to view your cart.');
-                                    return;
-                                }
-
                                 const apiUrl = `http://localhost:8080/api/v1/customers/${userId}/cart?page=0&size=10`;
 
                                 try {
