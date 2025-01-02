@@ -15,7 +15,7 @@ public class ReportScheduler
 
 
     //@Scheduled(cron = "0 0 0 * * SUN")
-    @Scheduled(fixedRate = 30 * 1000)
+    @Scheduled(fixedRate = 5 * 60 * 1000)
     public void generateWeeklyReport()
     {
         log.info("Generating weekly report");

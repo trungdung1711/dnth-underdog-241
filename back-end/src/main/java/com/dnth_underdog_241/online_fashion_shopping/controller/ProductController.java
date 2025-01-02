@@ -6,9 +6,6 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductUpdateRe
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.VariantProductCreateRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.dto.response.VariantProductGetResponseDto;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
 import com.dnth_underdog_241.online_fashion_shopping.service.ProductService;
 import com.dnth_underdog_241.online_fashion_shopping.service.VariantProductService;
 import lombok.RequiredArgsConstructor;

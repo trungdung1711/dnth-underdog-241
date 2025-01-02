@@ -32,6 +32,15 @@ public class OrderItem
     private Long quantity;
 
 
+    @Column(name = "short_description", nullable = false)
+    private String shortDescription;
+
+
+    @Column(name = "sku", nullable = false)
+    @Builder.Default
+    private String sku = "OFS_";
+
+
     @Enumerated(EnumType.STRING)
     @Column(name = "size", nullable = false)
     private SizeEnum sizeEnum;
@@ -45,9 +54,4 @@ public class OrderItem
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
-
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
 }

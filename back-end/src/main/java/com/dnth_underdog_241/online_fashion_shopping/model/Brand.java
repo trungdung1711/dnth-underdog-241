@@ -31,5 +31,6 @@ public class Brand
 
 
     @OneToMany(mappedBy = "brand", orphanRemoval = true)
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 }

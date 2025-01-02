@@ -5,14 +5,10 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.request.ProductUpdateRe
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetAllResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ProductGetResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.ProductMapper;
-import com.dnth_underdog_241.online_fashion_shopping.model.Brand;
 import com.dnth_underdog_241.online_fashion_shopping.model.Picture;
 import com.dnth_underdog_241.online_fashion_shopping.model.Product;
-import com.dnth_underdog_241.online_fashion_shopping.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 

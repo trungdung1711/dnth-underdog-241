@@ -1,7 +1,6 @@
 package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.Order;
 import com.dnth_underdog_241.online_fashion_shopping.model.Report;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ReportRepository;
 import lombok.RequiredArgsConstructor;

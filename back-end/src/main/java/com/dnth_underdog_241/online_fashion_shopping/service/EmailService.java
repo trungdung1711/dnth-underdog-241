@@ -1,7 +1,6 @@
 package com.dnth_underdog_241.online_fashion_shopping.service;
 
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Admin;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Customer;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Employee;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

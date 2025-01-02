@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -72,12 +71,15 @@ public class OrderMapperImpl implements OrderMapper
                                             .quantity(cartProduct.getQuantity())
                                             .sizeEnum(cartProduct.getVariantProduct().getSize().getSize())
                                             .colourEnum(cartProduct.getVariantProduct().getColour().getColour())
+                                            .shortDescription(cartProduct.getVariantProduct().getProduct().getShortDescription())
+                                            .sku("OFS_" + cartProduct.getId())
                                             .order(order)
-                                            .product(cartProduct.getVariantProduct().getProduct())
                                             .build();
                                 }
                         )
                 .toList();
+
+        order.setOrderItems(orderItemList);
 
 
         Payment payment = Payment

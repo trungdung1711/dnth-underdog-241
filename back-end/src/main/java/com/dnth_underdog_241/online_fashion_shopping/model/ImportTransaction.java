@@ -2,7 +2,6 @@ package com.dnth_underdog_241.online_fashion_shopping.model;
 
 
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SupplierEnum;
-import com.dnth_underdog_241.online_fashion_shopping.model.user.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 

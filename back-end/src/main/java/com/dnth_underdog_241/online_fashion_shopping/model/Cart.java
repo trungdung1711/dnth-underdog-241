@@ -24,6 +24,7 @@ public class Cart
 
 
     @OneToMany(mappedBy = "cart", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<CartProduct> cartProducts = new ArrayList<>();
 
 

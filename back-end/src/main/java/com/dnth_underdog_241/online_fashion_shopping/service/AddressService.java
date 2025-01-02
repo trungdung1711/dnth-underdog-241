@@ -11,7 +11,6 @@ import com.dnth_underdog_241.online_fashion_shopping.model.user.WebUser;
 import com.dnth_underdog_241.online_fashion_shopping.repository.AddressRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.WebUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

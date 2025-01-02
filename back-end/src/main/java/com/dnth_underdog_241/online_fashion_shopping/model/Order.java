@@ -36,10 +36,12 @@ public class Order
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
+    @Builder.Default
     private OrderStatusEnum orderStatus = OrderStatusEnum.PENDING;
 
 
     @Column(name = "time_stamp")
+    @Builder.Default
     private LocalDateTime timeStamp = LocalDateTime.now();
 
 
@@ -54,6 +56,7 @@ public class Order
 
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @Builder.Default
     private List<OrderItem> orderItems = new ArrayList<>();
 
 

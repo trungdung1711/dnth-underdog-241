@@ -63,14 +63,14 @@ public class PayPalOrderMapper
     {
         return PayPalOrderCreateRequestDto.Item.builder()
                 .name(orderItem.getName())
-                .description(orderItem.getProduct().getShortDescription()) // Add a proper description if available
+                .description(orderItem.getShortDescription()) // Add a proper description if available
                 .unitAmount(PayPalOrderCreateRequestDto.Money.builder()
                         .currencyCode("USD")
                         .value(String.format("%.2f", orderItem.getPrice()))
                         .build())
                 .quantity(String.valueOf(orderItem.getQuantity()))
                 .category("PHYSICAL_GOODS") // Adjust based on your item category
-                .sku(orderItem.getProduct().getId().toString()) // Assuming Product has an ID
+                .sku(orderItem.getSku()) // Assuming Product has an ID
                 .imageUrl("https://i.ibb.co/Vp8Jn9Q/2-AA94-E01-8386-4402-8669-1524-A7-EB75-B9.png")
                 .build();
     }

@@ -4,7 +4,6 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.request.ShippingCreateR
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.CustomerGetAllRequestDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.ShippingAddressGetResponseDto;
 import com.dnth_underdog_241.online_fashion_shopping.dto.response.WebUserGetDTO;
-import com.dnth_underdog_241.online_fashion_shopping.mapper.CustomerMapper;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.WebUserMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.RoleEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.user.Role;
@@ -19,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,8 +35,6 @@ public class CustomerController
 {
    private final WebUserRepository webUserRepository;
 
-   private  final CustomerMapper customerMapper;
-
    private  final WebUserMapper webUserMapper;
    private final AddressService addressService;
    private final RoleRepository roleRepository;
@@ -48,8 +44,7 @@ public class CustomerController
    // Lấy danh sách khách hàng
    @GetMapping("/index")
    public ResponseEntity<List<WebUserGetDTO>> getAllCustomersUpdate() {
-      List<WebUser> brands = webUserRepository.findAll();
-       return null;
+      return null;
    }
 
 

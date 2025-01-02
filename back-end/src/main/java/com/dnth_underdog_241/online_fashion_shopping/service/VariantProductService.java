@@ -6,9 +6,7 @@ import com.dnth_underdog_241.online_fashion_shopping.dto.response.VariantProduct
 import com.dnth_underdog_241.online_fashion_shopping.exception.ResourcesNotFound;
 import com.dnth_underdog_241.online_fashion_shopping.mapper.VariantProductMapper;
 import com.dnth_underdog_241.online_fashion_shopping.model.*;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.FileLocation;
-import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ColourRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.ProductRepository;
 import com.dnth_underdog_241.online_fashion_shopping.repository.SizeRepository;
