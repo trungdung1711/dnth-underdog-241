@@ -43,7 +43,7 @@ public class VariantProductService
         Colour colour = colourRepository.findById(variantProductCreateRequestDto.getColour()).orElseThrow(() -> new ResourcesNotFound("Colour not found"));
 
 
-        if (variantProductRepository.existsByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size, colour))
+        if (variantProductRepository. existsByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size, colour))
         {
             VariantProduct variantProduct = variantProductRepository.findByProductIdAndSizeAndColour(variantProductCreateRequestDto.getId(), size.getSize(), colour.getColour()).get();
 
@@ -52,7 +52,6 @@ public class VariantProductService
             importTransactionService.createImportTransaction(variantProduct.getProduct().getPrice(), variantProductCreateRequestDto.getStock(), variantProduct);
             return;
         }
-main
 
         Product product = productRepository.findProductById(variantProductCreateRequestDto.getId());
 
