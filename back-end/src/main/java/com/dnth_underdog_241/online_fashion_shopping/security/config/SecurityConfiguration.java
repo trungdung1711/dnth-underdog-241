@@ -68,6 +68,7 @@ public class SecurityConfiguration {
                                         "/update-info",
                                         "/checkout",
                                         "/cart",
+                                        "/orders",
                                         "/logout",
                                         "/home"
                                 ).permitAll()

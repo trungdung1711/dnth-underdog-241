@@ -66,7 +66,7 @@ public class CustomerController
       addressService.addShipping(shippingCreateRequestDto, id);
 
       return ResponseEntity
-              .status(HttpStatus.CREATED)
+              .status(HttpStatus.OK)
               .body(null);
    }
 

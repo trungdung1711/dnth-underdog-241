@@ -59,6 +59,11 @@ public class HomeController {
       return "Customer/shopping-cart";
    }
 
+   @RequestMapping("/orders")
+   public String order() {
+      return "Customer/shopping-orders";
+   }
+
    @RequestMapping("/detail/{id}")
    public String details(@PathVariable Long id, Model model) {
       model.addAttribute("productId", id);

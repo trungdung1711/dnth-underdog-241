@@ -700,18 +700,14 @@
 
                     <script>
                         document.addEventListener('DOMContentLoaded', function () {
-                            const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
-                            const token = localStorage.getItem('token');
-                            const userInfoUrl = `http://localhost:8080/api/v1/products`;
 
                             let currentPage = 0; // Trang hiện tại
 
                             function fetchProducts(page) {
-                                fetch(`${userInfoUrl}?page=${page}`, {
+                                fetch(`http://localhost:8080/api/v1/products?page=${page}`, {
                                     method: 'GET',
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
                                     },
                                 })
                                 .then(response => {

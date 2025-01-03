@@ -253,8 +253,6 @@
                 <form action="#">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                            here</a> to enter your code</h6>
                             <h6 class="checkout__title">Billing Details</h6>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -272,7 +270,149 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
+                                <div id="shippingaddress"></div>
+
+                                <script>
+                                 function getAlladdress() {
+                                        const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                                        const userInfoUrl = `http://localhost:8080/api/v1/customers/${userId}/shippings`;
+                                        const token = localStorage.getItem('token');
+
+                                        fetch(userInfoUrl, {
+                                            method: 'GET',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                            },
+                                        })
+                                            .then((response) => {
+                                                if (!response.ok) {
+                                                    throw new Error('Lỗi khi gọi API: ');
+                                                }
+                                                return response.json();
+                                            })
+                                            .then((shipaddresss) => {
+                                                const containerselection = document.getElementById('shippingaddress');
+                                                // Xóa tất cả các tùy chọn hiện có
+                                                containerselection.innerHTML = '';
+
+                                                const selection = document.createElement('select');
+                                                selection.classList.add('form-control');
+                                                selection.id = "address";
+
+                                                // Thêm tùy chọn mặc định
+                                                const option0 = document.createElement('option');
+                                                option0.value = "";
+                                                option0.innerText = "Select Address";
+                                                option0.selected = true;
+                                                selection.appendChild(option0);
+
+                                                // Thêm các địa chỉ từ shipaddresss
+                                                shipaddresss.forEach(shipaddress => {
+                                                    const option = document.createElement('option');
+                                                    option.value = shipaddress.id;
+                                                    option.innerText = shipaddress.address;
+                                                    selection.appendChild(option);
+                                                });
+
+                                                containerselection.appendChild(selection);
+                                            })
+                                            .catch((error) => {
+                                                console.error('Có lỗi xảy ra:', error);
+                                            });
+                                     }
+                                </script>
+                                <br>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Add Address<span>*</span></p>
+
+                                <div class="form-row">
+                                        <div class="col-md-4 form-group">
+                                            <p>Province</p>
+                                            <select class="form-control" id="province" name="province">
+                                                <option value="Ha Noi">Hà Nội</option>
+                                                <option value="Ho Chi Minh">Hồ Chí Minh</option>
+                                                <option value="Đa Nang">Đà Nẵng</option>
+                                                <!-- Thêm các tỉnh/thành phố khác ở đây -->
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4 form-group">
+                                            <p>City</p>
+                                            <select class="form-control" id="city" name="city">
+                                                <!-- Các thành phố sẽ phụ thuộc vào tỉnh -->
+                                                <option value="Ba Đình">Ba Đình</option>
+                                                <option value="Hoan Kiem">Hoàn Kiếm</option>
+                                                <option value="Tan Binh">Tân Bình</option>
+                                                <!-- Thêm các thành phố khác -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <p>Ward</p>
+                                            <select class="form-control" id="ward" name="ward">
+                                                <!-- Các phường/xã sẽ phụ thuộc vào thành phố -->
+                                                <option value="Phuc Xa">Phúc Xá</option>
+                                                <option value="Ngoc Ha">Ngọc Hà</option>
+                                                <!-- Thêm các phường/xã khác -->
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                <div class="form-group">
+                                    <label for="street">Street</label>
+                                    <input type="text" class="form-control" id="street" name="street" placeholder="Street Name">
+                                </div>
+
+                                <button type="button"  class="btn btn-secondary btn-sm shadow-sm" id="AddAddress" onclick="addRess()">Add</button>
+
+                                <script>
+                                    function addRess(){
+                                        const province = document.getElementById('province').value;
+                                        const city = document.getElementById('city').value;
+                                        const ward = document.getElementById('ward').value;
+                                        const street = document.getElementById('street').value;
+
+                                        const shipment = {
+                                            province: province,
+                                            city: city,
+                                            ward: ward,
+                                            street: street
+                                        };
+
+                                        const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
+                                        const token = localStorage.getItem('token');
+                                        const userInfoUrl = `http://localhost:8080/api/v1/customers/${userId}/shippings`;
+
+                                        fetch(userInfoUrl, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Authorization': `Bearer ${token}`, // Thay bằng token nếu cần
+                                            },
+                                            body: JSON.stringify({
+                                                province: province,
+                                                city: city,
+                                                ward: ward,
+                                                street: street
+                                            })
+
+                                        })
+                                            .then((response) => {
+                                                if (!response.ok) {
+                                                    throw new Error('Lỗi khi gọi API: ');
+                                                }
+                                                getAlladdress();
+                                                alert('Address added successfully!');
+                                            })
+                                            .catch((error) => {
+                                                console.error('Có lỗi xảy ra:', error);
+                                            });
+
+                                    }
+                                </script>
+                                <br>
+                                <br>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -289,11 +429,23 @@
                                 </div>
                             </div>
                             <div class="checkout__input">
+                                <p>Shipping Carrier<span>*</span></p>
+                                <select class="form-control align-content-center" id="shipmentAgency">
+                                    <option value="" disabled selected>Select a carrier</option>
+                                    <option value="FEDEX">FEDEX</option>
+                                    <option value="USPS">USPS</option>
+                                    <option value="AMAZON">AMAZON</option>
+                                    <option value="UPS">UPS</option>
+                                </select>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="checkout__input">
                                 <p>Order notes<span>*</span></p>
                                 <input type="text"
-                                placeholder="Notes about your order, e.g. special notes for delivery.">
+                                placeholder="Notes about your order, e.g. special notes for delivery."
+                                id="message"/>
                             </div>
-
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
                                     const userId = localStorage.getItem("id"); // Thay bằng ID người dùng cần lấy
@@ -323,41 +475,65 @@
                                         .catch((error) => {
                                             console.error('Có lỗi xảy ra:', error);
                                         });
+
+                                    getAlladdress();
                                 });
                             </script>
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
                                 <h4 class="order__title">Your order</h4>
-                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <div class="checkout__order__products">Product <span>Price</span></div>
                                 <ul class="checkout__total__products" id="tbdcart">
 <!--                                    <li>01. Vanilla salted caramel <span>$ 300.0</span></li>-->
-<!--                                    <li>02. German chocolate <span>$ 170.0</span></li>-->
-<!--                                    <li>03. Sweet autumn <span>$ 170.0</span></li>-->
-<!--                                    <li>04. Cluten free mini dozen <span>$ 110.0</span></li>-->
                                 </ul>
                                 <ul class="checkout__total__all">
                                     <li>Subtotal <span id="subtotal"></span></li>
                                     <li>Total <span id="total"></span></li>
                                 </ul>
+                                <h4>Method Payment</h4>
+                                <br>
+<!--                                <div class="checkout__input__checkbox">-->
+<!--                                    <label for="payment">-->
+<!--                                        Check Payment-->
+<!--                                        <input type="checkbox" id="payment">-->
+<!--                                        <span class="checkmark"></span>-->
+<!--                                    </label>-->
+<!--                                </div>-->
                                 <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
+                                    <label for="CREDIT_CARD">
+                                        Credit Card
+                                        <input type="radio" value="CREDIT_CARD" id="CREDIT_CARD"  name="paymentMethod">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
+                                <div class="checkout__input__checkbox" >
+                                    <label for="DEBIT_CARD">
+                                        Debit Card
+                                        <input type="radio" value="DEBIT_CARD" id="DEBIT_CARD" name="paymentMethod">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox" >
+                                    <label for="Paypal">
                                         Paypal
-                                        <input type="checkbox" id="paypal">
+                                        <input type="radio" value="paypal" id="paypal" name="paymentMethod">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                <div class="checkout__input__checkbox">
+                                    <label for="WHEN_RECEIVED">
+                                        When Received
+                                        <input type="radio" value="WHEN_RECEIVED" id="WHEN_RECEIVED" name="paymentMethod">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button  class="site-btn" id="creatOrder">PLACE ORDER</button>
                             </div>
                         </div>
                         <script>
+                            const cartProductId = [];
+
                             document.addEventListener('DOMContentLoaded', async function () {
                                 const userId = localStorage.getItem('id'); // Lấy userId từ localStorage
                                 const token = localStorage.getItem('token'); // Lấy token từ localStorage
@@ -389,7 +565,6 @@
                                     alert('Failed to fetch cart data. Please try again later.');
                                 }
                             });
-
                             function populateCartTable(products) {
                                 const cartTableBody = document.getElementById('tbdcart');
                                 cartTableBody.innerHTML = ''; // Xóa dữ liệu cũ (nếu có)
@@ -411,6 +586,7 @@
                                         ${count}.${name} x${quantity} <span>${price}</span>
                                     `;
                                     cartTableBody.appendChild(li);
+                                    cartProductId.push(id);
                                     vtotal += parseFloat(price * quantity);
                                     count += 1;
                                 });
@@ -418,6 +594,49 @@
                                 document.getElementById('subtotal').innerText = "$"+vtotal.toFixed(2);
                                 document.getElementById('total').innerText = "$"+vtotal.toFixed(2);
                             }
+
+                            document.getElementById('creatOrder').addEventListener('click', async function () {
+                                const userId = localStorage.getItem('id'); // Lấy userId từ localStorage
+                                const token = localStorage.getItem('token'); // Lấy token từ localStorage
+
+                                const shipmentAgency = document.getElementById('shipmentAgency').value;
+                                const paymentMethod = document.getElementsByName('paymentMethod')[0].value;
+                                const message = document.getElementById('message').value;
+                                const address = document.getElementById('address').value;
+                                console.log(`sdfdsf-${address} - ${message} - ${paymentMethod} - ${shipmentAgency} - ${cartProductId[0]} - ${cartProductId[1]}`)
+
+
+                                const apiUrl = `api/v1/customers/${userId}/orders`;
+
+                                try {
+                                    const response = await fetch(apiUrl, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            cartProductIdList: cartProductId,
+                                            shippingAddressId: address,
+                                            shipmentAgency: shipmentAgency,
+                                            paymentMethod: paymentMethod,
+                                            message: message
+                                        })
+                                    });
+
+                                    if (!response.ok) {
+                                        throw new Error(`Error fetching cart data: ${response.statusText}`);
+                                    }else{
+                                        alert('Order created successfully!');
+                                    }
+
+                                    const data = await response.json();
+
+                                } catch (error) {
+                                    console.error('Error:', error.message);
+                                    alert('Failed to fetch cart data. Please try again later.');
+                                }
+                            });
                         </script>
                     </div>
                 </form>
@@ -505,16 +724,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.nice-select.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

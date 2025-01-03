@@ -16,6 +16,7 @@ public class CartProductMapperImpl implements CartProductMapper
         return CartProductGetResponseDto
                 .builder()
                 .id(cartProduct.getId())
+                .cartid(cartProduct.getCart().getId())
                 .productId(cartProduct.getVariantProduct().getProduct().getId())
                 .variantProductId(cartProduct.getVariantProduct().getId())
                 .name(cartProduct.getVariantProduct().getProduct().getName())
