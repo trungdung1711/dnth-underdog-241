@@ -64,6 +64,11 @@ public class HomeController {
       return "Customer/shopping-orders";
    }
 
+   @RequestMapping("/paybal")
+   public String paybal() {
+      return "pp";
+   }
+
    @RequestMapping("/detail/{id}")
    public String details(@PathVariable Long id, Model model) {
       model.addAttribute("productId", id);

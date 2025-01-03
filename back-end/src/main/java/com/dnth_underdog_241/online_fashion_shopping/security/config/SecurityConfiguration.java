@@ -70,6 +70,7 @@ public class SecurityConfiguration {
                                         "/cart",
                                         "/orders",
                                         "/logout",
+                                        "/paybal",
                                         "/home"
                                 ).permitAll()
 
