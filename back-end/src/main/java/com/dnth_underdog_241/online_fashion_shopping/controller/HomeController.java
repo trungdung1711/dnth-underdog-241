@@ -65,10 +65,21 @@ public class HomeController {
    }
 
    @RequestMapping("/detail/{id}")
-   public String details(@PathVariable Long id, Model model) {
-      model.addAttribute("productId", id);
-      return "Customer/shop-details";
-   }
+   public String details(@PathVariable String id, Model model) {
+    try {
+        Long productId = Long.parseLong(id);
+        model.addAttribute("productId", productId);
+        return "Customer/shop-details";
+    } catch (NumberFormatException e) {
+        return "error-page"; // Trả về một trang lỗi hoặc thông báo.
+    }
+   }  
+
+   // @RequestMapping("/detail/{id}")
+   // public String details(@PathVariable Long id, Model model) {
+   //    model.addAttribute("productId", id);
+   //    return "Customer/shop-details";
+   // }
 
    @GetMapping("/update-info")
    public String UpdateInfo() {
