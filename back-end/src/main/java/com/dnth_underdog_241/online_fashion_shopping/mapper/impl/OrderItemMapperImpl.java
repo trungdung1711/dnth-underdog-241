@@ -21,6 +21,7 @@ public class OrderItemMapperImpl implements OrderItemMapper
                 .quantity(orderItem.getQuantity())
                 .size(orderItem.getSizeEnum())
                 .colour(orderItem.getColourEnum())
+                .image(orderItem.getImage())
                 .build();
     }
 }

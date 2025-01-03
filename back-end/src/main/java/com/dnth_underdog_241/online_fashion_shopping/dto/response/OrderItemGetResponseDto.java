@@ -25,4 +25,6 @@ public class OrderItemGetResponseDto
     private SizeEnum size;
 
     private ColourEnum colour;
+
+    private String image;
 }
