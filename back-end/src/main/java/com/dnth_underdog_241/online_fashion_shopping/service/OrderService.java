@@ -52,6 +52,8 @@ public class OrderService
                             CartProduct cartProduct= cartProductRepository.findById(cartProductId).orElseThrow(() -> new RuntimeException("Cart product not found"));
 
                             cartProduct.getVariantProduct().setStock(cartProduct.getVariantProduct().getStock() - cartProduct.getQuantity());
+
+                            cartProductRepository.deleteById(cartProductId);
                         });
 
         customer.getOrders().add(order);
@@ -85,5 +87,13 @@ public class OrderService
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new ResourcesNotFound("Order not found"));
 
         orderRepository.delete(order);
+    }
+
+
+    public Page<OrderGetAllResponseDto> getAllOrders(Pageable pageable)
+    {
+        return orderRepository
+        .findAll(pageable)
+        .map(orderMapper::toOrderGetAllResponseDto);
     }
 }
