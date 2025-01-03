@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.controller.web_user;
 
 import com.dnth_underdog_241.online_fashion_shopping.dto.request.ShippingCreateRequestDto;
@@ -66,7 +67,7 @@ public class CustomerController
       addressService.addShipping(shippingCreateRequestDto, id);
 
       return ResponseEntity
-              .status(HttpStatus.OK)
+              .status(HttpStatus.CREATED)
               .body(null);
    }
 

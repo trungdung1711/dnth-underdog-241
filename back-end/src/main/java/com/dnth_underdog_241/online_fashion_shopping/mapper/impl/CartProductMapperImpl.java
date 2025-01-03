@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.mapper.impl;
 
 
@@ -16,7 +17,6 @@ public class CartProductMapperImpl implements CartProductMapper
         return CartProductGetResponseDto
                 .builder()
                 .id(cartProduct.getId())
-                .cartid(cartProduct.getCart().getId())
                 .productId(cartProduct.getVariantProduct().getProduct().getId())
                 .variantProductId(cartProduct.getVariantProduct().getId())
                 .name(cartProduct.getVariantProduct().getProduct().getName())

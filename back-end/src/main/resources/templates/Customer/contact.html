@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
@@ -371,4 +372,366 @@
     <script src="js/main.js"></script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Male-Fashion | Template</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+    <style>
+        .dropdown-menu .dropdown-item {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #d9d9d9;
+            color: black;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p></p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right" id="guest">
+                        <div class="header__top__links">
+                            <a href="/login">Sign in</a>/
+                            <a href="/signup">Sign up</a>
+                        </div>
+                    </div>
+
+                    <div class="header__top__right d-flex align-items-center justify-content-end" id="user">
+                        <!-- Avatar -->
+                        <div class="header__user">
+                            <img src="/img/avatar.jpg" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px;" id="imgavatar">
+                        </div>
+                        <!-- User Name -->
+                        <div class="header__user__name ml-2 text-white dropdown-toggle " id="userDropdown" style="cursor: pointer;text-decoration: none; color: inherit;" >
+                            <span id="username"></span>
+                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userDropdown" style="text-decoration: none; color: inherit;">
+                                <a class="dropdown-item" href="/update-info">Update Info</a>
+                                <a class="dropdown-item" href="/orders">Orders</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="logout()">Logout</a>
+                            </div>
+                        </div>
+
+                        <script>
+                            function logout() {
+                                // Gửi yêu cầu logout đến backend
+                                fetch('/logout', {
+                                    method: 'GET',
+                                    credentials: 'include'  // Đảm bảo session/cookie được gửi đi
+                                })
+                                    .then(response => {
+                                        // Nếu logout thành công, xóa thông tin từ localStorage
+                                        if (response.ok) {
+                                            localStorage.removeItem('token');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('phoneNumber');  // Hoặc bất kỳ thông tin nào cần xóa khác
+                                            localStorage.removeItem('id');
+                                            localStorage.removeItem('role');
+                                            window.location.href = '/index';  // Điều hướng về trang /index
+                                        } else {
+                                            alert('Logout thất bại');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Có lỗi khi thực hiện logout:', error);
+                                    });
+                            }
+
+                        </script>
+
+                        <script>
+                            // Lấy dữ liệu từ localStorage
+                            const userData = localStorage.getItem("phoneNumber");
+                            console.log("Phone Number Data:", userData);
+
+                            if (userData) {
+                                document.getElementById("username").innerText = userData;
+                            } else {
+                                document.getElementById("username").innerText = "Guest";  // Thay thế bằng thông báo mặc định nếu không có dữ liệu
+                            }
+
+
+                            document.getElementById("userDropdown").addEventListener("click", () => {
+                                const dropdownMenu = document.querySelector("#userDropdown .dropdown-menu");
+                                dropdownMenu.classList.toggle("show");
+                            });
+
+                            // Close the dropdown when clicking outside
+                            window.addEventListener("click", (event) => {
+                                if (!document.getElementById("userDropdown").contains(event.target)) {
+                                    document.querySelector("#userDropdown .dropdown-menu").classList.remove("show");
+                                }
+                            });
+
+                        </script>
+                    </div>
+
+
+                    <script>
+                        // Kiểm tra xem người dùng đã đăng nhập hay chưa (ví dụ: kiểm tra token trong localStorage)
+                        const isLoggedIn = localStorage.getItem('token') !== null;
+
+                        if (isLoggedIn) {
+                            // Nếu đã đăng nhập
+                            document.getElementById('guest').classList.add('d-none'); // Ẩn phần tử chứa "Sign in" và "Sign up"
+                            document.getElementById('user').classList.remove('d-none'); // Hiển thị phần tử chứa tên người dùng
+
+                            // Lấy tên người dùng (ví dụ: từ localStorage hoặc API)
+                            const username = localStorage.getItem('phoneNumber'); // Thay bằng cách lấy tên người dùng thực tế
+                            document.getElementById('username').textContent = username;
+                        } else {
+                            // Nếu chưa đăng nhập
+                            document.getElementById('guest').classList.remove('d-none'); // Hiển thị phần tử chứa "Sign in" và "Sign up"
+                            document.getElementById('user').classList.add('d-none'); // Ẩn phần tử chứa tên người dùng
+                            document.getElementById('imgavatar').classList.add('d-none'); // Ẩn phần "User"
+                            document.getElementById('userDropdown').classList.add('d-none'); // Ẩn phần "User"
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="" id="linklogo"><img src="/img/logo.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li><a href="" id="linkhome">Home</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Kiểm tra xem người dùng đã đăng nhập hay chưa
+                                const token = localStorage.getItem('token');
+                                const isLoggedIn = token !== null && token.trim() !== '';
+
+                                // Cập nhật đường dẫn cho liên kết "Home"
+                                const linkHome = document.getElementById('linkhome');
+                                const linklogo = document.getElementById('linklogo');
+                                if (linkHome) {
+                                    linkHome.href = isLoggedIn ? "./home" : "./index";
+                                }
+                                if (linklogo) {
+                                    linklogo.href = isLoggedIn ? "./home" : "./index";
+                                }
+                            });
+                        </script>
+
+                        <li><a href="./shop">Shop</a></li>
+                        <li class="active"><a href="./contact">Contacts</a></li>
+                        <li><a href="./about">About Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option d-flex align-items-center justify-content-between">
+                    <!-- Search Form -->
+                    <form action="#" class="d-flex align-items-center flex-grow-1">
+                        <input type="text" class="form-control" placeholder="Search..." style="border-radius: 0;"/>
+                        <button type="submit" class="btn btn-light">
+                            <span class="icon_search"></span>
+                        </button>
+                    </form>
+
+                    <!-- Cart Icon -->
+                    <a href="#" class="ml-3">
+                        <img src="/img/icon/cart.png" alt="Cart">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+<!-- Header Section End -->
+
+    <!-- Map Begin -->
+    <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d111551.9926412813!2d-90.27317134641879!3d38.606612219170856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sbd!4v1597926938024!5m2!1sen!2sbd" height="500" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <!-- Map End -->
+
+    <!-- Contact Section Begin -->
+    <section class="contact spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__text">
+                        <div class="section-title">
+                            <span>Information</span>
+                            <h2>Contact Us</h2>
+                            <p>As you might expect of a company that began as a high-end interiors contractor, we pay
+                                strict attention.</p>
+                        </div>
+                        <ul>
+                            <li>
+                                <h4>America</h4>
+                                <p>195 E Parker Square Dr, Parker, CO 801 <br />+43 982-314-0958</p>
+                            </li>
+                            <li>
+                                <h4>France</h4>
+                                <p>109 Avenue Léon, 63 Clermont-Ferrand <br />+12 345-423-9893</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__form">
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="text" placeholder="Name">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input type="text" placeholder="Email">
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea placeholder="Message"></textarea>
+                                    <button type="submit" class="site-btn">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- Js Plugins -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/jquery.nicescroll.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.countdown.min.js"></script>
+    <script src="js/jquery.slicknav.js"></script>
+    <script src="js/mixitup.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+>>>>>>> 962c62d3796d1701728105df4fb77ce437627731
 </html>

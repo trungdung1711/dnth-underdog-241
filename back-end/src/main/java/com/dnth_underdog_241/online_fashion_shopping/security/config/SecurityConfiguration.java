@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.security.config;
 
 import com.dnth_underdog_241.online_fashion_shopping.security.filter.JwtAuthenticationFilter;
@@ -68,9 +69,7 @@ public class SecurityConfiguration {
                                         "/update-info",
                                         "/checkout",
                                         "/cart",
-                                        "/orders",
                                         "/logout",
-                                        "/paybal",
                                         "/home"
                                 ).permitAll()
 

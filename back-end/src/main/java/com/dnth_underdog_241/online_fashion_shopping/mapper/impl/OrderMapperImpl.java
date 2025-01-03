@@ -67,10 +67,16 @@ public class OrderMapperImpl implements OrderMapper
                                     return OrderItem
                                             .builder()
                                             .name(cartProduct.getVariantProduct().getProduct().getName())
-                                            .price(cartProduct.getPrice() * cartProduct.getQuantity())
+                                            .price
+                                            (
+                                                Math.round(
+                                                        cartProduct.getPrice() * cartProduct.getQuantity() * 100.0
+                                                   ) / 100.0
+                                                )
                                             .quantity(cartProduct.getQuantity())
                                             .sizeEnum(cartProduct.getVariantProduct().getSize().getSize())
                                             .colourEnum(cartProduct.getVariantProduct().getColour().getColour())
+                                            .image(cartProduct.getVariantProduct().getProduct().getThumbnail())
                                             .shortDescription(cartProduct.getVariantProduct().getProduct().getShortDescription())
                                             .sku("OFS_" + cartProduct.getId())
                                             .order(order)
@@ -86,10 +92,12 @@ public class OrderMapperImpl implements OrderMapper
                 .builder()
                 .amount
                         (
-                                orderItemList
-                                        .stream()
-                                        .mapToDouble(OrderItem::getPrice)
-                                        .sum()
+                                Math.round(
+                                        orderItemList
+                                            .stream()
+                                            .mapToDouble(OrderItem::getPrice)
+                                            .sum() * 100.0
+                                   ) / 100.0
                         )
                 .paymentMethodEnum(orderCreateRequestDto.getPaymentMethod())
                 .paymentStatusEnum(PaymentStatusEnum.PENDING)

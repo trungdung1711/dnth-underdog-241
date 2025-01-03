@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 
@@ -29,7 +30,7 @@ public class OrderController
     public ResponseEntity<OrderCreateResponseDto> createOrder(@PathVariable("id") Long id, @RequestBody @Valid OrderCreateRequestDto orderCreateRequestDto)
     {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body
                         (
                                 orderService.createOrder(orderCreateRequestDto)

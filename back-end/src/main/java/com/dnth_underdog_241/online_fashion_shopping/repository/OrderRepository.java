@@ -20,6 +20,10 @@ public interface OrderRepository extends JpaRepository<Order, Long>
 {
     Page<Order> findByCustomerId(Long customerId, Pageable pageable);
 
+
+    Page<Order> findAll(Pageable pageable);
+    
+
     Optional<Order> findByPaypalId(String orderId);
 
     @Query("SELECT o " +

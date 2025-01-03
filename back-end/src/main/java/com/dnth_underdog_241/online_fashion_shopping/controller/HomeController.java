@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,16 +58,6 @@ public class HomeController {
    @RequestMapping("/cart")
    public String cart() {
       return "Customer/shopping-cart";
-   }
-
-   @RequestMapping("/orders")
-   public String order() {
-      return "Customer/shopping-orders";
-   }
-
-   @RequestMapping("/paybal")
-   public String paybal() {
-      return "pp";
    }
 
    @RequestMapping("/detail/{id}")

@@ -1,7 +1,7 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.dto.response;
 
 
-import com.dnth_underdog_241.online_fashion_shopping.model.Cart;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.ColourEnum;
 import com.dnth_underdog_241.online_fashion_shopping.model.systemenum.SizeEnum;
 import lombok.*;
@@ -18,8 +18,6 @@ import java.time.LocalDateTime;
 public class CartProductGetResponseDto
 {
     private Long id;
-
-    private Long cartid;
 
     private Long productId;
 

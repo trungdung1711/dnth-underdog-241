@@ -1,3 +1,4 @@
+
 package com.dnth_underdog_241.online_fashion_shopping.service.customer;
 
 
@@ -84,6 +85,4 @@ public class CustomerService
     {
         return customerRepository.getAllCustomers(pageable).map(webUserMapper::toDto1);
     }
-
-
 }

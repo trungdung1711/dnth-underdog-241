@@ -51,6 +51,10 @@ public class OrderItem
     private ColourEnum colourEnum;
 
 
+    @Column(name = "image")
+    String image;
+
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
