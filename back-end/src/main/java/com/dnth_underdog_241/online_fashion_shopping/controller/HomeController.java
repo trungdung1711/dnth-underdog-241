@@ -60,9 +60,15 @@ public class HomeController {
       return "Customer/shopping-cart";
    }
 
-   @RequestMapping("/paybal")
-   public String paybal() {
-      return "pp";
+   @RequestMapping("/orders")
+   public String order() {
+      return "Customer/shopping-orders";
+   }
+
+   @RequestMapping("/payment/{id}")
+   public String payment(@PathVariable Long id, Model model) {
+      model.addAttribute("paymentId", id);
+      return "Customer/payment";
    }
 
    @RequestMapping("/detail/{id}")

@@ -12,7 +12,7 @@ window.paypal
 
         async createOrder() {
             try {
-                const response = await fetch("/api/v1/payment/paypal/orders/4", {
+                const response = await fetch(`/api/v1/payment/paypal/orders/${paymentidd}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -71,7 +71,8 @@ public class SecurityConfiguration {
                                         "/cart",
                                         "/logout",
                                         "/home",
-                                        "/paybal"
+                                        "/payment/**",
+                                        "/orders"
                                 ).permitAll()
 
 //                                .requestMatchers(

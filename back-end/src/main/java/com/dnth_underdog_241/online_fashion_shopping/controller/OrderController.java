@@ -30,7 +30,7 @@ public class OrderController
     public ResponseEntity<OrderCreateResponseDto> createOrder(@PathVariable("id") Long id, @RequestBody @Valid OrderCreateRequestDto orderCreateRequestDto)
     {
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body
                         (
                                 orderService.createOrder(orderCreateRequestDto)
